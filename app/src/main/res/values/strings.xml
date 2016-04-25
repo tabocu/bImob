@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">BlackImob</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="inquilinos">Inquilinos</string>
+    <string name="imoveis">Imóveis</string>
+    <string name="locacoes">Locações</string>
+
+    <string name="nova_locacao">Nova Locação</string>
+    <string name="novo_imovel">Novo Imóvel</string>
+    <string name="novo_inquilino">Novo Inquilino</string>
+    <string name="action_search">Search</string>
+    <string name="action_apply">Salvar</string>
+
+
+</resources>
