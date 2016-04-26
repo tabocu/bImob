@@ -13,6 +13,9 @@
     <string name="novo_inquilino">Novo Inquilino</string>
     <string name="action_search">Search</string>
     <string name="action_apply">Salvar</string>
+    <string name="title_activity_add_imovel">AddImovelActivity</string>
+    <string name="title_activity_add_inquilino">AddInquilinoActivity</string>
+    <string name="title_activity_add_locacao">AddLocacaoActivity</string>
 
 
 </resources>

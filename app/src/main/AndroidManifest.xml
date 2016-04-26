@@ -10,8 +10,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,15 +20,30 @@
         <activity
             android:name=".AddImovelActivity"
             android:label="@string/novo_imovel"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="br.com.blackseed.blackimob.MainActivity" />
+        </activity>
         <activity
             android:name=".AddInquilinoActivity"
             android:label="@string/novo_inquilino"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="br.com.blackseed.blackimob.MainActivity" />
+        </activity>
         <activity
             android:name=".AddLocacaoActivity"
             android:label="@string/nova_locacao"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="br.com.blackseed.blackimob.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
