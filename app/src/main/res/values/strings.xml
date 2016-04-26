@@ -8,14 +8,19 @@
     <string name="imoveis">Imóveis</string>
     <string name="locacoes">Locações</string>
 
-    <string name="nova_locacao">Nova Locação</string>
-    <string name="novo_imovel">Novo Imóvel</string>
-    <string name="novo_inquilino">Novo Inquilino</string>
+    <string name="nova_locacao">Nova locação</string>
+    <string name="novo_imovel">Novo imóvel</string>
+    <string name="novo_inquilino">Novo inquilino</string>
+
     <string name="action_search">Search</string>
     <string name="action_apply">Salvar</string>
     <string name="title_activity_add_imovel">AddImovelActivity</string>
     <string name="title_activity_add_inquilino">AddInquilinoActivity</string>
     <string name="title_activity_add_locacao">AddLocacaoActivity</string>
 
+    <string name="imovel_adicionado">Imóvel adicionado!</string>
+    <string name="inquilino_adicionado">Inquilino adicionado!</string>
+    <string name="locacao_adicionada">Locação adicionada!</string>
+    <string name="title_activity_main2">Main2Activity</string>
 
 </resources>

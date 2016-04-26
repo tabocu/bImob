@@ -69,7 +69,7 @@
                 fab:fab_icon="@drawable/ic_person_white_24dp"
                 fab:fab_plusIconColor="@color/white"
                 fab:fab_size="mini"
-                fab:fab_title="@string/inquilinos" />
+                fab:fab_title="@string/novo_inquilino" />
 
             <com.getbase.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab_imoveis"
@@ -80,7 +80,7 @@
                 fab:fab_icon="@drawable/ic_home_white_24dp"
                 fab:fab_plusIconColor="@color/white"
                 fab:fab_size="mini"
-                fab:fab_title="@string/imoveis" />
+                fab:fab_title="@string/novo_imovel" />
 
             <com.getbase.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab_locacoes"
@@ -91,7 +91,7 @@
                 fab:fab_icon="@drawable/ic_description_white_24dp"
                 fab:fab_plusIconColor="@color/white"
                 fab:fab_size="mini"
-                fab:fab_title="@string/locacoes" />
+                fab:fab_title="@string/nova_locacao" />
 
         </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
