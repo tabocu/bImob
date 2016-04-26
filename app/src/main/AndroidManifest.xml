@@ -27,8 +27,8 @@
                 android:value="br.com.blackseed.blackimob.MainActivity" />
         </activity>
         <activity
-            android:name=".AddInquilinoActivity"
-            android:label="@string/novo_inquilino"
+            android:name=".AddLocacaoActivity"
+            android:label="@string/nova_locacao"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme">
             <meta-data
@@ -36,8 +36,8 @@
                 android:value="br.com.blackseed.blackimob.MainActivity" />
         </activity>
         <activity
-            android:name=".AddLocacaoActivity"
-            android:label="@string/nova_locacao"
+            android:name=".AddInquilinoActivity"
+            android:label="@string/title_activity_add_inquilino"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme">
             <meta-data
