@@ -1,16 +1,52 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp"
+    android:stretchColumns="1"
     tools:context="br.com.blackseed.blackimob.AddPessoaFisicaFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
-    
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Pessoa fisica" />
+
+    <TableRow>
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_column="0"
+            android:layout_marginBotton="12dp"
+            android:layout_marginRight="48dp"
+            android:layout_marginTop="12dp"
+            android:src="@drawable/ic_person_gray_24dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_column="1"
+            android:hint="Nome"
+            android:inputType="textPersonName" />
+    </TableRow>
+
+    <TableRow>
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_column="0"
+            android:layout_marginBotton="12dp"
+            android:layout_marginRight="48dp"
+            android:layout_marginTop="12dp"
+            android:src="@drawable/ic_person_gray_24dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_column="1"
+            android:hint="Nome"
+            android:inputType="textPersonName" />
+    </TableRow>
 
 
-</FrameLayout>
+</TableLayout>
