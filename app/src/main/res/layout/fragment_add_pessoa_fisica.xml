@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:paddingLeft="24dp"
     android:paddingRight="24dp"
+    android:paddingTop="8dp"
     android:stretchColumns="1"
     tools:context="br.com.blackseed.blackimob.AddPessoaFisicaFragment">
 
@@ -16,9 +17,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_column="0"
-            android:layout_marginBotton="12dp"
-            android:layout_marginRight="48dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="16dp"
             android:src="@drawable/ic_person_gray_24dp" />
 
         <EditText
@@ -26,26 +25,68 @@
             android:layout_height="match_parent"
             android:layout_column="1"
             android:hint="Nome"
-            android:inputType="textPersonName" />
+            android:inputType="textCapWords" />
     </TableRow>
 
     <TableRow>
-
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_column="0"
-            android:layout_marginBotton="12dp"
-            android:layout_marginRight="48dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="16dp"
             android:src="@drawable/ic_person_gray_24dp" />
-
         <EditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_column="1"
-            android:hint="Nome"
-            android:inputType="textPersonName" />
+            android:hint="CPF"
+            android:inputType="number" />
+    </TableRow>
+
+    <TableRow>
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_column="0"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/ic_person_gray_24dp" />
+        <EditText
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_column="1"
+            android:hint="Telefone"
+            android:inputType="phone" />
+    </TableRow>
+
+    <TableRow>
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_column="0"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/ic_person_gray_24dp" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_column="1"
+            android:hint="E-Mail"
+            android:inputType="textEmailAddress" />
+    </TableRow>
+
+    <TableRow>
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_column="0"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/ic_person_gray_24dp" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_column="1"
+            android:hint="CPF"
+            android:inputType="number" />
     </TableRow>
 
 
