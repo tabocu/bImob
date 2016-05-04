@@ -8,9 +8,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 public class AddImovelActivity extends AppCompatActivity {
+
+    private EditText mApelidoEditText;
+    private EditText mCepEditText;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +24,8 @@ public class AddImovelActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        mApelidoEditText = (EditText) findViewById(R.id.etApelido);
+        mCepEditText = (EditText) findViewById(R.id.etCep);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -39,6 +46,11 @@ public class AddImovelActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_apply) {
+
+        Imovel imovel = new Imovel(mApelidoEditText.getText().toString(), mCepEditText.getText().toString());
+
+            Dados.imoveis.add(imovel);
+
             Toast.makeText(this, R.string.imovel_adicionado,Toast.LENGTH_SHORT).show();
             finish();
             return true;

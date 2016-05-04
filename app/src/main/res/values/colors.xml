@@ -10,4 +10,6 @@
     <color name="secondary_text">#727272</color>
     <color name="white">#FFFFFF</color>
     <color name="white_overlay">#F3F3F3</color>
+
+    <color name="gray_icon">#FF444444</color>
 </resources>

@@ -6,6 +6,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
+import android.widget.ListView;
+
+import java.util.ArrayList;
 
 
 /**
@@ -58,8 +62,42 @@ public class ImoveisFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_imoveis, container, false);
+
+        View rootView =  inflater.inflate(R.layout.fragment_imoveis, container, false);
+
+        // Construct the data source
+
+        // Create the adapter to convert the array to views
+        ImoveisAdapter adapter = new ImoveisAdapter(getActivity(), Dados.imoveis);
+        // Attach the adapter to a ListView
+//        ListView listView = (ListView) rootView.findViewById(R.id.lvItens);
+//        listView.setAdapter(adapter);
+        GridView gridview = (GridView) rootView.findViewById(R.id.gridview);
+        gridview.setAdapter(adapter);
+
+        Imovel testImovel1 = new Imovel("NOME","123456789");
+        Imovel testImovel2 = new Imovel("NOME","123456789");
+        Imovel testImovel3 = new Imovel("NOME","123456789");
+        Imovel testImovel4 = new Imovel("NOME","123456789");
+        Imovel testImovel5 = new Imovel("NOME","123456789");
+        Imovel testImovel6 = new Imovel("NOME","123456789");
+        Imovel testImovel7 = new Imovel("NOME","123456789");
+        Imovel testImovel8 = new Imovel("NOME","123456789");
+        Imovel testImovel9 = new Imovel("NOME","123456789");
+        Imovel testImovel10 = new Imovel("NOME","123456789");
+
+        adapter.add(testImovel1);
+        adapter.add(testImovel2);
+        adapter.add(testImovel3);
+        adapter.add(testImovel4);
+        adapter.add(testImovel5);
+        adapter.add(testImovel6);
+        adapter.add(testImovel7);
+        adapter.add(testImovel8);
+        adapter.add(testImovel9);
+        adapter.add(testImovel10);
+
+        return rootView;
     }
 
 }

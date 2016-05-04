@@ -5,9 +5,27 @@
     tools:context="br.com.blackseed.blackimob.ImoveisFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+
+    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/gridview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="imoveis" />
+        android:columnWidth="90dp"
+        android:numColumns="2"
+        android:verticalSpacing="10dp"
+        android:horizontalSpacing="10dp"
+        android:stretchMode="columnWidth"
+        android:padding="10dp"
+        android:gravity="center"
+        />
+
+
+    <!--<ListView-->
+        <!--android:id="@+id/lvItens"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+
+    <!--</ListView>-->
 
 </FrameLayout>

@@ -6,6 +6,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.GridView;
+import android.widget.ListView;
+
+import java.util.ArrayList;
 
 
 /**
@@ -58,8 +63,22 @@ public class InquilinosFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_inquilinos, container, false);
+
+        View rootView =  inflater.inflate(R.layout.fragment_inquilinos, container, false);
+
+        // Construct the data source
+        ArrayList<Inquilino> arrayOfInquilinos = new ArrayList<Inquilino>();
+        // Create the adapter to convert the array to views
+        InquilinosAdapter adapter = new InquilinosAdapter(getActivity(), arrayOfInquilinos);
+        // Attach the adapter to a ListView
+        GridView gridView = (GridView) rootView.findViewById(R.id.lvItens);
+        gridView.setAdapter(adapter);
+
+        Inquilino newUser = new Inquilino("Nilo", "06167937664");
+        adapter.add(newUser);
+
+        return rootView;
     }
+
 
 }

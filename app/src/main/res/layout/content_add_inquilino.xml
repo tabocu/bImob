@@ -9,16 +9,46 @@
     tools:showIn="@layout/activity_add_inquilino">
 
     <LinearLayout
+        android:layout_marginTop="27dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <Switch
-            android:id="@+id/pessoaSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="false"
-            android:text="Pessoa Juridica" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal">
+
+            <!--<View-->
+                <!--android:layout_width="24dp"-->
+                <!--android:layout_height="24dp"-->
+                <!--android:layout_marginRight="32dp"-->
+                <!--android:layout_gravity="center_vertical"/>-->
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="16dp"
+                android:text="Pessoa física"/>
+
+            <Switch
+                android:id="@+id/pessoaSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="16dp"
+                android:checked="false" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="Pessoa juridica"/>
+
+        </LinearLayout>
+
 
         <FrameLayout
             android:id="@+id/pessoaFrame"
