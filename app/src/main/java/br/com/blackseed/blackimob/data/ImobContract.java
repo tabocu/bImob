@@ -10,32 +10,35 @@ public class ImobContract {
     public static final String CONTENT_AUTHORITY = "br.com.blackseed.blackimob";
     public static final Uri BASE_CONTENT_URI = Uri.parse("Content://" + CONTENT_AUTHORITY);
 
-    public static final String PATH_INQUILINO = "inquilino";
+    public static final String PATH_PESSOA = "pessoa";
     public static final String PATH_IMOVEL = "imovel";
 //    public static final String PATH_LOCACAO = "locacao";
     public static final String PATH_TELEFONE = "telefone";
     public static final String PATH_EMAIL = "email";
 
-    public static final class InquilinoEntry implements BaseColumns{
+    public static final class PessoaEntry implements BaseColumns{
 
         public static final  Uri CONTENT_URI =
-                BASE_CONTENT_URI.buildUpon().appendPath(PATH_INQUILINO).build();
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_PESSOA).build();
 
         public static final String CONTENT_TYPE =
-                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_INQUILINO;
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PESSOA;
 
         public static final String CONTENT_ITEM_TYPE =
-                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_INQUILINO;
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PESSOA;
 
         //Table name
-        public static final String TABLE_NAME = "inquilino";
+        public static final String TABLE_NAME = "pessoa";
 
         //Columns
         public static final String COLUMN_NOME = "nome";
-        public static final String COLUMN_CADASTRO_PESSOA = "cadastro_pessoa";
+        public static final String COLUMN_NOME_FANTASIA = "nome_fantasia";
+        public static final String COLUMN_RAZAO_SOCIAL = "razao_social";
+        public static final String COLUMN_CPF = "cpf";
+        public static final String COLUMN_CNPJ = "cnpj";
         public static final String COLUMN_TIPO_PESSOA = "tipo_pessoa";
 
-        public static Uri buildInquilinoUri(long id){
+        public static Uri buildPessoaUri(long id){
             return ContentUris.withAppendedId(CONTENT_URI,id);
         }
     }
@@ -98,7 +101,7 @@ public class ImobContract {
         public static final String TABLE_NAME = "telefone";
         //Columns
         public static final String COLUMN_TELEFONE = "telefone";
-        public static final String COLUMN_INQUILINO_ID = "inquilino_id";   //Foreign key
+        public static final String COLUMN_PESSOA_ID = "pessoa_id";   //Foreign key
 
         public static Uri buildTelefoneUri(long id){
             return ContentUris.withAppendedId(CONTENT_URI,id);
@@ -120,7 +123,7 @@ public class ImobContract {
         public static final String TABLE_NAME = "email";
         //Columns
         public static final String COLUMN_EMAIL = "email";
-        public static final String COLUMN_INQUILINO_ID = "inquilino_id";   //Foreign key
+        public static final String COLUMN_PESSOA_ID = "pessoa_id";   //Foreign key
 
         public static Uri buildEmailUri(long id){
             return ContentUris.withAppendedId(CONTENT_URI,id);

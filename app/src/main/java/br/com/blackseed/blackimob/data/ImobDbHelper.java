@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import br.com.blackseed.blackimob.Inquilino;
 import br.com.blackseed.blackimob.data.ImobContract.*;
 
 public class ImobDbHelper extends SQLiteOpenHelper {
@@ -21,11 +20,15 @@ public class ImobDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        final String SQL_CREATE_INQUILINO_TABLE = "CREATE TABLE " + InquilinoEntry.TABLE_NAME + " (" +
-                InquilinoEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                InquilinoEntry.COLUMN_NOME + " TEXT NOT NULL, " +
-                InquilinoEntry.COLUMN_TIPO_PESSOA + " BOOLEAN, " +
-                InquilinoEntry.COLUMN_CADASTRO_PESSOA + " TEXT" + ");";
+        final String SQL_CREATE_PESSOA_TABLE = "CREATE TABLE " + PessoaEntry.TABLE_NAME + " (" +
+                PessoaEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                PessoaEntry.COLUMN_NOME             + " VARCHAR(80), " +
+                PessoaEntry.COLUMN_NOME_FANTASIA    + " VARCHAR(80), " +
+                PessoaEntry.COLUMN_RAZAO_SOCIAL     + " VARCHAR(80), " +
+                PessoaEntry.COLUMN_CPF              + " CHAR, " +
+                PessoaEntry.COLUMN_CNPJ             + " CHAR, " +
+                PessoaEntry.COLUMN_TIPO_PESSOA      + " BOOLEAN, " + ");";
+
 
         final String SQL_CREATE_IMOVEL_TABLE = "CREATE TABLE " + ImovelEntry.TABLE_NAME + " (" +
                 ImovelEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -35,16 +38,16 @@ public class ImobDbHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_TELEFONE_TABLE = "CREATE TABLE " + TelefoneEntry.TABLE_NAME + " (" +
                 TelefoneEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 TelefoneEntry.COLUMN_TELEFONE + " TEXT NOT NULL, " +
-                " FOREIGN KEY (" + TelefoneEntry.COLUMN_INQUILINO_ID + ") REFERENCES " +
-                TelefoneEntry.TABLE_NAME + " (" + InquilinoEntry._ID + ");";
+                " FOREIGN KEY (" + TelefoneEntry.COLUMN_PESSOA_ID + ") REFERENCES " +
+                TelefoneEntry.TABLE_NAME + " (" + PessoaEntry._ID + ");";
 
         final String SQL_CREATE_EMAIL_TABLE = "CREATE TABLE " + EmailEntry.TABLE_NAME + " (" +
                 EmailEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 EmailEntry.COLUMN_EMAIL + " TEXT NOT NULL, " +
-                " FOREIGN KEY (" + TelefoneEntry.COLUMN_INQUILINO_ID + ") REFERENCES " +
-                TelefoneEntry.TABLE_NAME + " (" + InquilinoEntry._ID + ");";
+                " FOREIGN KEY (" + TelefoneEntry.COLUMN_PESSOA_ID + ") REFERENCES " +
+                TelefoneEntry.TABLE_NAME + " (" + PessoaEntry._ID + ");";
 
-        db.execSQL(SQL_CREATE_INQUILINO_TABLE);
+        db.execSQL(SQL_CREATE_PESSOA_TABLE);
         db.execSQL(SQL_CREATE_IMOVEL_TABLE);
         db.execSQL(SQL_CREATE_TELEFONE_TABLE);
         db.execSQL(SQL_CREATE_EMAIL_TABLE);
@@ -52,7 +55,7 @@ public class ImobDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + InquilinoEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + PessoaEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + ImovelEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + TelefoneEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + EmailEntry.TABLE_NAME);
