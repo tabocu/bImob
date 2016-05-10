@@ -1,6 +1,9 @@
 package br.com.blackseed.blackimob;
 
 
+import android.app.LoaderManager;
+import android.content.Loader;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -17,7 +20,7 @@ import java.util.ArrayList;
  * Use the {@link ImoveisFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ImoveisFragment extends Fragment {
+public class ImoveisFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -100,4 +103,18 @@ public class ImoveisFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
+    }
 }

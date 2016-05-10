@@ -14,6 +14,7 @@ public class ImoveisAdapter extends ArrayAdapter<Imovel> {
         super(context, 0, imoveis);
     }
 
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
