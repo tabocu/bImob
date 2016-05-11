@@ -2,34 +2,64 @@ package br.com.blackseed.blackimob;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
-import android.view.MotionEvent;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
+import java.util.List;
+
+import br.com.blackseed.blackimob.data.ImobDb;
+import br.com.blackseed.blackimob.entity.Pessoa;
+import br.com.blackseed.blackimob.entity.Telefone;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    ImobDb db = new ImobDb(this);
     private SectionsPagerAdapter mSectionsPagerAdapter;
-
     private ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // INICIO - Área de teste
+
+        Pessoa.Fisica pf = new Pessoa.Fisica();
+        pf.setCpf("01234567891");
+        pf.setNome("Tales");
+        Telefone tel = new Telefone();
+        tel.setNumero("34982300");
+        pf.telefones().add(tel);
+        db.createPessoa(pf);
+
+
+        Pessoa.Juridica pj = new Pessoa.Juridica();
+        pj.setCnpj("01234567891234");
+        pj.setNomeFantasia("Fantasia");
+        pj.setRazaoSocial("Razao");
+        tel = new Telefone();
+        tel.setNumero("34982300");
+        pj.telefones().add(tel);
+        db.createPessoa(pj);
+
+        List<Pessoa> pessoas = db.readAllPessoa();
+
+        Log.v("Pessoas:", pessoas.toString());
+
+        // FIM - Area de Teste
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -80,9 +110,20 @@ public class MainActivity extends AppCompatActivity
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        fabMenu.collapse();
-                        Intent intent = new Intent(getBaseContext(), AddInquilinoActivity.class);
-                        startActivity(intent);
+                        //fabMenu.collapse();
+                        //Intent intent = new Intent(getBaseContext(), AddInquilinoActivity.class);
+                        //startActivity(intent);
+
+                        // INICIO - Área de teste
+
+
+                        List<Pessoa> pessoas = db.readAllPessoa();
+
+                        db.deletePessoa(pessoas.get(0));
+
+                        pessoas = db.readAllPessoa();
+                        Log.v("Pessoas:", pessoas.toString());
+                        // FIM - Área de teste
                     }
                 });
 

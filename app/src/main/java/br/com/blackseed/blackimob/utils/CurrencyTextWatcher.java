@@ -1,18 +1,15 @@
-package br.com.blackseed.blackimob;
+package br.com.blackseed.blackimob.utils;
 
 import android.text.Editable;
 import android.text.TextWatcher;
 
 import java.text.NumberFormat;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class CurrencyTextWatcher implements TextWatcher {
 
     boolean mEditing;
-    AtomicReference<Double> mValor;
 
-    public CurrencyTextWatcher(AtomicReference<Double> valor) {
-        mValor = valor;
+    public CurrencyTextWatcher() {
         mEditing = false;
     }
 
@@ -25,7 +22,6 @@ public class CurrencyTextWatcher implements TextWatcher {
             try {
                 String formatted = nf.format(Double.parseDouble(digits) / 100);
                 s.replace(0, s.length(), formatted);
-                mValor.set(Double.parseDouble(digits));
             } catch (NumberFormatException nfe) {
                 s.clear();
             }

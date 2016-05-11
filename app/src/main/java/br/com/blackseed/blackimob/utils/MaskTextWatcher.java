@@ -1,22 +1,18 @@
-package br.com.blackseed.blackimob;
+package br.com.blackseed.blackimob.utils;
 
 import android.text.Editable;
 import android.text.TextWatcher;
 
 import java.text.NumberFormat;
-import java.util.concurrent.atomic.AtomicReference;
 
-public class CnpjTextWatcher implements TextWatcher {
+public class MaskTextWatcher implements TextWatcher {
 
-    private static final String maskCNPJ = "##.###.###/####-##";
-    private static final String maskCPF = "###.###.###-##";
+    private boolean mEditing;
+    private Mask mMask;
 
-    boolean mEditing;
-    AtomicReference<String> mCnpj;
-
-    public CnpjTextWatcher(AtomicReference<String> cnpj) {
+    public MaskTextWatcher(Mask mask) {
         mEditing = false;
-        mCnpj = cnpj;
+        mMask = mask;
     }
 
     public synchronized void afterTextChanged(Editable s) {
@@ -26,8 +22,7 @@ public class CnpjTextWatcher implements TextWatcher {
             String digits = s.toString().replaceAll("\\D", "");
             NumberFormat nf = NumberFormat.getCurrencyInstance();
             try {
-                String formatted = format(digits, maskCNPJ, 14);
-                mCnpj.set(digits);
+                String formatted = format(digits, mMask.getMask(), mMask.getSize());
                 s.replace(0, s.length(), formatted);
             } catch (NumberFormatException nfe) {
                 s.clear();
@@ -63,6 +58,28 @@ public class CnpjTextWatcher implements TextWatcher {
     }
 
     public void onTextChanged(CharSequence s, int start, int before, int count) {
+    }
+
+    public enum Mask {
+
+        CPF("###.###.###-##", 11),
+        CNPJ("##.###.###/####-##", 14);
+
+        private final String text;
+        private final int size;
+
+        Mask(final String text, final int size) {
+            this.text = text;
+            this.size = size;
+        }
+
+        public String getMask() {
+            return text;
+        }
+
+        public int getSize() {
+            return size;
+        }
     }
 
 
