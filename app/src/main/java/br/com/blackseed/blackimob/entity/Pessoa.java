@@ -1,13 +1,6 @@
 package br.com.blackseed.blackimob.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public abstract class Pessoa extends Item {
-
-    private List<Telefone> telefoneList = new ArrayList<>();
-
-    private List<Email> emailList = new ArrayList<>();
 
     public boolean isPessoaFisica() {
         return this instanceof Fisica;
@@ -17,22 +10,10 @@ public abstract class Pessoa extends Item {
         return this instanceof Juridica;
     }
 
-    public List<Telefone> telefones() {
-        return telefoneList;
+    @Override
+    public String toString() {
+        return super.toString();
     }
-
-    public List<Email> emails() {
-        return emailList;
-    }
-//
-//    @Override
-//    public String toString() {
-//        if(isPessoaFisica())
-//            return ((Fisica)this).toString();
-//        else if(isPessoaJuridica())
-//            return ((Juridica)this).toString();
-//        return "";
-//    }
 
     public static class Fisica extends Pessoa {
 
@@ -58,11 +39,12 @@ public abstract class Pessoa extends Item {
         @Override
         public String toString() {
             StringBuffer stringBuffer = new StringBuffer();
-            stringBuffer//.append(super.toString())
-                    .append("\n\nCpf: ")
+            stringBuffer.append(super.toString())
+                    .append("Cpf: ")
                     .append(cpf)
                     .append("\nNome: ")
-                    .append(nome);
+                    .append(nome)
+                    .append("\n");
             return stringBuffer.toString();
         }
     }
@@ -102,13 +84,14 @@ public abstract class Pessoa extends Item {
         @Override
         public String toString() {
             StringBuffer stringBuffer = new StringBuffer();
-            stringBuffer//.append(super.toString())
-                    .append("\n\nCnpj: ")
+            stringBuffer.append(super.toString())
+                    .append("Cnpj: ")
                     .append(cnpj)
                     .append("\nNome fantasia: ")
                     .append(nomeFantasia)
                     .append("\nRazao social: ")
-                    .append(razaoSocial);
+                    .append(razaoSocial)
+                    .append("\n");
             return stringBuffer.toString();
         }
     }

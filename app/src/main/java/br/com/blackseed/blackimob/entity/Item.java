@@ -17,7 +17,6 @@ public abstract class Item {
     public String toString() {
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer
-                .append(Item.class.getSimpleName())
                 .append("\nID: ")
                 .append(_id)
                 .append("\n");

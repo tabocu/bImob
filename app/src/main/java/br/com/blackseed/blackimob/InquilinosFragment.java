@@ -1,16 +1,21 @@
 package br.com.blackseed.blackimob;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.GridView;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
-import java.util.ArrayList;
+import java.util.List;
+
+import br.com.blackseed.blackimob.adapter.PessoasAdapter;
+import br.com.blackseed.blackimob.data.ImobDb;
+import br.com.blackseed.blackimob.entity.Pessoa;
 
 
 /**
@@ -28,20 +33,15 @@ public class InquilinosFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private ImobDb db;
+    private PessoasAdapter adapter;
+    private List<Pessoa> pessoaList;
+
 
     public InquilinosFragment() {
-        // Required empty public constructor
+
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment InquilinosFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static InquilinosFragment newInstance(String param1, String param2) {
         InquilinosFragment fragment = new InquilinosFragment();
         Bundle args = new Bundle();
@@ -58,6 +58,8 @@ public class InquilinosFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        db = new ImobDb(getContext());
+        adapter = new PessoasAdapter(getActivity());
     }
 
     @Override
@@ -66,18 +68,38 @@ public class InquilinosFragment extends Fragment {
 
         View rootView =  inflater.inflate(R.layout.fragment_inquilinos, container, false);
 
-        // Construct the data source
-        ArrayList<Inquilino> arrayOfInquilinos = new ArrayList<Inquilino>();
-        // Create the adapter to convert the array to views
-        InquilinosAdapter adapter = new InquilinosAdapter(getActivity(), arrayOfInquilinos);
-        // Attach the adapter to a ListView
-        GridView gridView = (GridView) rootView.findViewById(R.id.lvItens);
-        gridView.setAdapter(adapter);
+        ListView listView = (ListView) rootView.findViewById(R.id.lvItens);
+        listView.setAdapter(adapter);
+        pessoaList = db.readAllPessoa();
+        adapter.addAll(pessoaList);
 
-        Inquilino newUser = new Inquilino("Nilo", "06167937664");
-        adapter.add(newUser);
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Pessoa pessoa = (Pessoa) parent.getItemAtPosition(position);
+                itemMenu(pessoa);
+                return true;
+            }
+        });
 
         return rootView;
+    }
+
+    private void itemMenu(final Pessoa pessoa) {
+        final CharSequence[] options = {"Delete"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (options[item].equals("Delete")) {
+                    db.deletePessoa(pessoa);
+                    adapter.clear();
+                    adapter.addAll(db.readAllPessoa());
+                }
+            }
+        });
+        builder.show();
     }
 
 

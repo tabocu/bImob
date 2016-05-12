@@ -28,7 +28,7 @@ public class ImobDbHelper extends SQLiteOpenHelper {
                 PessoaEntry.COLUMN_RAZAO_SOCIAL     + " VARCHAR(80), " +
                 PessoaEntry.COLUMN_CPF + " VARCHAR(11), " +
                 PessoaEntry.COLUMN_CNPJ + " VARCHAR(14), " +
-                PessoaEntry.COLUMN_TIPO_PESSOA + " BOOLEAN " + ");";
+                PessoaEntry.COLUMN_IS_PESSOA_FISICA + " BOOLEAN " + ");";
 
         final String SQL_CREATE_TELEFONE_TABLE = "CREATE TABLE " + TelefoneEntry.TABLE_NAME + " (" +
                 TelefoneEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +

@@ -17,8 +17,10 @@ public class Telefone extends Item {
 
     public String toString() {
         StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append(super.toString())
-                .append("Numero: ")
+        stringBuffer
+                .append("\t")
+                .append(super.toString())
+                .append("\tNumero: ")
                 .append(numero)
                 .append("\n");
         return stringBuffer.toString();

@@ -63,7 +63,8 @@ public class MaskTextWatcher implements TextWatcher {
     public enum Mask {
 
         CPF("###.###.###-##", 11),
-        CNPJ("##.###.###/####-##", 14);
+        CNPJ("##.###.###/####-##", 14),
+        CEP("##.###-###", 8);
 
         private final String text;
         private final int size;
