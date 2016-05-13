@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import br.com.blackseed.blackimob.entity.Imovel;
+
 public class AddImovelActivity extends AppCompatActivity {
 
     private EditText mApelidoEditText;
@@ -47,7 +49,7 @@ public class AddImovelActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_apply) {
 
-        Imovel imovel = new Imovel(mApelidoEditText.getText().toString(), mCepEditText.getText().toString());
+        Imovel imovel = new Imovel();
 
             Dados.imoveis.add(imovel);
 

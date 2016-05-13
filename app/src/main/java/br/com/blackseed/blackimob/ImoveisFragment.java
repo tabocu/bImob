@@ -1,7 +1,9 @@
 package br.com.blackseed.blackimob;
 
 
+import android.app.AlertDialog;
 import android.app.LoaderManager;
+import android.content.DialogInterface;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -9,10 +11,16 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import br.com.blackseed.blackimob.adapter.ImoveisAdapter;
+import br.com.blackseed.blackimob.data.ImobDb;
+import br.com.blackseed.blackimob.entity.Imovel;
 
 
 /**
@@ -30,20 +38,16 @@ public class ImoveisFragment extends Fragment implements LoaderManager.LoaderCal
     private String mParam1;
     private String mParam2;
 
+    private ImobDb db;
+    private ImoveisAdapter adapter;
+    private List<Imovel> imovelList;
+
+
 
     public ImoveisFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ImoveisFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static ImoveisFragment newInstance(String param1, String param2) {
         ImoveisFragment fragment = new ImoveisFragment();
         Bundle args = new Bundle();
@@ -60,6 +64,8 @@ public class ImoveisFragment extends Fragment implements LoaderManager.LoaderCal
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        db = new ImobDb(getContext());
+        adapter = new ImoveisAdapter(getActivity());
     }
 
     @Override
@@ -68,39 +74,37 @@ public class ImoveisFragment extends Fragment implements LoaderManager.LoaderCal
 
         View rootView =  inflater.inflate(R.layout.fragment_imoveis, container, false);
 
-        // Construct the data source
-
-        // Create the adapter to convert the array to views
-        ImoveisAdapter adapter = new ImoveisAdapter(getActivity(), Dados.imoveis);
-        // Attach the adapter to a ListView
-//        ListView listView = (ListView) rootView.findViewById(R.id.lvItens);
-//        listView.setAdapter(adapter);
         GridView gridview = (GridView) rootView.findViewById(R.id.gridview);
         gridview.setAdapter(adapter);
 
-        Imovel testImovel1 = new Imovel("NOME","123456789");
-        Imovel testImovel2 = new Imovel("NOME","123456789");
-        Imovel testImovel3 = new Imovel("NOME","123456789");
-        Imovel testImovel4 = new Imovel("NOME","123456789");
-        Imovel testImovel5 = new Imovel("NOME","123456789");
-        Imovel testImovel6 = new Imovel("NOME","123456789");
-        Imovel testImovel7 = new Imovel("NOME","123456789");
-        Imovel testImovel8 = new Imovel("NOME","123456789");
-        Imovel testImovel9 = new Imovel("NOME","123456789");
-        Imovel testImovel10 = new Imovel("NOME","123456789");
+        imovelList = db.readAllImovel();
+        adapter.addAll(imovelList);
 
-        adapter.add(testImovel1);
-        adapter.add(testImovel2);
-        adapter.add(testImovel3);
-        adapter.add(testImovel4);
-        adapter.add(testImovel5);
-        adapter.add(testImovel6);
-        adapter.add(testImovel7);
-        adapter.add(testImovel8);
-        adapter.add(testImovel9);
-        adapter.add(testImovel10);
-
+        gridview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Imovel imovel = (Imovel) parent.getItemAtPosition(position);
+                itemMenu(imovel);
+                return true;
+            }
+        });
         return rootView;
+    }
+
+    private void itemMenu(final Imovel imovel) {
+        final CharSequence[] options = {"Koalar"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (options[item].equals("Koala")) {
+                    db.deleteImovel(imovel);
+                    adapter.clear();
+                    adapter.addAll(db.readAllImovel());
+                }
+            }
+        });
+        builder.show();
     }
 
     @Override

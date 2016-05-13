@@ -68,7 +68,7 @@ public class InquilinosFragment extends Fragment {
 
         View rootView =  inflater.inflate(R.layout.fragment_inquilinos, container, false);
 
-        ListView listView = (ListView) rootView.findViewById(R.id.lvItens);
+        ListView listView = (ListView) rootView.findViewById(R.id.itensListView);
         listView.setAdapter(adapter);
         pessoaList = db.readAllPessoa();
         adapter.addAll(pessoaList);

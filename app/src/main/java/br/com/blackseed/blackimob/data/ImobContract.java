@@ -68,7 +68,16 @@ public class ImobContract {
         public static final String TABLE_NAME = "imovel";
         //Columns
         public static final String COLUMN_APELIDO = "apelido";
-        public static final String COLUMN_TIPO_IMOVEL= "tipo_imovel";
+        public static final String COLUMN_CEP = "cep";
+        public static final String COLUMN_TIPO_IMOVEL = "tipo_imovel";
+
+
+        public static final String[] IMOVEL_SELECT = {
+                ImovelEntry._ID,
+                ImovelEntry.COLUMN_APELIDO,
+                ImovelEntry.COLUMN_CEP,
+                ImovelEntry.COLUMN_TIPO_IMOVEL
+        };
 
         public static Uri buildImovelUri(long id){
             return ContentUris.withAppendedId(CONTENT_URI,id);

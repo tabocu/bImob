@@ -11,10 +11,14 @@ import java.util.List;
 import br.com.blackseed.blackimob.data.ImobContract.EmailEntry;
 import br.com.blackseed.blackimob.data.ImobContract.PessoaEntry;
 import br.com.blackseed.blackimob.data.ImobContract.TelefoneEntry;
+import br.com.blackseed.blackimob.data.ImobContract.ImovelEntry;
+
 import br.com.blackseed.blackimob.entity.Email;
 import br.com.blackseed.blackimob.entity.Imovel;
 import br.com.blackseed.blackimob.entity.Pessoa;
 import br.com.blackseed.blackimob.entity.Telefone;
+
+
 
 public class ImobDb {
 
@@ -52,7 +56,7 @@ public class ImobDb {
     public List<Pessoa> readAllPessoa() {
 
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-        qb.setTables(ImobContract.PessoaEntry.TABLE_NAME);
+        qb.setTables(PessoaEntry.TABLE_NAME);
 
         List<Pessoa> pessoaList = new ArrayList<>();
         Cursor pessoaCursor = qb.query(dbHelper.getReadableDatabase(),
@@ -115,19 +119,65 @@ public class ImobDb {
     //CRUD - Imovel
 
     public Imovel createImovel(Imovel imovel) {
-        return null;
+
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(ImovelEntry.COLUMN_APELIDO, imovel.getApelido());
+        contentValues.put(ImovelEntry.COLUMN_CEP, imovel.getCep());
+        contentValues.put(ImovelEntry.COLUMN_TIPO_IMOVEL, imovel.getTipo());
+
+        long _id = dbHelper.getWritableDatabase().insert(ImovelEntry.TABLE_NAME, null, contentValues);
+
+        imovel.setId(_id);
+        return imovel;
     }
 
-    public List<Pessoa> readAllImovel() {
-        return null;
+    public List<Imovel> readAllImovel() {
+
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+        qb.setTables(ImovelEntry.TABLE_NAME);
+
+        List<Imovel> imovelList = new ArrayList<>();
+        Cursor imovelCursor = qb.query(dbHelper.getReadableDatabase(),
+                ImovelEntry.IMOVEL_SELECT,
+                null, null, null, null,null);
+
+        while(imovelCursor.moveToNext()){
+            Imovel imovel = new Imovel();
+            imovel.setApelido(
+                    imovelCursor.getString(
+                            imovelCursor.getColumnIndex(
+                                    ImovelEntry.COLUMN_APELIDO)));
+            imovel.setCep(
+                    imovelCursor.getString(
+                            imovelCursor.getColumnIndex(
+                                    ImovelEntry.COLUMN_CEP)));
+            imovel.setTipo(
+                    imovelCursor.getString(
+                            imovelCursor.getColumnIndex(
+                                    ImovelEntry.COLUMN_TIPO_IMOVEL)));
+
+            imovel.setId(imovelCursor.getLong(imovelCursor.getColumnIndex(ImovelEntry._ID)));
+            imovelList.add(imovel);
+        }
+        return imovelList;
     }
 
     public boolean updateImovel(Imovel imovel) {
         return false;
     }
 
-    public boolean deleteImovel(Imovel imovel) {
-        return false;
+    public int deleteImovel(Imovel imovel) {
+        return dbHelper.getWritableDatabase()
+                .delete(ImovelEntry.TABLE_NAME, ImovelEntry._ID + " = " + imovel.getId(), null);
+    }
+
+    public int deleteImovel(List<Imovel> imoveis){
+        int result = 0;
+        for(Imovel imovel: imoveis){
+            result += deleteImovel(imovel);
+        }
+        return result;
     }
 
     //CRUD - Telefone
@@ -204,14 +254,14 @@ public class ImobDb {
         };
 
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-        qb.setTables(ImobContract.EmailEntry.TABLE_NAME);
+        qb.setTables(EmailEntry.TABLE_NAME);
         qb.appendWhere(foreignColumn + " = " + foreignKey);
         Cursor emailCursor = qb.query(dbHelper.getReadableDatabase(),
                 sqlSelect,
                 null, null, null, null, null);
 
-        int _id = emailCursor.getColumnIndex(ImobContract.EmailEntry._ID);
-        int endereco = emailCursor.getColumnIndex(ImobContract.EmailEntry.COLUMN_EMAIL);
+        int _id = emailCursor.getColumnIndex(EmailEntry._ID);
+        int endereco = emailCursor.getColumnIndex(EmailEntry.COLUMN_EMAIL);
 
         List<Email> emails = new ArrayList<>();
         Email email;

@@ -5,7 +5,7 @@
     tools:context="br.com.blackseed.blackimob.ImoveisFragment">
 
     <ListView
-        android:id="@+id/lvItens"
+        android:id="@+id/itensListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />

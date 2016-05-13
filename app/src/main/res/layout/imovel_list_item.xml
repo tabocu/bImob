@@ -18,13 +18,19 @@ xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:background="?android:selectableItemBackground">
 
         <TextView
-            android:id="@+id/tvApelido"
+            android:id="@+id/idTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="19" />
+
+        <TextView
+            android:id="@+id/apelidoTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"/>
 
         <TextView
-            android:id="@+id/tvCEP"
+            android:id="@+id/cepTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"/>
