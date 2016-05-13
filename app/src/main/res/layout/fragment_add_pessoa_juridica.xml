@@ -1,184 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:blackseed="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
     tools:context="br.com.blackseed.blackimob.AddPessoaJuridicaFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
-
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_marginRight="32dp"
-            android:src="@drawable/ic_person_gray_24dp"
-            android:layout_gravity="center_vertical"/>
-
+            android:layout_margin="12dp"
+            android:src="@drawable/ic_person_gray_24dp" />
         <EditText
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:id="@+id/nomeFantasiaEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
             android:hint="Nome fantasia"
-            android:textSize="16sp"
-            android:layout_gravity="center_vertical"
-            android:inputType="textCapWords" />
+            android:inputType="textCapWords"
+            android:singleLine="true" />
 
+        <View
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="12dp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
-
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_marginRight="32dp"
-            android:src="@drawable/ic_person_gray_24dp"
-            android:layout_gravity="center_vertical"/>
-
+            android:layout_margin="12dp"
+            android:src="@drawable/ic_person_gray_24dp" />
         <EditText
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:id="@+id/razaoSocialEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
             android:hint="Razão social"
-            android:textSize="16sp"
+            android:inputType="textCapWords"
+            android:singleLine="true" />
+
+        <View
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="12dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_margin="12dp"
+            android:src="@drawable/ic_cpf_gray_24dp" />
+        <EditText
+            android:id="@+id/cpfEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:inputType="textCapCharacters" />
+            android:layout_weight="1"
+            android:hint="Cnpj"
+            android:singleLine="true" />
+
+        <View
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="12dp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_margin="12dp"
+            android:src="@drawable/ic_email_black_24dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <br.com.blackseed.blackimob.components.MultiEditView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                blackseed:addText="Novo e-mail"
+                blackseed:hint="E-Mail"
+                blackseed:inputType="textEmailAddress" />
+        </LinearLayout>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
-
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_marginRight="32dp"
-            android:src="@drawable/ic_person_gray_24dp"
-            android:layout_gravity="center_vertical"/>
+            android:layout_margin="12dp"
+            android:src="@drawable/ic_call_black_24dp" />
 
-        <EditText
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="CNPJ"
-            android:textSize="16sp"
-            android:layout_gravity="center_vertical"
-            android:inputType="number" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <br.com.blackseed.blackimob.components.MultiEditView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                blackseed:addText="Novo numero"
+                blackseed:hint="Telefone"
+                blackseed:inputType="phone" />
+        </LinearLayout>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
-
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_marginRight="32dp"
-            android:src="@drawable/ic_person_gray_24dp"
-            android:layout_gravity="center_vertical"/>
+            android:layout_margin="12dp"
+            android:src="@drawable/ic_place_black_24dp" />
 
-        <EditText
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Telefone"
-            android:textSize="16sp"
-            android:layout_gravity="center_vertical"
-            android:inputType="phone" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginRight="32dp"
-            android:src="@drawable/ic_person_gray_24dp"
-            android:layout_gravity="center_vertical"/>
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="E-mail"
-            android:textSize="16sp"
-            android:layout_gravity="center_vertical"
-            android:inputType="textEmailAddress" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginRight="32dp"
-            android:src="@drawable/ic_person_gray_24dp"
-            android:layout_gravity="center_vertical"/>
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="CEP"
-            android:textSize="16sp"
-            android:layout_gravity="center_vertical"
-            android:inputType="number" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginRight="32dp"
-            android:src="@drawable/ic_person_gray_24dp"
-            android:layout_gravity="center_vertical"/>
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Endereço (Rua, N)"
-            android:textSize="16sp"
-            android:layout_gravity="center_vertical"
-            android:inputType="textCapSentences" />
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginRight="32dp"
-            android:src="@drawable/ic_person_gray_24dp"
-            android:layout_gravity="center_vertical"/>
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Complemento (Loja, Sala)"
-            android:textSize="16sp"
-            android:layout_gravity="center_vertical"
-            android:inputType="textCapSentences" />
+            <br.com.blackseed.blackimob.components.AdressEditView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </LinearLayout>
 
     </LinearLayout>
 </LinearLayout>

@@ -18,6 +18,10 @@ public class MaskTextWatcher implements TextWatcher {
     public synchronized void afterTextChanged(Editable s) {
         if (!mEditing) {
             mEditing = true;
+            if (s.toString().isEmpty()) {
+                mEditing = false;
+                return;
+            }
 
             String digits = s.toString().replaceAll("\\D", "");
             NumberFormat nf = NumberFormat.getCurrencyInstance();

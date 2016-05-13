@@ -37,7 +37,7 @@
         </activity>
         <activity
             android:name=".AddInquilinoActivity"
-            android:label="@string/title_activity_add_inquilino"
+            android:label="@string/novo_inquilino"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme">
             <meta-data
