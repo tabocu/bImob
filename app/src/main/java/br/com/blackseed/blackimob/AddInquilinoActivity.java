@@ -1,6 +1,5 @@
 package br.com.blackseed.blackimob;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +11,9 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import br.com.blackseed.blackimob.data.ImobDb;
+import br.com.blackseed.blackimob.entity.Pessoa;
+
 public class AddInquilinoActivity extends AppCompatActivity {
 
     private AddPessoaFisicaFragment mAddPessoaFisicaFragment = new AddPessoaFisicaFragment();
@@ -19,9 +21,14 @@ public class AddInquilinoActivity extends AppCompatActivity {
 
     private Switch mPessoaSwitch;
 
+    private ImobDb db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        db = new ImobDb(this);
+
         setContentView(R.layout.activity_add_inquilino);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -70,6 +77,7 @@ public class AddInquilinoActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_apply) {
+            onClickAdd();
             Toast.makeText(this, R.string.imovel_adicionado, Toast.LENGTH_SHORT).show();
             finish();
             return true;
@@ -79,22 +87,15 @@ public class AddInquilinoActivity extends AppCompatActivity {
     }
 
     private void onClickAdd() {
-        Intent newIntent = getIntent();
-        newIntent.putExtra("tag_pessoa_juridica", mPessoaSwitch.isChecked());
 
         if (mPessoaSwitch.isChecked()) {
-            newIntent.putExtra("tag_nome_fantasia", mPessoaSwitch.isChecked());
-            newIntent.putExtra("tag_razao_social", mPessoaSwitch.isChecked());
-            newIntent.putExtra("tag_cnpj", mPessoaSwitch.isChecked());
-            newIntent.putExtra("tag_telefone", mPessoaSwitch.isChecked());
-            newIntent.putExtra("tag_email", mPessoaSwitch.isChecked());
+
         } else {
-            newIntent.putExtra("tag_nome", mPessoaSwitch.isChecked());
-            newIntent.putExtra("tag_cpf", mPessoaSwitch.isChecked());
-            newIntent.putExtra("tag_telefone", mPessoaSwitch.isChecked());
-            newIntent.putExtra("tag_email", mPessoaSwitch.isChecked());
+            Pessoa.Fisica pessoa = new Pessoa.Fisica();
+            pessoa.setNome(mAddPessoaFisicaFragment.getNome());
+            pessoa.setCpf(mAddPessoaFisicaFragment.getCpf());
+            db.createPessoa(pessoa);
         }
 
-        setResult(RESULT_OK, newIntent);
     }
 }

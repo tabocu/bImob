@@ -94,12 +94,16 @@ public class InquilinosFragment extends Fragment {
             public void onClick(DialogInterface dialog, int item) {
                 if (options[item].equals("Delete")) {
                     db.deletePessoa(pessoa);
-                    adapter.clear();
-                    adapter.addAll(db.readAllPessoa());
+                    updateList();
                 }
             }
         });
         builder.show();
+    }
+
+    public void updateList() {
+        adapter.clear();
+        adapter.addAll(db.readAllPessoa());
     }
 
 

@@ -11,6 +11,9 @@ import android.support.v4.app.FragmentPagerAdapter;
  */
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
+    InquilinosFragment mInquilinosFragment = new InquilinosFragment();
+    ImoveisFragment mImoveisFragment = new ImoveisFragment();
+    LocacaoFragment mLocacaoFragment = new LocacaoFragment();
     private Context context;
 
     public SectionsPagerAdapter(FragmentManager fm, Context c) {
@@ -22,11 +25,11 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new InquilinosFragment();
+                return mInquilinosFragment;
             case 1:
-                return new ImoveisFragment();
+                return mImoveisFragment;
             case 2:
-                return new LocacaoFragment();
+                return mLocacaoFragment;
         }
         return null;
     }
@@ -47,5 +50,9 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
                 return context.getString(R.string.locacoes);
         }
         return null;
+    }
+
+    public void updatePages() {
+        mInquilinosFragment.updateList();
     }
 }

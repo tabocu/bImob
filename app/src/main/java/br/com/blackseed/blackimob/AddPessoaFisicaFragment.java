@@ -59,4 +59,34 @@ public class AddPessoaFisicaFragment extends Fragment {
         return rootView;
     }
 
+    public String getNome() {
+        return mNomeEditText.getText().toString();
+    }
+
+    public String getCpf() {
+        return mCpfEditText.getText().toString().replaceAll("\\D", "");
+    }
+
+    public String[] getTelefones() {
+        EditText editText[] = mTelefoneMultiEditView.getEditTextList();
+
+        String telefones[] = new String[editText.length];
+
+        for (int i = 0; i < editText.length; i++)
+            telefones[i] = editText[i].getText().toString();
+
+        return telefones;
+    }
+
+    public String[] getEmails() {
+        EditText editText[] = mEmailMultiEditView.getEditTextList();
+
+        String emails[] = new String[editText.length];
+
+        for (int i = 0; i < editText.length; i++)
+            emails[i] = editText[i].getText().toString();
+
+        return emails;
+    }
+
 }

@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity
                     public void onClick(View v) {
                         fabMenu.collapse();
                         Intent intent = new Intent(getBaseContext(), AddInquilinoActivity.class);
-                        startActivity(intent);
+                        startActivityForResult(intent, 0);
                     }
                 });
 
@@ -163,5 +163,12 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        mSectionsPagerAdapter.updatePages();
     }
 }
