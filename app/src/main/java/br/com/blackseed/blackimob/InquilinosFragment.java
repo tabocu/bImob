@@ -3,6 +3,7 @@ package br.com.blackseed.blackimob;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import java.util.List;
 
 import br.com.blackseed.blackimob.adapter.PessoasAdapter;
 import br.com.blackseed.blackimob.data.ImobDb;
+import br.com.blackseed.blackimob.detail.DetailPessoaFisicaActivity;
 import br.com.blackseed.blackimob.entity.Pessoa;
 
 
@@ -80,6 +82,14 @@ public class InquilinosFragment extends Fragment {
                 Pessoa pessoa = (Pessoa) parent.getItemAtPosition(position);
                 itemMenu(pessoa);
                 return true;
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getContext(), DetailPessoaFisicaActivity.class);
+                startActivity(intent);
             }
         });
 

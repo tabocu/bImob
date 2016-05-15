@@ -44,6 +44,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="br.com.blackseed.blackimob.MainActivity" />
         </activity>
+        <activity
+            android:name=".detail.DetailPessoaFisicaActivity"
+            android:label="@string/title_activity_detail_pessoa_fisica"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="br.com.blackseed.blackimob.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
