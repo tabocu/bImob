@@ -20,5 +20,6 @@ public class DetailPessoaFisicaActivity extends AppCompatActivity {
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Tales Bontempo Cunha");
     }
 }
