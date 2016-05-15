@@ -68,7 +68,7 @@
                 fab:fab_icon="@drawable/ic_person_white_24dp"
                 fab:fab_plusIconColor="@color/white"
                 fab:fab_size="mini"
-                fab:fab_title="@string/novo_inquilino" />
+                fab:fab_title="@string/nova_pessoa"/>
 
             <com.getbase.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab_imoveis"

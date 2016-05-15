@@ -15,7 +15,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_margin="12dp"
-            android:src="@drawable/ic_person_gray_24dp" />
+            android:src="@drawable/ic_business_man" />
         <EditText
             android:id="@+id/nomeFantasiaEditText"
             android:layout_width="0dp"
@@ -67,12 +67,12 @@
             android:layout_margin="12dp"
             android:src="@drawable/ic_cpf_gray_24dp" />
         <EditText
-            android:id="@+id/cpfEditText"
+            android:id="@+id/cnpjEditText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:hint="Cnpj"
+            android:hint="CNPJ"
             android:singleLine="true" />
 
         <View
@@ -90,7 +90,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_margin="12dp"
-            android:src="@drawable/ic_email_black_24dp" />
+            android:src="@drawable/ic_email_gray_24dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -98,10 +98,11 @@
             android:orientation="vertical">
 
             <br.com.blackseed.blackimob.components.MultiEditView
+                android:id="@+id/emailMultiEditView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                blackseed:addText="Novo e-mail"
+                blackseed:addText="Adicionar e-mail"
                 blackseed:hint="E-Mail"
                 blackseed:inputType="textEmailAddress" />
         </LinearLayout>
@@ -116,7 +117,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_margin="12dp"
-            android:src="@drawable/ic_call_black_24dp" />
+            android:src="@drawable/ic_call_gray_24dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -124,10 +125,11 @@
             android:orientation="vertical">
 
             <br.com.blackseed.blackimob.components.MultiEditView
+                android:id="@+id/telefoneMultiEditView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                blackseed:addText="Novo numero"
+                blackseed:addText="Adcionar numero"
                 blackseed:hint="Telefone"
                 blackseed:inputType="phone" />
         </LinearLayout>
@@ -142,7 +144,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_margin="12dp"
-            android:src="@drawable/ic_place_black_24dp" />
+            android:src="@drawable/ic_place_gray_24dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -150,6 +152,7 @@
             android:orientation="vertical">
 
             <br.com.blackseed.blackimob.components.AdressEditView
+                android:id="@+id/enderecoEditView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" />

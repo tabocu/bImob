@@ -78,7 +78,7 @@ public class AddInquilinoActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_apply) {
             onClickAdd();
-            Toast.makeText(this, R.string.imovel_adicionado, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.pessoa_adicionada, Toast.LENGTH_SHORT).show();
             finish();
             return true;
         }
@@ -89,7 +89,11 @@ public class AddInquilinoActivity extends AppCompatActivity {
     private void onClickAdd() {
 
         if (mPessoaSwitch.isChecked()) {
-
+            Pessoa.Juridica pessoa = new Pessoa.Juridica();
+            pessoa.setRazaoSocial(mAddPessoaJuridicaFragment.getRazaoSocial());
+            pessoa.setNomeFantasia(mAddPessoaJuridicaFragment.getNomeFantasia());
+            pessoa.setCnpj(mAddPessoaJuridicaFragment.getCnpj());
+            db.createPessoa(pessoa);
         } else {
             Pessoa.Fisica pessoa = new Pessoa.Fisica();
             pessoa.setNome(mAddPessoaFisicaFragment.getNome());

@@ -10,7 +10,7 @@
 
     <string name="nova_locacao">Nova locação</string>
     <string name="novo_imovel">Novo imóvel</string>
-    <string name="novo_inquilino">Novo inquilino</string>
+    <string name="nova_pessoa">Nova pessoa</string>
 
     <string name="action_search">Search</string>
     <string name="action_apply">Salvar</string>
@@ -19,7 +19,7 @@
     <string name="title_activity_add_locacao">AddLocacaoActivity</string>
 
     <string name="imovel_adicionado">Imóvel adicionado!</string>
-    <string name="inquilino_adicionado">Inquilino adicionado!</string>
+    <string name="pessoa_adicionada">Pessoa adicionada!</string>
     <string name="locacao_adicionada">Locação adicionada!</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="large_text">
