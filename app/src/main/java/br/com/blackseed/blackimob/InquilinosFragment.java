@@ -88,8 +88,21 @@ public class InquilinosFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getContext(), DetailPessoaFisicaActivity.class);
+
+                Pessoa pessoa = (Pessoa) parent.getItemAtPosition(position);
+                Bundle bundle = new Bundle();
+                bundle.putLong("id",pessoa.getId());
+
+
+                Intent intent;
+                if(pessoa.isPessoaFisica())
+                    intent = new Intent(getContext(), DetailPessoaFisicaActivity.class);
+
+                else return;  //TODO implementar para pessoa jurídica
+
+                intent.putExtras(bundle);
                 startActivity(intent);
+
             }
         });
 

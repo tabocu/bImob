@@ -53,6 +53,51 @@ public class ImobDb {
         return pessoa;
     }
 
+    public Pessoa readPessoa(long id) {
+
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+        qb.setTables(PessoaEntry.TABLE_NAME);
+        qb.appendWhere(PessoaEntry._ID + " = " + id);
+        Cursor pessoaCursor = qb.query(dbHelper.getReadableDatabase(),
+                PessoaEntry.PESSOA_SELECT,
+                null, null, null, null, null);
+
+        Pessoa pessoa;
+
+        if(!pessoaCursor.moveToNext()) return null;
+
+        if (pessoaCursor.getInt(pessoaCursor.getColumnIndex(PessoaEntry.COLUMN_IS_PESSOA_FISICA)) == 1) {
+            pessoa = new Pessoa.Fisica();
+            ((Pessoa.Fisica) pessoa).setNome(
+                    pessoaCursor.getString(
+                            pessoaCursor.getColumnIndex(
+                                    PessoaEntry.COLUMN_NOME)));
+            ((Pessoa.Fisica) pessoa).setCpf(
+                    pessoaCursor.getString(
+                            pessoaCursor.getColumnIndex(
+                                    PessoaEntry.COLUMN_CPF)));
+
+        } else {
+            pessoa = new Pessoa.Juridica();
+            ((Pessoa.Juridica) pessoa).setNomeFantasia(
+                    pessoaCursor.getString(
+                            pessoaCursor.getColumnIndex(
+                                    PessoaEntry.COLUMN_NOME_FANTASIA)));
+            ((Pessoa.Juridica) pessoa).setRazaoSocial(
+                    pessoaCursor.getString(
+                            pessoaCursor.getColumnIndex(
+                                    PessoaEntry.COLUMN_RAZAO_SOCIAL)));
+            ((Pessoa.Juridica) pessoa).setCnpj(
+                    pessoaCursor.getString(
+                            pessoaCursor.getColumnIndex(
+                                    PessoaEntry.COLUMN_CNPJ)));
+        }
+        pessoa.setId(pessoaCursor.getLong(pessoaCursor.getColumnIndex(PessoaEntry._ID)));
+
+        return pessoa;
+    }
+
+
     public List<Pessoa> readAllPessoa() {
 
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();

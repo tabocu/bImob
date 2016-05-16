@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import java.util.List;
+
 import br.com.blackseed.blackimob.components.AdressEditView;
 import br.com.blackseed.blackimob.components.MultiEditView;
 import br.com.blackseed.blackimob.utils.MaskTextWatcher;
@@ -70,23 +72,23 @@ public class AddPessoaJuridicaFragment extends Fragment {
     }
 
     public String[] getTelefones() {
-        EditText editText[] = mTelefoneMultiEditView.getEditTextList();
+        List<EditText> editText = mTelefoneMultiEditView.getEditTextList();
 
-        String telefones[] = new String[editText.length];
+        String telefones[] = new String[editText.size()];
 
-        for (int i = 0; i < editText.length; i++)
-            telefones[i] = editText[i].getText().toString();
+        for (int i = 0; i < editText.size(); i++)
+            telefones[i] = editText.get(i).getText().toString();
 
         return telefones;
     }
 
     public String[] getEmails() {
-        EditText editText[] = mEmailMultiEditView.getEditTextList();
+        List<EditText> editText = mEmailMultiEditView.getEditTextList();
 
-        String emails[] = new String[editText.length];
+        String emails[] = new String[editText.size()];
 
-        for (int i = 0; i < editText.length; i++)
-            emails[i] = editText[i].getText().toString();
+        for (int i = 0; i < editText.size(); i++)
+            emails[i] = editText.get(i).getText().toString();
 
         return emails;
     }

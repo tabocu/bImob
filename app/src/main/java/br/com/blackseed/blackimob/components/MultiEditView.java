@@ -64,8 +64,8 @@ public class MultiEditView extends LinearLayout {
         addView(addBtn);
     }
 
-    public EditText[] getEditTextList() {
-        return (EditText[]) editTextList.toArray();
+    public List<EditText> getEditTextList() {
+        return  editTextList;
     }
 
     public class RemoveClickListener implements OnClickListener {

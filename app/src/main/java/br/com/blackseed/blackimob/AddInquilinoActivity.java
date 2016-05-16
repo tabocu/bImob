@@ -11,8 +11,11 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import br.com.blackseed.blackimob.data.ImobContract;
 import br.com.blackseed.blackimob.data.ImobDb;
+import br.com.blackseed.blackimob.entity.Email;
 import br.com.blackseed.blackimob.entity.Pessoa;
+import br.com.blackseed.blackimob.entity.Telefone;
 
 public class AddInquilinoActivity extends AppCompatActivity {
 
@@ -99,7 +102,20 @@ public class AddInquilinoActivity extends AppCompatActivity {
             pessoa.setNome(mAddPessoaFisicaFragment.getNome());
             pessoa.setCpf(mAddPessoaFisicaFragment.getCpf());
             db.createPessoa(pessoa);
+
+            for(int i = 0; i<mAddPessoaFisicaFragment.getTelefones().length;i++) {
+                Telefone telefone = new Telefone();
+                telefone.setNumero( mAddPessoaFisicaFragment.getTelefones()[i]);
+                db.createTelefone(ImobContract.TelefoneEntry.COLUMN_PESSOA_ID, pessoa.getId(),telefone);
+            }
+
+            for(int i = 0; i<mAddPessoaFisicaFragment.getEmails().length;i++) {
+                Email email = new Email();
+                email.setEndereco( mAddPessoaFisicaFragment.getEmails()[i]);
+                db.createEmail(ImobContract.EmailEntry.COLUMN_PESSOA_ID, pessoa.getId(),email);
+            }
         }
+
 
     }
 }
