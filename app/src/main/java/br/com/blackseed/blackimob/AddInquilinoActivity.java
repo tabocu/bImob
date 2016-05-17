@@ -103,15 +103,15 @@ public class AddInquilinoActivity extends AppCompatActivity {
             pessoa.setCpf(mAddPessoaFisicaFragment.getCpf());
             db.createPessoa(pessoa);
 
-            for(int i = 0; i<mAddPessoaFisicaFragment.getTelefones().length;i++) {
+            for (int i = 0; i < mAddPessoaFisicaFragment.getTelefones().size(); i++) {
                 Telefone telefone = new Telefone();
-                telefone.setNumero( mAddPessoaFisicaFragment.getTelefones()[i]);
+                telefone.setNumero(mAddPessoaFisicaFragment.getTelefones().get(i));
                 db.createTelefone(ImobContract.TelefoneEntry.COLUMN_PESSOA_ID, pessoa.getId(),telefone);
             }
 
-            for(int i = 0; i<mAddPessoaFisicaFragment.getEmails().length;i++) {
+            for (int i = 0; i < mAddPessoaFisicaFragment.getEmails().size(); i++) {
                 Email email = new Email();
-                email.setEndereco( mAddPessoaFisicaFragment.getEmails()[i]);
+                email.setEndereco(mAddPessoaFisicaFragment.getEmails().get(i));
                 db.createEmail(ImobContract.EmailEntry.COLUMN_PESSOA_ID, pessoa.getId(),email);
             }
         }

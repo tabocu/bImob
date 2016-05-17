@@ -70,24 +70,26 @@ public class AddPessoaFisicaFragment extends Fragment {
         return mCpfEditText.getText().toString().replaceAll("\\D", "");
     }
 
-    public String[] getTelefones() {
+    public List<String> getTelefones() {
         List<EditText> editText = mTelefoneMultiEditView.getEditTextList();
 
-        String telefones[] = new String[editText.size()];
+        List<String> telefones = new ArrayList<>();
 
         for (int i = 0; i < editText.size(); i++)
-            telefones[i] = editText.get(i).getText().toString();
+            if (!editText.get(i).getText().toString().isEmpty())
+                telefones.add(editText.get(i).getText().toString());
 
         return telefones;
     }
 
-    public String[] getEmails() {
+    public List<String> getEmails() {
         List<EditText> editText = mEmailMultiEditView.getEditTextList();
 
-        String emails[] = new String[editText.size()];
+        List<String> emails = new ArrayList<>();
 
         for (int i = 0; i < editText.size(); i++)
-            emails[i] = editText.get(i).getText().toString();
+            if (!editText.get(i).getText().toString().isEmpty())
+                emails.add(editText.get(i).getText().toString());
 
         return emails;
     }

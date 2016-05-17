@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.InputType;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -62,6 +63,8 @@ public class MultiEditView extends LinearLayout {
         addBtn.findViewById(R.id.addFieldBtn).setOnClickListener(new AddClickListener());
         ((Button) addBtn.findViewById(R.id.addFieldBtn)).setText(mAddText);
         addView(addBtn);
+
+
     }
 
     public List<EditText> getEditTextList() {
@@ -79,7 +82,8 @@ public class MultiEditView extends LinearLayout {
 
         @Override
         public void onClick(View view) {
-            EditText editText = (EditText) view.findViewById(R.id.editText);
+            EditText editText = (EditText) parent.findViewById(R.id.editText);
+            Log.v("EDIT TEXT: ", editText.toString());
             editTextList.remove(editText);
             removeView(parent);
             numberOfViews--;

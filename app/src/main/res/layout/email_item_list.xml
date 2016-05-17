@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="72dp"
+    android:layout_height="96dp"
     android:background="?android:attr/selectableItemBackground"
     android:clickable="true"
     android:orientation="horizontal">
@@ -12,6 +12,7 @@
         android:layout_height="54dp"
         android:layout_gravity="center_vertical"
         android:padding="12dp" />
+
     <TextView
         android:id="@+id/contatoTextView"
         style="@style/Base.TextAppearance.AppCompat.Body1"
@@ -23,13 +24,4 @@
         android:layout_weight="1"
         android:singleLine="true"
         android:textSize="16sp" />
-    <ImageButton
-        android:id="@+id/contatoImageBtn"
-        android:layout_width="54dp"
-        android:layout_height="54dp"
-        android:layout_gravity="center_vertical"
-        android:background="?android:attr/selectableItemBackground"
-        android:padding="12dp" />
-
-
 </LinearLayout>
