@@ -1,8 +1,10 @@
 package br.com.blackseed.blackimob.detail;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -14,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -97,7 +100,7 @@ public class DetailPessoaJuridicaActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_delete) {
-
+            deletePessoa();
         } else if (id == R.id.action_edit) {
             Intent intent = new Intent(this, AddInquilinoActivity.class);
             Bundle bundle = new Bundle();
@@ -210,6 +213,33 @@ public class DetailPessoaJuridicaActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         recreate();
+    }
+
+    private void deletePessoa() {
+        AlertDialog deleteAlert;
+        //Cria o gerador do AlertDialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //define o titulo
+        builder.setTitle(R.string.deletePessoaAlertTitle);
+        //define a mensagem
+        builder.setMessage(R.string.deletePessoaAlertText);
+        //define um botão como positivo
+        builder.setPositiveButton(R.string.deletePessoaAlertPositive, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1) {
+                Toast.makeText(DetailPessoaJuridicaActivity.this, R.string.deletePessoaAlertToast, Toast.LENGTH_SHORT).show();
+                db.deletePessoa(pessoa);
+                finish();
+            }
+        });
+        //define um botão como negativo.
+        builder.setNegativeButton(R.string.deletePessoaAlertNegative, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1) {
+            }
+        });
+        //cria o AlertDialog
+        deleteAlert = builder.create();
+        //Exibe
+        deleteAlert.show();
     }
 }
 

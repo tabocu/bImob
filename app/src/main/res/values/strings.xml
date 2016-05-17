@@ -28,7 +28,7 @@
     <string name="deletePessoaAlertText">Tem certeza que deseja apagar este contato?</string>
     <string name="deletePessoaAlertPositive">Apagar</string>
     <string name="deletePessoaAlertNegative">Cancelar</string>
-    <string name="deletePessoaAlertToast">Cancelar</string>
+    <string name="deletePessoaAlertToast">Pessoa deletada</string>
 
     <string name="large_text">
         "Material is the metaphor.\n\n"

@@ -21,7 +21,6 @@ import android.widget.Toast;
 import java.util.List;
 
 import br.com.blackseed.blackimob.AddInquilinoActivity;
-import br.com.blackseed.blackimob.MainActivity;
 import br.com.blackseed.blackimob.R;
 import br.com.blackseed.blackimob.components.LongClick;
 import br.com.blackseed.blackimob.data.ImobContract;
@@ -34,8 +33,6 @@ import br.com.blackseed.blackimob.utils.MaskTextWatcher;
 public class DetailPessoaFisicaActivity extends AppCompatActivity {
 
     private final static int EDIT_INTENT = 100;
-
-    private AlertDialog deleteAlert;
 
     private ImobDb db;
 
@@ -100,8 +97,7 @@ public class DetailPessoaFisicaActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_delete) {
-            alertDialog();
-
+            deletePessoa();
         } else if (id == R.id.action_edit) {
 
             Intent intent = new Intent(this, AddInquilinoActivity.class);
@@ -220,8 +216,8 @@ public class DetailPessoaFisicaActivity extends AppCompatActivity {
     }
 
 
-
-    private void alertDialog() {
+    private void deletePessoa() {
+        AlertDialog deleteAlert;
         //Cria o gerador do AlertDialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         //define o titulo
@@ -233,6 +229,7 @@ public class DetailPessoaFisicaActivity extends AppCompatActivity {
             public void onClick(DialogInterface arg0, int arg1) {
                 Toast.makeText(DetailPessoaFisicaActivity.this, R.string.deletePessoaAlertToast, Toast.LENGTH_SHORT).show();
                 db.deletePessoa(pessoa);
+                finish();
             }
         });
         //define um botão como negativo.

@@ -103,7 +103,7 @@ public class InquilinosFragment extends Fragment {
                     intent = new Intent(getContext(), DetailPessoaJuridicaActivity.class);
 
                 intent.putExtras(bundle);
-                startActivity(intent);
+                startActivityForResult(intent, 0, null);
 
             }
         });
