@@ -3,6 +3,7 @@ package br.com.blackseed.blackimob.detail;
 import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -28,6 +29,7 @@ import br.com.blackseed.blackimob.data.ImobDb;
 import br.com.blackseed.blackimob.entity.Email;
 import br.com.blackseed.blackimob.entity.Pessoa;
 import br.com.blackseed.blackimob.entity.Telefone;
+import br.com.blackseed.blackimob.utils.MaskTextWatcher;
 
 public class DetailPessoaFisicaActivity extends AppCompatActivity {
 
@@ -37,6 +39,7 @@ public class DetailPessoaFisicaActivity extends AppCompatActivity {
     private List<Telefone> telefoneList;
     private List<Email> emailList;
 
+    private TextView mNomeTextView;
     private TextView mCpfTextView;
     private LinearLayout mTelefoneLayout;
     private LinearLayout mEmailLayout;
@@ -51,6 +54,17 @@ public class DetailPessoaFisicaActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
 
         loadData(bundle.getLong("id"));
+
+        mNomeTextView = (TextView) findViewById(R.id.nomeTextView);
+        mNomeTextView.setText(pessoa.getNome());
+        findViewById(R.id.nomeLayout).setOnLongClickListener(new LongClick(this, pessoa.getNome()));
+
+        mCpfTextView = (TextView) findViewById(R.id.cpfTextView);
+        mCpfTextView.setText(
+                MaskTextWatcher.formatter(
+                        MaskTextWatcher.Mask.CPF,
+                        pessoa.getCpf()));
+        findViewById(R.id.cpfLayout).setOnLongClickListener(new LongClick(this, pessoa.getCpf()));
 
         if (telefoneList.isEmpty() && emailList.isEmpty()) {
             findViewById(R.id.contatoCard).setVisibility(View.GONE);
@@ -149,13 +163,7 @@ public class DetailPessoaFisicaActivity extends AppCompatActivity {
             });
 
             // Clicar e segurar
-            view.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    itemMenu(telefone.getNumero());
-                    return true;
-                }
-            });
+            view.setOnLongClickListener(new LongClick(this, telefone.getNumero()));
 
             mTelefoneLayout.addView(view);
         }
@@ -188,30 +196,42 @@ public class DetailPessoaFisicaActivity extends AppCompatActivity {
             });
 
             // Clicar e segurar
-            view.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    itemMenu(email.getEndereco());
-                    return true;
-                }
-            });
+            view.setOnLongClickListener(new LongClick(this, email.getEndereco()));
 
             mEmailLayout.addView(view);
         }
     }
+}
+
+
+class LongClick implements View.OnLongClickListener {
+
+    private String text;
+    private Context context;
+
+    public LongClick(Context context, String text) {
+        this.context = context;
+        this.text = text;
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        itemMenu(text);
+        return true;
+    }
 
     private void itemMenu(final String content) {
         final CharSequence[] options = {"Copiar para área de transferência"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(content);
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
                 if (item == 0) {
-                    ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                    ClipboardManager clipboard = (ClipboardManager) context.getSystemService(context.CLIPBOARD_SERVICE);
                     ClipData clip = ClipData.newPlainText("Imob", content);
                     clipboard.setPrimaryClip(clip);
-                    Toast.makeText(DetailPessoaFisicaActivity.this, "Texto copiado", Toast.LENGTH_SHORT);
+                    Toast.makeText(context, "Texto copiado", Toast.LENGTH_SHORT);
                 }
             }
         });

@@ -3,8 +3,6 @@ package br.com.blackseed.blackimob.utils;
 import android.text.Editable;
 import android.text.TextWatcher;
 
-import java.text.NumberFormat;
-
 public class MaskTextWatcher implements TextWatcher {
 
     private boolean mEditing;
@@ -13,6 +11,28 @@ public class MaskTextWatcher implements TextWatcher {
     public MaskTextWatcher(Mask mask) {
         mEditing = false;
         mMask = mask;
+    }
+
+    public static String formatter(Mask pattern, String source) {
+
+        if (source.length() > pattern.getSize())
+            source = source.substring(source.length() - pattern.getSize());
+
+        StringBuilder result = new StringBuilder();
+
+        int j = 0;
+        for (int i = 0; i < pattern.getMask().length(); i++) {
+            if (pattern.getMask().charAt(i) == '#') {
+                if (j < source.length())
+                    result.append(source.charAt(j++));
+                else
+                    result.append('0');
+            } else {
+                result.append(pattern.getMask().charAt(i));
+            }
+        }
+
+        return result.toString();
     }
 
     public synchronized void afterTextChanged(Editable s) {
@@ -24,9 +44,8 @@ public class MaskTextWatcher implements TextWatcher {
             }
 
             String digits = s.toString().replaceAll("\\D", "");
-            NumberFormat nf = NumberFormat.getCurrencyInstance();
             try {
-                String formatted = format(digits, mMask.getMask(), mMask.getSize());
+                String formatted = formatter(mMask, digits);
                 s.replace(0, s.length(), formatted);
             } catch (NumberFormatException nfe) {
                 s.clear();
@@ -34,28 +53,6 @@ public class MaskTextWatcher implements TextWatcher {
 
             mEditing = false;
         }
-    }
-
-    public String format(String source, String mask, int digits) {
-
-        if (source.length() > digits)
-            source = source.substring(source.length() - digits);
-
-        StringBuilder result = new StringBuilder();
-
-        int j = 0;
-        for (int i = 0; i < mask.length(); i++) {
-            if (mask.charAt(i) == '#') {
-                if (j < source.length())
-                    result.append(source.charAt(j++));
-                else
-                    result.append('0');
-            } else {
-                result.append(mask.charAt(i));
-            }
-        }
-
-        return result.toString();
     }
 
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -86,7 +83,6 @@ public class MaskTextWatcher implements TextWatcher {
             return size;
         }
     }
-
 
 }
 
