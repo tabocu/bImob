@@ -9,10 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.blackseed.blackimob.data.ImobContract.EmailEntry;
+import br.com.blackseed.blackimob.data.ImobContract.ImovelEntry;
 import br.com.blackseed.blackimob.data.ImobContract.PessoaEntry;
 import br.com.blackseed.blackimob.data.ImobContract.TelefoneEntry;
-import br.com.blackseed.blackimob.data.ImobContract.ImovelEntry;
-
 import br.com.blackseed.blackimob.entity.Email;
 import br.com.blackseed.blackimob.entity.Imovel;
 import br.com.blackseed.blackimob.entity.Pessoa;
@@ -30,8 +29,7 @@ public class ImobDb {
 
     //CRUD - Pessoa
 
-    public Pessoa createPessoa(Pessoa pessoa) {
-
+    private static ContentValues getContentValues(Pessoa pessoa) {
         ContentValues contentValues = new ContentValues();
 
         if (pessoa.isPessoaFisica()) {
@@ -47,6 +45,25 @@ public class ImobDb {
             contentValues.put(PessoaEntry.COLUMN_IS_PESSOA_FISICA, false);
         }
 
+        return contentValues;
+    }
+
+    private static ContentValues getContentValues(Telefone telefone) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TelefoneEntry.COLUMN_TELEFONE, telefone.getNumero());
+
+        return contentValues;
+    }
+
+    private static ContentValues getContentValues(Email email) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(EmailEntry.COLUMN_EMAIL, email.getEndereco());
+
+        return contentValues;
+    }
+
+    public Pessoa createPessoa(Pessoa pessoa) {
+        ContentValues contentValues = getContentValues(pessoa);
         long _id = dbHelper.getWritableDatabase().insert(PessoaEntry.TABLE_NAME, null, contentValues);
 
         pessoa.setId(_id);
@@ -97,7 +114,6 @@ public class ImobDb {
         return pessoa;
     }
 
-
     public List<Pessoa> readAllPessoa() {
 
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
@@ -142,8 +158,12 @@ public class ImobDb {
         return pessoaList;
     }
 
-    public boolean updatePessoa(Pessoa pessoa) {
-        return false;
+    //CRUD - Imovel
+
+    public void updatePessoa(Pessoa pessoa) {
+        ContentValues contentValues = getContentValues(pessoa);
+        String where = PessoaEntry._ID + " = " + pessoa.getId();
+        dbHelper.getWritableDatabase().update(PessoaEntry.TABLE_NAME, contentValues, where, null);
     }
 
     public int deletePessoa(Pessoa pessoa) {
@@ -160,8 +180,6 @@ public class ImobDb {
         }
         return result;
     }
-
-    //CRUD - Imovel
 
     public Imovel createImovel(Imovel imovel) {
 
@@ -208,6 +226,8 @@ public class ImobDb {
         return imovelList;
     }
 
+    //CRUD - Telefone
+
     public boolean updateImovel(Imovel imovel) {
         return false;
     }
@@ -225,8 +245,6 @@ public class ImobDb {
         return result;
     }
 
-    //CRUD - Telefone
-
     public void createTelefone(String column, Long foreignKey, List<Telefone> telefoneList) {
 
         for(Telefone telefone : telefoneList){
@@ -235,8 +253,7 @@ public class ImobDb {
     }
 
     public Telefone createTelefone(String column, Long foreignKey, Telefone telefone) {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(TelefoneEntry.COLUMN_TELEFONE, telefone.getNumero());
+        ContentValues contentValues = getContentValues(telefone);
         contentValues.put(column, foreignKey);
 
         long _id = dbHelper.getWritableDatabase()
@@ -246,6 +263,8 @@ public class ImobDb {
 
         return telefone;
     }
+
+    //CRUD - Email
 
     public List<Telefone> readTelefone(String foreignColumn, long foreignKey) {
         String[] sqlSelect = {
@@ -284,8 +303,6 @@ public class ImobDb {
                 .delete(TelefoneEntry.TABLE_NAME, foreignColumn + " = " + foreignKey, null);
     }
 
-    //CRUD - Email
-
     public void createEmail(String column, Long foreignKey, List<Email> emailList) {
 
         for(Email email : emailList){
@@ -294,8 +311,7 @@ public class ImobDb {
     }
 
     public Email createEmail(String foreignColumn, Long foreignKey, Email email) {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(EmailEntry.COLUMN_EMAIL, email.getEndereco());
+        ContentValues contentValues = getContentValues(email);
         contentValues.put(foreignColumn, foreignKey);
 
         long _id = dbHelper.getWritableDatabase()
@@ -342,4 +358,6 @@ public class ImobDb {
         return dbHelper.getWritableDatabase()
                 .delete(EmailEntry.TABLE_NAME, foreignColumn + " = " + foreignKey, null);
     }
+
+
 }

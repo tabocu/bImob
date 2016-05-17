@@ -20,6 +20,7 @@
 
     <string name="imovel_adicionado">Imóvel adicionado!</string>
     <string name="pessoa_adicionada">Pessoa adicionada!</string>
+    <string name="pessoa_atualizada">Pessoa atualizada!</string>
     <string name="locacao_adicionada">Locação adicionada!</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="large_text">

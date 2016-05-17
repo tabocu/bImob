@@ -11,41 +11,83 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import java.util.List;
-
-import br.com.blackseed.blackimob.data.ImobContract;
 import br.com.blackseed.blackimob.data.ImobDb;
-import br.com.blackseed.blackimob.entity.Email;
 import br.com.blackseed.blackimob.entity.Pessoa;
-import br.com.blackseed.blackimob.entity.Telefone;
 
 public class AddInquilinoActivity extends AppCompatActivity {
 
+    long id = -1;
+    private ImobDb db;
     private AddPessoaFisicaFragment mAddPessoaFisicaFragment = new AddPessoaFisicaFragment();
     private AddPessoaJuridicaFragment mAddPessoaJuridicaFragment = new AddPessoaJuridicaFragment();
 
     private Switch mPessoaSwitch;
 
-    private ImobDb db;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        db = new ImobDb(this);
-
         setContentView(R.layout.activity_add_inquilino);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setPessoaFisica();
+
+        //Inicializa o banco de dados
+        db = new ImobDb(this);
+
+        // Obtem referencia do seletor de pessoa
         mPessoaSwitch = (Switch) findViewById(R.id.pessoaSwitch);
-        mPessoaSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) setPessoaJuridica();
-                else setPessoaFisica();
+
+        // Pega o id da pessoa (no caso de edição)
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            // Obtem o id da pessoa
+            id = bundle.getLong("id");
+            // Obtem o objeto pessoa do banco de dados
+            Pessoa pessoa = db.readPessoa(id);
+
+
+            if (pessoa.isPessoaFisica()) { // Se for pessoa fisica
+                // Carrega a fragment de pessoa fisica
+                mAddPessoaFisicaFragment.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.pessoaFrame, mAddPessoaFisicaFragment)
+                        .commit();
+                mPessoaSwitch.setChecked(false);
+            } else { // Se for pessoa juridica
+                // Carrega o fragment de pessoa juridica
+                mAddPessoaJuridicaFragment.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.pessoaFrame, mAddPessoaJuridicaFragment)
+                        .commit();
+                mPessoaSwitch.setChecked(true);
             }
-        });
+            // Desabilita o switch
+            mPessoaSwitch.setEnabled(false);
+        } else {
+            // Carrega a fragment de pessoa fisica
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.pessoaFrame, mAddPessoaFisicaFragment)
+                    .commit();
+            // Adiciona o listener responsavel por alternar entre os
+            // fragmentes de pessoa fisica e juridica
+            mPessoaSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.pessoaFrame, mAddPessoaJuridicaFragment)
+                                .commit();
+                    } else {
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.pessoaFrame, mAddPessoaFisicaFragment)
+                                .commit();
+                    }
+                }
+            });
+        }
+
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -64,26 +106,19 @@ public class AddInquilinoActivity extends AppCompatActivity {
         return true;
     }
 
-    public void setPessoaFisica() {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.pessoaFrame, mAddPessoaFisicaFragment)
-                .commit();
-    }
-
-    public void setPessoaJuridica() {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.pessoaFrame, mAddPessoaJuridicaFragment)
-                .commit();
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_apply) {
-            onClickAdd();
-            Toast.makeText(this, R.string.pessoa_adicionada, Toast.LENGTH_SHORT).show();
+            long pessoaId;
+            if (mPessoaSwitch.isChecked()) pessoaId = mAddPessoaJuridicaFragment.saveData();
+            else pessoaId = mAddPessoaFisicaFragment.saveData();
+
+            if (pessoaId == -1)
+                Toast.makeText(this, R.string.pessoa_adicionada, Toast.LENGTH_SHORT).show();
+            else Toast.makeText(this, R.string.pessoa_atualizada, Toast.LENGTH_SHORT).show();
             finish();
             return true;
         }
@@ -91,31 +126,4 @@ public class AddInquilinoActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void onClickAdd() {
-
-        Pessoa pessoa;
-        List<Telefone> telefoneList;
-        List<Email> emailList;
-
-        if (mPessoaSwitch.isChecked()) {
-            pessoa = new Pessoa.Juridica();
-            ((Pessoa.Juridica)pessoa).setRazaoSocial(mAddPessoaJuridicaFragment.getRazaoSocial());
-            ((Pessoa.Juridica)pessoa).setNomeFantasia(mAddPessoaJuridicaFragment.getNomeFantasia());
-            ((Pessoa.Juridica)pessoa).setCnpj(mAddPessoaJuridicaFragment.getCnpj());
-            telefoneList = mAddPessoaJuridicaFragment.getTelefones();
-            emailList = mAddPessoaJuridicaFragment.getEmails();
-
-        } else {
-            pessoa = new Pessoa.Fisica();
-            ((Pessoa.Fisica)pessoa).setNome(mAddPessoaFisicaFragment.getNome());
-            ((Pessoa.Fisica)pessoa).setCpf(mAddPessoaFisicaFragment.getCpf());
-            telefoneList = mAddPessoaFisicaFragment.getTelefones();
-            emailList = mAddPessoaFisicaFragment.getEmails();
-        }
-
-        db.createPessoa(pessoa);
-        db.createTelefone(ImobContract.TelefoneEntry.COLUMN_PESSOA_ID, pessoa.getId(),telefoneList);
-        db.createEmail(ImobContract.EmailEntry.COLUMN_PESSOA_ID, pessoa.getId(),emailList);
-
-    }
 }

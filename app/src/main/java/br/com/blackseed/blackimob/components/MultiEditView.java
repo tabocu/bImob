@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.InputType;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -67,8 +66,36 @@ public class MultiEditView extends LinearLayout {
 
     }
 
-    public List<EditText> getEditTextList() {
-        return  editTextList;
+    public List<String> getTextList() {
+        List<String> textList = new ArrayList<>();
+        for (EditText editText : editTextList)
+            textList.add(editText.getText().toString());
+        return textList;
+    }
+
+    public void setTextList(List<String> textList) {
+        editTextList.clear();
+        numberOfViews = 0;
+        removeAllViews();
+        View addBtn = inflate(getContext(), R.layout.add_field_btn, null);
+        addBtn.findViewById(R.id.addFieldBtn).setOnClickListener(new AddClickListener());
+        ((Button) addBtn.findViewById(R.id.addFieldBtn)).setText(mAddText);
+        addView(addBtn);
+        for (String text : textList)
+            createField(text);
+    }
+
+    private void createField(String text) {
+        View view = inflate(getContext(), R.layout.single_item, null);
+        view.findViewById(R.id.deleteBtn).setOnClickListener(new RemoveClickListener(view));
+        EditText editText = (EditText) view.findViewById(R.id.editText);
+        editText.setHint(mHint);
+        editText.setInputType(mInputType);
+        editText.setText(text);
+        editTextList.add(editText);
+
+        addView(view, numberOfViews);
+        numberOfViews++;
     }
 
     public class RemoveClickListener implements OnClickListener {
@@ -83,7 +110,6 @@ public class MultiEditView extends LinearLayout {
         @Override
         public void onClick(View view) {
             EditText editText = (EditText) parent.findViewById(R.id.editText);
-            Log.v("EDIT TEXT: ", editText.toString());
             editTextList.remove(editText);
             removeView(parent);
             numberOfViews--;
@@ -93,15 +119,7 @@ public class MultiEditView extends LinearLayout {
     public class AddClickListener implements OnClickListener {
         @Override
         public void onClick(View v) {
-            View view = inflate(getContext(), R.layout.single_item, null);
-            view.findViewById(R.id.deleteBtn).setOnClickListener(new RemoveClickListener(view));
-            EditText editText = (EditText) view.findViewById(R.id.editText);
-            editText.setHint(mHint);
-            editText.setInputType(mInputType);
-            editTextList.add(editText);
-
-            addView(view, numberOfViews);
-            numberOfViews++;
+            createField("");
         }
     }
 

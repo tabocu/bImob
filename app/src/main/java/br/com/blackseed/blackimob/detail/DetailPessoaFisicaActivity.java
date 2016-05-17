@@ -1,10 +1,5 @@
 package br.com.blackseed.blackimob.detail;
 
-import android.app.AlertDialog;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,20 +14,22 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
+import br.com.blackseed.blackimob.AddInquilinoActivity;
 import br.com.blackseed.blackimob.R;
+import br.com.blackseed.blackimob.components.LongClick;
 import br.com.blackseed.blackimob.data.ImobContract;
 import br.com.blackseed.blackimob.data.ImobDb;
 import br.com.blackseed.blackimob.entity.Email;
 import br.com.blackseed.blackimob.entity.Pessoa;
 import br.com.blackseed.blackimob.entity.Telefone;
 import br.com.blackseed.blackimob.utils.MaskTextWatcher;
-import br.com.blackseed.blackimob.components.LongClick;
 
 public class DetailPessoaFisicaActivity extends AppCompatActivity {
+
+    private final static int EDIT_INTENT = 100;
 
     private ImobDb db;
 
@@ -99,6 +96,13 @@ public class DetailPessoaFisicaActivity extends AppCompatActivity {
         if (id == R.id.action_delete) {
 
         } else if (id == R.id.action_edit) {
+
+            Intent intent = new Intent(this, AddInquilinoActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putLong("id", pessoa.getId());
+            intent.putExtras(bundle);
+            startActivityForResult(intent, 1, null);
+
 
         } else if (id == R.id.action_favorite) {
             if (item.isChecked()) {
@@ -201,5 +205,10 @@ public class DetailPessoaFisicaActivity extends AppCompatActivity {
 
             mEmailLayout.addView(view);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        recreate();
     }
 }
