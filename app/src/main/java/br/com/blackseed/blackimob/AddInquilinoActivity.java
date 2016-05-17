@@ -11,6 +11,8 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import java.util.List;
+
 import br.com.blackseed.blackimob.data.ImobContract;
 import br.com.blackseed.blackimob.data.ImobDb;
 import br.com.blackseed.blackimob.entity.Email;
@@ -91,31 +93,29 @@ public class AddInquilinoActivity extends AppCompatActivity {
 
     private void onClickAdd() {
 
+        Pessoa pessoa;
+        List<Telefone> telefoneList;
+        List<Email> emailList;
+
         if (mPessoaSwitch.isChecked()) {
-            Pessoa.Juridica pessoa = new Pessoa.Juridica();
-            pessoa.setRazaoSocial(mAddPessoaJuridicaFragment.getRazaoSocial());
-            pessoa.setNomeFantasia(mAddPessoaJuridicaFragment.getNomeFantasia());
-            pessoa.setCnpj(mAddPessoaJuridicaFragment.getCnpj());
-            db.createPessoa(pessoa);
+            pessoa = new Pessoa.Juridica();
+            ((Pessoa.Juridica)pessoa).setRazaoSocial(mAddPessoaJuridicaFragment.getRazaoSocial());
+            ((Pessoa.Juridica)pessoa).setNomeFantasia(mAddPessoaJuridicaFragment.getNomeFantasia());
+            ((Pessoa.Juridica)pessoa).setCnpj(mAddPessoaJuridicaFragment.getCnpj());
+            telefoneList = mAddPessoaJuridicaFragment.getTelefones();
+            emailList = mAddPessoaJuridicaFragment.getEmails();
+
         } else {
-            Pessoa.Fisica pessoa = new Pessoa.Fisica();
-            pessoa.setNome(mAddPessoaFisicaFragment.getNome());
-            pessoa.setCpf(mAddPessoaFisicaFragment.getCpf());
-            db.createPessoa(pessoa);
-
-            for (int i = 0; i < mAddPessoaFisicaFragment.getTelefones().size(); i++) {
-                Telefone telefone = new Telefone();
-                telefone.setNumero(mAddPessoaFisicaFragment.getTelefones().get(i));
-                db.createTelefone(ImobContract.TelefoneEntry.COLUMN_PESSOA_ID, pessoa.getId(),telefone);
-            }
-
-            for (int i = 0; i < mAddPessoaFisicaFragment.getEmails().size(); i++) {
-                Email email = new Email();
-                email.setEndereco(mAddPessoaFisicaFragment.getEmails().get(i));
-                db.createEmail(ImobContract.EmailEntry.COLUMN_PESSOA_ID, pessoa.getId(),email);
-            }
+            pessoa = new Pessoa.Fisica();
+            ((Pessoa.Fisica)pessoa).setNome(mAddPessoaFisicaFragment.getNome());
+            ((Pessoa.Fisica)pessoa).setCpf(mAddPessoaFisicaFragment.getCpf());
+            telefoneList = mAddPessoaFisicaFragment.getTelefones();
+            emailList = mAddPessoaFisicaFragment.getEmails();
         }
 
+        db.createPessoa(pessoa);
+        db.createTelefone(ImobContract.TelefoneEntry.COLUMN_PESSOA_ID, pessoa.getId(),telefoneList);
+        db.createEmail(ImobContract.EmailEntry.COLUMN_PESSOA_ID, pessoa.getId(),emailList);
 
     }
 }

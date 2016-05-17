@@ -14,6 +14,8 @@ import java.util.List;
 
 import br.com.blackseed.blackimob.components.AdressEditView;
 import br.com.blackseed.blackimob.components.MultiEditView;
+import br.com.blackseed.blackimob.entity.Email;
+import br.com.blackseed.blackimob.entity.Telefone;
 import br.com.blackseed.blackimob.utils.MaskTextWatcher;
 
 
@@ -70,27 +72,33 @@ public class AddPessoaFisicaFragment extends Fragment {
         return mCpfEditText.getText().toString().replaceAll("\\D", "");
     }
 
-    public List<String> getTelefones() {
+    public List<Telefone> getTelefones() {
         List<EditText> editText = mTelefoneMultiEditView.getEditTextList();
 
-        List<String> telefones = new ArrayList<>();
+        List<Telefone> telefones = new ArrayList<>();
 
-        for (int i = 0; i < editText.size(); i++)
-            if (!editText.get(i).getText().toString().isEmpty())
-                telefones.add(editText.get(i).getText().toString());
-
+        for (int i = 0; i < editText.size(); i++) {
+            if (!editText.get(i).getText().toString().isEmpty()) {
+                Telefone telefone = new Telefone();
+                telefone.setNumero(editText.get(i).getText().toString());
+                telefones.add(telefone);
+            }
+        }
         return telefones;
     }
 
-    public List<String> getEmails() {
+    public List<Email> getEmails() {
         List<EditText> editText = mEmailMultiEditView.getEditTextList();
 
-        List<String> emails = new ArrayList<>();
+        List<Email> emails = new ArrayList<>();
 
-        for (int i = 0; i < editText.size(); i++)
-            if (!editText.get(i).getText().toString().isEmpty())
-                emails.add(editText.get(i).getText().toString());
-
+        for (int i = 0; i < editText.size(); i++) {
+            if (!editText.get(i).getText().toString().isEmpty()) {
+                Email email = new Email();
+                email.setEndereco(editText.get(i).getText().toString());
+                emails.add(email);
+            }
+        }
         return emails;
     }
 

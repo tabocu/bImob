@@ -227,6 +227,13 @@ public class ImobDb {
 
     //CRUD - Telefone
 
+    public void createTelefone(String column, Long foreignKey, List<Telefone> telefoneList) {
+
+        for(Telefone telefone : telefoneList){
+            createTelefone(column, foreignKey, telefone);
+        }
+    }
+
     public Telefone createTelefone(String column, Long foreignKey, Telefone telefone) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(TelefoneEntry.COLUMN_TELEFONE, telefone.getNumero());
@@ -278,6 +285,13 @@ public class ImobDb {
     }
 
     //CRUD - Email
+
+    public void createEmail(String column, Long foreignKey, List<Email> emailList) {
+
+        for(Email email : emailList){
+            createEmail(column, foreignKey, email);
+        }
+    }
 
     public Email createEmail(String foreignColumn, Long foreignKey, Email email) {
         ContentValues contentValues = new ContentValues();

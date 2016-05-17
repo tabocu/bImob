@@ -17,6 +17,7 @@ import java.util.List;
 import br.com.blackseed.blackimob.adapter.PessoasAdapter;
 import br.com.blackseed.blackimob.data.ImobDb;
 import br.com.blackseed.blackimob.detail.DetailPessoaFisicaActivity;
+import br.com.blackseed.blackimob.detail.DetailPessoaJuridicaActivity;
 import br.com.blackseed.blackimob.entity.Pessoa;
 
 
@@ -98,7 +99,8 @@ public class InquilinosFragment extends Fragment {
                 if(pessoa.isPessoaFisica())
                     intent = new Intent(getContext(), DetailPessoaFisicaActivity.class);
 
-                else return;  //TODO implementar para pessoa jurídica
+                else
+                    intent = new Intent(getContext(), DetailPessoaJuridicaActivity.class);
 
                 intent.putExtras(bundle);
                 startActivity(intent);

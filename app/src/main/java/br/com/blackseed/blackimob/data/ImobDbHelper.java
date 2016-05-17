@@ -12,7 +12,7 @@ import br.com.blackseed.blackimob.data.ImobContract.TelefoneEntry;
 public class ImobDbHelper extends SQLiteOpenHelper {
 
     static final String DATABASE_NAME = "imob.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
 
     public ImobDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

@@ -32,23 +32,24 @@ import br.com.blackseed.blackimob.entity.Telefone;
 import br.com.blackseed.blackimob.utils.MaskTextWatcher;
 import br.com.blackseed.blackimob.components.LongClick;
 
-public class DetailPessoaFisicaActivity extends AppCompatActivity {
+public class DetailPessoaJuridicaActivity extends AppCompatActivity {
 
     private ImobDb db;
 
-    private Pessoa.Fisica pessoa;
+    private Pessoa.Juridica pessoa;
     private List<Telefone> telefoneList;
     private List<Email> emailList;
 
-    private TextView mNomeTextView;
-    private TextView mCpfTextView;
+    private TextView mNomeFantasiaTextView;
+    private TextView mRazaoSocialTextView;
+    private TextView mCnpjTextView;
     private LinearLayout mTelefoneLayout;
     private LinearLayout mEmailLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail_pessoa_fisica);
+        setContentView(R.layout.activity_detail_pessoa_juridica);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -56,16 +57,20 @@ public class DetailPessoaFisicaActivity extends AppCompatActivity {
 
         loadData(bundle.getLong("id"));
 
-        mNomeTextView = (TextView) findViewById(R.id.nomeTextView);
-        mNomeTextView.setText(pessoa.getNome());
-        findViewById(R.id.nomeLayout).setOnLongClickListener(new LongClick(this, pessoa.getNome()));
+        mNomeFantasiaTextView = (TextView) findViewById(R.id.nomeFantasiaTextView);
+        mNomeFantasiaTextView.setText(pessoa.getNomeFantasia());
+        findViewById(R.id.nomeFantasiaLayout).setOnLongClickListener(new LongClick(this, pessoa.getNomeFantasia()));
 
-        mCpfTextView = (TextView) findViewById(R.id.cpfTextView);
-        mCpfTextView.setText(
+        mRazaoSocialTextView = (TextView) findViewById(R.id.razaoSocialTextView);
+        mRazaoSocialTextView.setText(pessoa.getRazaoSocial());
+        findViewById(R.id.razaoSocialLayout).setOnLongClickListener(new LongClick(this, pessoa.getRazaoSocial()));
+
+        mCnpjTextView = (TextView) findViewById(R.id.cnpjTextView);
+        mCnpjTextView.setText(
                 MaskTextWatcher.formatter(
-                        MaskTextWatcher.Mask.CPF,
-                        pessoa.getCpf()));
-        findViewById(R.id.cpfLayout).setOnLongClickListener(new LongClick(this, pessoa.getCpf()));
+                        MaskTextWatcher.Mask.CNPJ,
+                        pessoa.getCnpj()));
+        findViewById(R.id.cnpjLayout).setOnLongClickListener(new LongClick(this, pessoa.getCnpj()));
 
         if (telefoneList.isEmpty() && emailList.isEmpty()) {
             findViewById(R.id.contatoCard).setVisibility(View.GONE);
@@ -81,7 +86,7 @@ public class DetailPessoaFisicaActivity extends AppCompatActivity {
         }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(pessoa.getNome());
+        getSupportActionBar().setTitle(pessoa.getNomeFantasia());
     }
 
     @Override
@@ -115,7 +120,7 @@ public class DetailPessoaFisicaActivity extends AppCompatActivity {
 
     private void loadData(long id) {
         db = new ImobDb(this);
-        pessoa = (Pessoa.Fisica) db.readPessoa(id);
+        pessoa = (Pessoa.Juridica) db.readPessoa(id);
         telefoneList = db.readTelefone(ImobContract.TelefoneEntry.COLUMN_PESSOA_ID,pessoa.getId());
         emailList = db.readEmail(ImobContract.EmailEntry.COLUMN_PESSOA_ID,pessoa.getId());
     }
@@ -203,3 +208,6 @@ public class DetailPessoaFisicaActivity extends AppCompatActivity {
         }
     }
 }
+
+
+

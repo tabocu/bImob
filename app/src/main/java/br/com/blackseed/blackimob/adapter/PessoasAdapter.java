@@ -1,6 +1,7 @@
 package br.com.blackseed.blackimob.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,6 +64,7 @@ public class PessoasAdapter extends ArrayAdapter<Pessoa> {
         TextView razaoSocialTextView = (TextView) view.findViewById(R.id.razaoSocialTextView);
         razaoSocialTextView.setText(pessoa.getRazaoSocial());
         TextView cnpjTextView = (TextView) view.findViewById(R.id.cnpjTextView);
+        Log.v("Teste",cnpjTextView.toString());
         cnpjTextView.setText(pessoa.getCnpj()
                 .replaceAll("([0-9]{2})([0-9]{3})([0-9]{3})([0-9]{4})([0-9]{2})", "$1.$2.$3/$4-$5"));
 
