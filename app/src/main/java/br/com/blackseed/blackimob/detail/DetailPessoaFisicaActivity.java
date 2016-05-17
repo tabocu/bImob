@@ -10,6 +10,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -64,6 +67,35 @@ public class DetailPessoaFisicaActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(pessoa.getNome());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_detail, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_delete) {
+
+        } else if (id == R.id.action_edit) {
+
+        } else if (id == R.id.action_favorite) {
+            if (item.isChecked()) {
+                item.setIcon(R.drawable.ic_favorite_24dp);
+                item.setChecked(false);
+            } else {
+                item.setIcon(R.drawable.ic_favorite_not_24dp);
+                item.setChecked(true);
+            }
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void loadData(long id) {
