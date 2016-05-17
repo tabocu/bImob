@@ -23,6 +23,13 @@
     <string name="pessoa_atualizada">Pessoa atualizada!</string>
     <string name="locacao_adicionada">Locação adicionada!</string>
     <string name="title_activity_main2">Main2Activity</string>
+
+    <string name="deletePessoaAlertTitle">Apagar contato</string>
+    <string name="deletePessoaAlertText">Tem certeza que deseja apagar este contato?</string>
+    <string name="deletePessoaAlertPositive">Apagar</string>
+    <string name="deletePessoaAlertNegative">Cancelar</string>
+    <string name="deletePessoaAlertToast">Cancelar</string>
+
     <string name="large_text">
         "Material is the metaphor.\n\n"
 

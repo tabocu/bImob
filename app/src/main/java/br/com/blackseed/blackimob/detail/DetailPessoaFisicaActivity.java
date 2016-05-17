@@ -1,8 +1,10 @@
 package br.com.blackseed.blackimob.detail;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -14,10 +16,12 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
 import br.com.blackseed.blackimob.AddInquilinoActivity;
+import br.com.blackseed.blackimob.MainActivity;
 import br.com.blackseed.blackimob.R;
 import br.com.blackseed.blackimob.components.LongClick;
 import br.com.blackseed.blackimob.data.ImobContract;
@@ -30,6 +34,8 @@ import br.com.blackseed.blackimob.utils.MaskTextWatcher;
 public class DetailPessoaFisicaActivity extends AppCompatActivity {
 
     private final static int EDIT_INTENT = 100;
+
+    private AlertDialog deleteAlert;
 
     private ImobDb db;
 
@@ -94,6 +100,7 @@ public class DetailPessoaFisicaActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_delete) {
+            alertDialog();
 
         } else if (id == R.id.action_edit) {
 
@@ -211,4 +218,31 @@ public class DetailPessoaFisicaActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         recreate();
     }
+
+
+
+    private void alertDialog() {
+        //Cria o gerador do AlertDialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //define o titulo
+        builder.setTitle(R.string.deletePessoaAlertTitle);
+        //define a mensagem
+        builder.setMessage(R.string.deletePessoaAlertText);
+        //define um botão como positivo
+        builder.setPositiveButton(R.string.deletePessoaAlertPositive, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1) {
+                Toast.makeText(DetailPessoaFisicaActivity.this, R.string.deletePessoaAlertToast, Toast.LENGTH_SHORT).show();
+                db.deletePessoa(pessoa);
+            }
+        });
+        //define um botão como negativo.
+        builder.setNegativeButton(R.string.deletePessoaAlertNegative, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1) { }
+        });
+        //cria o AlertDialog
+        deleteAlert = builder.create();
+        //Exibe
+        deleteAlert.show();
+    }
+
 }

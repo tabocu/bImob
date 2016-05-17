@@ -103,7 +103,7 @@ public class DetailPessoaJuridicaActivity extends AppCompatActivity {
             Bundle bundle = new Bundle();
             bundle.putLong("id", pessoa.getId());
             intent.putExtras(bundle);
-            startActivity(intent);
+            startActivityForResult(intent, 1, null);
         } else if (id == R.id.action_favorite) {
             if (item.isChecked()) {
                 item.setIcon(R.drawable.ic_favorite_24dp);
