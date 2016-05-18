@@ -34,18 +34,18 @@ public class ImobDb {
 
         if (pessoa.isPessoaFisica()) {
             Pessoa.Fisica pessoaFisica = (Pessoa.Fisica) pessoa;
-            contentValues.put(PessoaEntry.COLUMN_NOME, pessoaFisica.getNome());
             contentValues.put(PessoaEntry.COLUMN_CPF, pessoaFisica.getCpf());
             contentValues.put(PessoaEntry.COLUMN_IS_FAVORITO, pessoaFisica.isFavorito());
             contentValues.put(PessoaEntry.COLUMN_IS_PESSOA_FISICA, true);
         } else {
             Pessoa.Juridica pessoaJuridica = (Pessoa.Juridica) pessoa;
-            contentValues.put(PessoaEntry.COLUMN_NOME_FANTASIA, pessoaJuridica.getNomeFantasia());
             contentValues.put(PessoaEntry.COLUMN_RAZAO_SOCIAL, pessoaJuridica.getRazaoSocial());
             contentValues.put(PessoaEntry.COLUMN_CNPJ, pessoaJuridica.getCnpj());
             contentValues.put(PessoaEntry.COLUMN_IS_FAVORITO, pessoaJuridica.isFavorito());
             contentValues.put(PessoaEntry.COLUMN_IS_PESSOA_FISICA, false);
         }
+
+        contentValues.put(PessoaEntry.COLUMN_NOME, pessoa.getNome());
 
         return contentValues;
     }
@@ -84,13 +84,8 @@ public class ImobDb {
         Pessoa pessoa;
 
         if(!pessoaCursor.moveToNext()) return null;
-
         if (pessoaCursor.getInt(pessoaCursor.getColumnIndex(PessoaEntry.COLUMN_IS_PESSOA_FISICA)) == 1) {
             pessoa = new Pessoa.Fisica();
-            ((Pessoa.Fisica) pessoa).setNome(
-                    pessoaCursor.getString(
-                            pessoaCursor.getColumnIndex(
-                                    PessoaEntry.COLUMN_NOME)));
             ((Pessoa.Fisica) pessoa).setCpf(
                     pessoaCursor.getString(
                             pessoaCursor.getColumnIndex(
@@ -98,10 +93,6 @@ public class ImobDb {
 
         } else {
             pessoa = new Pessoa.Juridica();
-            ((Pessoa.Juridica) pessoa).setNomeFantasia(
-                    pessoaCursor.getString(
-                            pessoaCursor.getColumnIndex(
-                                    PessoaEntry.COLUMN_NOME_FANTASIA)));
             ((Pessoa.Juridica) pessoa).setRazaoSocial(
                     pessoaCursor.getString(
                             pessoaCursor.getColumnIndex(
@@ -111,13 +102,19 @@ public class ImobDb {
                             pessoaCursor.getColumnIndex(
                                     PessoaEntry.COLUMN_CNPJ)));
         }
+
+        pessoa.setNome(pessoaCursor.getString(pessoaCursor.getColumnIndex(PessoaEntry.COLUMN_NOME)));
         pessoa.setFavorito(pessoaCursor.getInt(pessoaCursor.getColumnIndex(PessoaEntry.COLUMN_IS_FAVORITO)) == 1);
         pessoa.setId(pessoaCursor.getLong(pessoaCursor.getColumnIndex(PessoaEntry._ID)));
 
         return pessoa;
     }
 
+
+
     public List<Pessoa> readAllPessoa() {
+
+        String ordenacao = PessoaEntry.COLUMN_IS_FAVORITO + " DESC, " + PessoaEntry.COLUMN_NOME + " ASC";
 
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         qb.setTables(PessoaEntry.TABLE_NAME);
@@ -125,16 +122,12 @@ public class ImobDb {
         List<Pessoa> pessoaList = new ArrayList<>();
         Cursor pessoaCursor = qb.query(dbHelper.getReadableDatabase(),
                 PessoaEntry.PESSOA_SELECT,
-                null, null, null, null, null);
+                null, null, null, null, ordenacao);
 
         while (pessoaCursor.moveToNext()) {
             Pessoa pessoa;
             if (pessoaCursor.getInt(pessoaCursor.getColumnIndex(PessoaEntry.COLUMN_IS_PESSOA_FISICA)) == 1) {
                 pessoa = new Pessoa.Fisica();
-                ((Pessoa.Fisica) pessoa).setNome(
-                        pessoaCursor.getString(
-                                pessoaCursor.getColumnIndex(
-                                        PessoaEntry.COLUMN_NOME)));
                 ((Pessoa.Fisica) pessoa).setCpf(
                         pessoaCursor.getString(
                                 pessoaCursor.getColumnIndex(
@@ -142,10 +135,7 @@ public class ImobDb {
 
             } else {
                 pessoa = new Pessoa.Juridica();
-                ((Pessoa.Juridica) pessoa).setNomeFantasia(
-                        pessoaCursor.getString(
-                                pessoaCursor.getColumnIndex(
-                                        PessoaEntry.COLUMN_NOME_FANTASIA)));
+
                 ((Pessoa.Juridica) pessoa).setRazaoSocial(
                         pessoaCursor.getString(
                                 pessoaCursor.getColumnIndex(
@@ -155,6 +145,7 @@ public class ImobDb {
                                 pessoaCursor.getColumnIndex(
                                         PessoaEntry.COLUMN_CNPJ)));
             }
+            pessoa.setNome(pessoaCursor.getString(pessoaCursor.getColumnIndex(PessoaEntry.COLUMN_NOME)));
             pessoa.setFavorito(pessoaCursor.getInt(pessoaCursor.getColumnIndex(PessoaEntry.COLUMN_IS_FAVORITO)) == 1);
             pessoa.setId(pessoaCursor.getLong(pessoaCursor.getColumnIndex(PessoaEntry._ID)));
             pessoaList.add(pessoa);
@@ -202,13 +193,15 @@ public class ImobDb {
 
     public List<Imovel> readAllImovel() {
 
+        String ordenacao = ImovelEntry.COLUMN_IS_FAVORITO + " DESC, " + ImovelEntry.COLUMN_APELIDO + " ASC";
+
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         qb.setTables(ImovelEntry.TABLE_NAME);
 
         List<Imovel> imovelList = new ArrayList<>();
         Cursor imovelCursor = qb.query(dbHelper.getReadableDatabase(),
                 ImovelEntry.IMOVEL_SELECT,
-                null, null, null, null,null);
+                null, null, null, null,ordenacao);
 
         while(imovelCursor.moveToNext()){
             Imovel imovel = new Imovel();

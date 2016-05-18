@@ -56,8 +56,8 @@ public class DetailPessoaJuridicaActivity extends AppCompatActivity {
         loadData(bundle.getLong("id"));
 
         mNomeFantasiaTextView = (TextView) findViewById(R.id.nomeFantasiaTextView);
-        mNomeFantasiaTextView.setText(pessoa.getNomeFantasia());
-        findViewById(R.id.nomeFantasiaLayout).setOnLongClickListener(new LongClick(this, pessoa.getNomeFantasia()));
+        mNomeFantasiaTextView.setText(pessoa.getNome());
+        findViewById(R.id.nomeFantasiaLayout).setOnLongClickListener(new LongClick(this, pessoa.getNome()));
 
         mRazaoSocialTextView = (TextView) findViewById(R.id.razaoSocialTextView);
         mRazaoSocialTextView.setText(pessoa.getRazaoSocial());
@@ -84,7 +84,7 @@ public class DetailPessoaJuridicaActivity extends AppCompatActivity {
         }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(pessoa.getNomeFantasia());
+        getSupportActionBar().setTitle(pessoa.getNome());
     }
 
     @Override

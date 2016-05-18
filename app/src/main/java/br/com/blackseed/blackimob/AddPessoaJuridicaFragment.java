@@ -83,7 +83,7 @@ public class AddPessoaJuridicaFragment extends Fragment {
             // Obtem o objeto pessoa do banco de dados
             Pessoa.Juridica pessoa = (Pessoa.Juridica) db.readPessoa(id);
             // Preenche o campo de nome fantasia
-            mNomeFantasiaEditText.setText(pessoa.getNomeFantasia());
+            mNomeFantasiaEditText.setText(pessoa.getNome());
             // Preenche o campo de razao social
             mRazaoSocialEditText.setText(pessoa.getRazaoSocial());
             // Preenche o campo de cnpj
@@ -120,7 +120,7 @@ public class AddPessoaJuridicaFragment extends Fragment {
 
         // Preenche o objeto pessoa
         pessoa.setId(id);
-        pessoa.setNomeFantasia(mNomeFantasiaEditText.getText().toString());
+        pessoa.setNome(mNomeFantasiaEditText.getText().toString());
         pessoa.setRazaoSocial(mRazaoSocialEditText.getText().toString());
         pessoa.setCnpj(mCnpjEditText.getText().toString().replaceAll("\\D", ""));
 

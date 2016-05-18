@@ -60,7 +60,7 @@ public class PessoasAdapter extends ArrayAdapter<Pessoa> {
         TextView idTextView = (TextView) view.findViewById(R.id.idTextView);
         idTextView.setText(String.valueOf(pessoa.getId()));
         TextView nomeFantasiaTextView = (TextView) view.findViewById(R.id.nomeFantasiaTextView);
-        nomeFantasiaTextView.setText(pessoa.getNomeFantasia());
+        nomeFantasiaTextView.setText(pessoa.getNome());
         TextView razaoSocialTextView = (TextView) view.findViewById(R.id.razaoSocialTextView);
         razaoSocialTextView.setText(pessoa.getRazaoSocial());
         TextView cnpjTextView = (TextView) view.findViewById(R.id.cnpjTextView);

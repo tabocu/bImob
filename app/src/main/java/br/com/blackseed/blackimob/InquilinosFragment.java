@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -74,6 +75,7 @@ public class InquilinosFragment extends Fragment {
         ListView listView = (ListView) rootView.findViewById(R.id.itensListView);
         listView.setAdapter(adapter);
         pessoaList = db.readAllPessoa();
+        adapter.clear();
         adapter.addAll(pessoaList);
 
 
@@ -130,6 +132,5 @@ public class InquilinosFragment extends Fragment {
         adapter.clear();
         adapter.addAll(db.readAllPessoa());
     }
-
 
 }

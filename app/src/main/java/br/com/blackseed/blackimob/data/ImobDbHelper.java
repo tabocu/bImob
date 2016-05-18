@@ -12,7 +12,7 @@ import br.com.blackseed.blackimob.data.ImobContract.TelefoneEntry;
 public class ImobDbHelper extends SQLiteOpenHelper {
 
     static final String DATABASE_NAME = "imob.db";
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
 
     public ImobDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -24,7 +24,7 @@ public class ImobDbHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_PESSOA_TABLE = "CREATE TABLE " + PessoaEntry.TABLE_NAME + " (" +
                 PessoaEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 PessoaEntry.COLUMN_NOME             + " VARCHAR(80), " +
-                PessoaEntry.COLUMN_NOME_FANTASIA    + " VARCHAR(80), " +
+//                PessoaEntry.COLUMN_NOME_FANTASIA    + " VARCHAR(80), " +
                 PessoaEntry.COLUMN_RAZAO_SOCIAL     + " VARCHAR(80), " +
                 PessoaEntry.COLUMN_CPF + " VARCHAR(11), " +
                 PessoaEntry.COLUMN_CNPJ + " VARCHAR(14), " +

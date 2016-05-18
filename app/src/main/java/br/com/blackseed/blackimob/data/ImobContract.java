@@ -32,7 +32,7 @@ public class ImobContract {
 
         //Columns
         public static final String COLUMN_NOME = "nome";
-        public static final String COLUMN_NOME_FANTASIA = "nome_fantasia";
+//        public static final String COLUMN_NOME_FANTASIA = "nome_fantasia";
         public static final String COLUMN_RAZAO_SOCIAL = "razao_social";
         public static final String COLUMN_CPF = "cpf";
         public static final String COLUMN_CNPJ = "cnpj";
@@ -43,7 +43,7 @@ public class ImobContract {
                 PessoaEntry._ID,
                 PessoaEntry.COLUMN_IS_PESSOA_FISICA,
                 PessoaEntry.COLUMN_NOME,
-                PessoaEntry.COLUMN_NOME_FANTASIA,
+//                PessoaEntry.COLUMN_NOME_FANTASIA,
                 PessoaEntry.COLUMN_RAZAO_SOCIAL,
                 PessoaEntry.COLUMN_CPF,
                 PessoaEntry.COLUMN_CNPJ,
