@@ -2,6 +2,12 @@ package br.com.blackseed.blackimob.entity;
 
 public abstract class Pessoa extends Item {
 
+    private boolean favorito;
+
+    public boolean isFavorito() { return favorito; }
+
+    public void setFavorito(boolean favorito) {this.favorito = favorito;}
+
     public boolean isPessoaFisica() {
         return this instanceof Fisica;
     }

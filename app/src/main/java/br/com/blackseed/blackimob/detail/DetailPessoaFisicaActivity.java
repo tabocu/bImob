@@ -56,6 +56,7 @@ public class DetailPessoaFisicaActivity extends AppCompatActivity {
 
         loadData(bundle.getLong("id"));
 
+
         mNomeTextView = (TextView) findViewById(R.id.nomeTextView);
         mNomeTextView.setText(pessoa.getNome());
         findViewById(R.id.nomeLayout).setOnLongClickListener(new LongClick(this, pessoa.getNome()));
@@ -85,6 +86,18 @@ public class DetailPessoaFisicaActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        menu.findItem(R.id.action_favorite).setChecked(pessoa.isFavorito());
+
+        if (pessoa.isFavorito())
+            menu.findItem(R.id.action_favorite).setIcon(R.drawable.ic_favorite_24dp);
+        else
+            menu.findItem(R.id.action_favorite).setIcon(R.drawable.ic_favorite_not_24dp);
+        return true;
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.menu_detail, menu);
@@ -109,11 +122,15 @@ public class DetailPessoaFisicaActivity extends AppCompatActivity {
 
         } else if (id == R.id.action_favorite) {
             if (item.isChecked()) {
-                item.setIcon(R.drawable.ic_favorite_24dp);
-                item.setChecked(false);
-            } else {
                 item.setIcon(R.drawable.ic_favorite_not_24dp);
+                item.setChecked(false);
+                pessoa.setFavorito(false);
+                db.updatePessoa(pessoa);
+            } else {
+                item.setIcon(R.drawable.ic_favorite_24dp);
                 item.setChecked(true);
+                pessoa.setFavorito(true);
+                db.updatePessoa(pessoa);
             }
         }
 

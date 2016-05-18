@@ -5,7 +5,11 @@ public class Imovel extends Item {
     private String apelido;
     private String cep;
     private String tipo;
+    private boolean favorito;
 
+    public boolean isFavorito() { return favorito; }
+
+    public void setFavorito(boolean favorito) {this.favorito = favorito;}
 
     public String getApelido() {
         return apelido;

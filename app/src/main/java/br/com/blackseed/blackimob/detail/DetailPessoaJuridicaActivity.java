@@ -96,6 +96,18 @@ public class DetailPessoaJuridicaActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        menu.findItem(R.id.action_favorite).setChecked(pessoa.isFavorito());
+
+        if (pessoa.isFavorito())
+            menu.findItem(R.id.action_favorite).setIcon(R.drawable.ic_favorite_24dp);
+        else
+            menu.findItem(R.id.action_favorite).setIcon(R.drawable.ic_favorite_not_24dp);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
@@ -107,13 +119,17 @@ public class DetailPessoaJuridicaActivity extends AppCompatActivity {
             bundle.putLong("id", pessoa.getId());
             intent.putExtras(bundle);
             startActivityForResult(intent, 1, null);
-        } else if (id == R.id.action_favorite) {
+        } else if (id == R.id.action_favorite){
             if (item.isChecked()) {
-                item.setIcon(R.drawable.ic_favorite_24dp);
-                item.setChecked(false);
-            } else {
                 item.setIcon(R.drawable.ic_favorite_not_24dp);
+                item.setChecked(false);
+                pessoa.setFavorito(false);
+                db.updatePessoa(pessoa);
+            } else {
+                item.setIcon(R.drawable.ic_favorite_24dp);
                 item.setChecked(true);
+                pessoa.setFavorito(true);
+                db.updatePessoa(pessoa);
             }
         }
 

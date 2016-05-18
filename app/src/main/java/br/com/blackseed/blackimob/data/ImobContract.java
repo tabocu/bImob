@@ -37,6 +37,7 @@ public class ImobContract {
         public static final String COLUMN_CPF = "cpf";
         public static final String COLUMN_CNPJ = "cnpj";
         public static final String COLUMN_IS_PESSOA_FISICA = "tipo_pessoa";
+        public static final String COLUMN_IS_FAVORITO = "favorito";
 
         public static final String[] PESSOA_SELECT = {
                 PessoaEntry._ID,
@@ -45,7 +46,8 @@ public class ImobContract {
                 PessoaEntry.COLUMN_NOME_FANTASIA,
                 PessoaEntry.COLUMN_RAZAO_SOCIAL,
                 PessoaEntry.COLUMN_CPF,
-                PessoaEntry.COLUMN_CNPJ
+                PessoaEntry.COLUMN_CNPJ,
+                PessoaEntry.COLUMN_IS_FAVORITO
         };
 
         public static Uri buildPessoaUri(long id){
@@ -70,13 +72,15 @@ public class ImobContract {
         public static final String COLUMN_APELIDO = "apelido";
         public static final String COLUMN_CEP = "cep";
         public static final String COLUMN_TIPO_IMOVEL = "tipo_imovel";
+        public static final String COLUMN_IS_FAVORITO = "favorito";
 
 
         public static final String[] IMOVEL_SELECT = {
                 ImovelEntry._ID,
                 ImovelEntry.COLUMN_APELIDO,
                 ImovelEntry.COLUMN_CEP,
-                ImovelEntry.COLUMN_TIPO_IMOVEL
+                ImovelEntry.COLUMN_TIPO_IMOVEL,
+                ImovelEntry.COLUMN_IS_FAVORITO
         };
 
         public static Uri buildImovelUri(long id){

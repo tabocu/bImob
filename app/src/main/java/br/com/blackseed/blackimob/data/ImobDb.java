@@ -36,12 +36,14 @@ public class ImobDb {
             Pessoa.Fisica pessoaFisica = (Pessoa.Fisica) pessoa;
             contentValues.put(PessoaEntry.COLUMN_NOME, pessoaFisica.getNome());
             contentValues.put(PessoaEntry.COLUMN_CPF, pessoaFisica.getCpf());
+            contentValues.put(PessoaEntry.COLUMN_IS_FAVORITO, pessoaFisica.isFavorito());
             contentValues.put(PessoaEntry.COLUMN_IS_PESSOA_FISICA, true);
         } else {
             Pessoa.Juridica pessoaJuridica = (Pessoa.Juridica) pessoa;
             contentValues.put(PessoaEntry.COLUMN_NOME_FANTASIA, pessoaJuridica.getNomeFantasia());
             contentValues.put(PessoaEntry.COLUMN_RAZAO_SOCIAL, pessoaJuridica.getRazaoSocial());
             contentValues.put(PessoaEntry.COLUMN_CNPJ, pessoaJuridica.getCnpj());
+            contentValues.put(PessoaEntry.COLUMN_IS_FAVORITO, pessoaJuridica.isFavorito());
             contentValues.put(PessoaEntry.COLUMN_IS_PESSOA_FISICA, false);
         }
 
@@ -109,6 +111,7 @@ public class ImobDb {
                             pessoaCursor.getColumnIndex(
                                     PessoaEntry.COLUMN_CNPJ)));
         }
+        pessoa.setFavorito(pessoaCursor.getInt(pessoaCursor.getColumnIndex(PessoaEntry.COLUMN_IS_FAVORITO)) == 1);
         pessoa.setId(pessoaCursor.getLong(pessoaCursor.getColumnIndex(PessoaEntry._ID)));
 
         return pessoa;
@@ -152,6 +155,7 @@ public class ImobDb {
                                 pessoaCursor.getColumnIndex(
                                         PessoaEntry.COLUMN_CNPJ)));
             }
+            pessoa.setFavorito(pessoaCursor.getInt(pessoaCursor.getColumnIndex(PessoaEntry.COLUMN_IS_FAVORITO)) == 1);
             pessoa.setId(pessoaCursor.getLong(pessoaCursor.getColumnIndex(PessoaEntry._ID)));
             pessoaList.add(pessoa);
         }
@@ -188,6 +192,7 @@ public class ImobDb {
         contentValues.put(ImovelEntry.COLUMN_APELIDO, imovel.getApelido());
         contentValues.put(ImovelEntry.COLUMN_CEP, imovel.getCep());
         contentValues.put(ImovelEntry.COLUMN_TIPO_IMOVEL, imovel.getTipo());
+        contentValues.put(ImovelEntry.COLUMN_IS_FAVORITO, imovel.isFavorito());
 
         long _id = dbHelper.getWritableDatabase().insert(ImovelEntry.TABLE_NAME, null, contentValues);
 
@@ -219,6 +224,11 @@ public class ImobDb {
                     imovelCursor.getString(
                             imovelCursor.getColumnIndex(
                                     ImovelEntry.COLUMN_TIPO_IMOVEL)));
+
+            imovel.setFavorito(
+                    imovelCursor.getInt(
+                            imovelCursor.getColumnIndex(
+                                    ImovelEntry.COLUMN_IS_FAVORITO)) == 1);
 
             imovel.setId(imovelCursor.getLong(imovelCursor.getColumnIndex(ImovelEntry._ID)));
             imovelList.add(imovel);
