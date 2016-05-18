@@ -3,8 +3,12 @@ package br.com.blackseed.blackimob.entity;
 public abstract class Pessoa extends Item {
 
     private boolean favorito;
-
     private String nome;
+    private Endereco endereco;
+
+    public Endereco getEndereco() { return endereco; }
+
+    public void setEndereco(Endereco endereco){ this.endereco = endereco; }
 
     public String getNome() { return nome; }
 

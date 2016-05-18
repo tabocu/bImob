@@ -11,8 +11,6 @@ import android.widget.Toast;
 public class AddImovelActivity extends AppCompatActivity {
 
     private EditText mApelidoEditText;
-    private EditText mCepEditText;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +20,6 @@ public class AddImovelActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         mApelidoEditText = (EditText) findViewById(R.id.etApelido);
-        mCepEditText = (EditText) findViewById(R.id.etCep);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }

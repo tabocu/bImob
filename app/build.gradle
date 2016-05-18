@@ -29,4 +29,5 @@ dependencies {
     compile 'com.getbase:floatingactionbutton:1.10.0'
     compile 'com.android.support:cardview-v7:23.3.0'
     compile 'com.android.support:recyclerview-v7:23.3.0'
+    compile 'com.google.android.gms:play-services:8.4.0'
 }

@@ -15,6 +15,7 @@ public class ImobContract {
 //    public static final String PATH_LOCACAO = "locacao";
     public static final String PATH_TELEFONE = "telefone";
     public static final String PATH_EMAIL = "email";
+    public static final String PATH_ENDERECO = "endereco";
 
     public static final class PessoaEntry implements BaseColumns{
 
@@ -32,22 +33,22 @@ public class ImobContract {
 
         //Columns
         public static final String COLUMN_NOME = "nome";
-//        public static final String COLUMN_NOME_FANTASIA = "nome_fantasia";
         public static final String COLUMN_RAZAO_SOCIAL = "razao_social";
         public static final String COLUMN_CPF = "cpf";
         public static final String COLUMN_CNPJ = "cnpj";
         public static final String COLUMN_IS_PESSOA_FISICA = "tipo_pessoa";
         public static final String COLUMN_IS_FAVORITO = "favorito";
+        public static final String COLUMN_ENDERECO_ID = "endereco_id";  //foreign key
 
         public static final String[] PESSOA_SELECT = {
                 PessoaEntry._ID,
                 PessoaEntry.COLUMN_IS_PESSOA_FISICA,
                 PessoaEntry.COLUMN_NOME,
-//                PessoaEntry.COLUMN_NOME_FANTASIA,
                 PessoaEntry.COLUMN_RAZAO_SOCIAL,
                 PessoaEntry.COLUMN_CPF,
                 PessoaEntry.COLUMN_CNPJ,
-                PessoaEntry.COLUMN_IS_FAVORITO
+                PessoaEntry.COLUMN_IS_FAVORITO,
+                PessoaEntry.COLUMN_ENDERECO_ID
         };
 
         public static Uri buildPessoaUri(long id){
@@ -70,17 +71,17 @@ public class ImobContract {
         public static final String TABLE_NAME = "imovel";
         //Columns
         public static final String COLUMN_APELIDO = "apelido";
-        public static final String COLUMN_CEP = "cep";
         public static final String COLUMN_TIPO_IMOVEL = "tipo_imovel";
         public static final String COLUMN_IS_FAVORITO = "favorito";
+        public static final String COLUMN_ENDERECO_ID = "endereco_id"; //foreign key
 
 
         public static final String[] IMOVEL_SELECT = {
                 ImovelEntry._ID,
                 ImovelEntry.COLUMN_APELIDO,
-                ImovelEntry.COLUMN_CEP,
                 ImovelEntry.COLUMN_TIPO_IMOVEL,
-                ImovelEntry.COLUMN_IS_FAVORITO
+                ImovelEntry.COLUMN_IS_FAVORITO,
+                ImovelEntry.COLUMN_ENDERECO_ID
         };
 
         public static Uri buildImovelUri(long id){
@@ -147,6 +148,40 @@ public class ImobContract {
         //Columns
         public static final String COLUMN_EMAIL = "email";
         public static final String COLUMN_PESSOA_ID = "pessoa_id";   //Foreign key
+
+        public static Uri buildEmailUri(long id){
+            return ContentUris.withAppendedId(CONTENT_URI,id);
+        }
+    }
+
+    public static final class EnderecoEntry implements BaseColumns{
+
+        public static final  Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_ENDERECO).build();
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_ENDERECO;
+
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_ENDERECO;
+
+        //Table name
+        public static final String TABLE_NAME = "endereco";
+        //Columns
+        public static final String COLUMN_PLACE_ID = "place_id";
+        public static final String COLUMN_LOCAL = "local";
+        public static final String COLUMN_COMPLEMENTO = "complemento";
+        public static final String COLUMN_LATITUDE = "latitude";
+           public static final String COLUMN_LONGITUDE = "longitude";
+
+        public static final String[] ENDERECO_SELECT = {
+                EnderecoEntry._ID,
+                EnderecoEntry.COLUMN_PLACE_ID,
+                EnderecoEntry.COLUMN_LOCAL,
+                EnderecoEntry.COLUMN_COMPLEMENTO,
+                EnderecoEntry.COLUMN_LATITUDE,
+                EnderecoEntry.COLUMN_LONGITUDE
+        };
 
         public static Uri buildEmailUri(long id){
             return ContentUris.withAppendedId(CONTENT_URI,id);

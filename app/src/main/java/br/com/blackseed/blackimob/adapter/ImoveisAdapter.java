@@ -32,10 +32,6 @@ public class ImoveisAdapter extends ArrayAdapter<Imovel> {
         TextView apelidoTextView = (TextView) view.findViewById(R.id.apelidoTextView);
         apelidoTextView.setText(imovel.getApelido());
 
-        TextView cepTextView = (TextView) view.findViewById(R.id.cepTextView);
-        cepTextView.setText(imovel.getCep()
-                .replaceAll("([0-9]{2})([0-9]{3})([0-9]{3})", "$1.$2-$3"));
-
         return view;
     }
 }

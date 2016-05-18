@@ -3,9 +3,14 @@ package br.com.blackseed.blackimob.entity;
 public class Imovel extends Item {
 
     private String apelido;
-    private String cep;
     private String tipo;
     private boolean favorito;
+    private Endereco endereco;
+
+    public Endereco getEndereco() { return endereco; }
+
+    public void setEndereco(Endereco endereco){ this.endereco = endereco; }
+
 
     public boolean isFavorito() { return favorito; }
 
@@ -19,12 +24,6 @@ public class Imovel extends Item {
         this.apelido = apelido;
     }
 
-    public String getCep() { return cep; }
-
-    public void setCep(String cep) {
-        this.cep = cep;
-    }
-
     public String getTipo() { return tipo; }
 
     public void setTipo(String tipo) { this.tipo = tipo; }
@@ -35,8 +34,6 @@ public class Imovel extends Item {
         stringBuffer.append(super.toString())
                 .append("Apelido: ")
                 .append(apelido)
-                .append("\nCep: ")
-                .append(cep)
                 .append("\nTipo: ")
                 .append(tipo)
                 .append("\n");
