@@ -52,16 +52,24 @@ public class DetailPessoaFisicaActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Bundle bundle = getIntent().getExtras();
+        db = new ImobDb(this);
 
+        // Dados
+        mNomeTextView = (TextView) findViewById(R.id.nomeTextView);
+        mCpfTextView = (TextView) findViewById(R.id.cpfTextView);
+
+        // Contatos
+        mTelefoneLayout = (LinearLayout) findViewById(R.id.telefoneLayout);
+        mEmailLayout = (LinearLayout) findViewById(R.id.emailLayout);
+
+        Bundle bundle = getIntent().getExtras();
         loadData(bundle.getLong("id"));
 
 
-        mNomeTextView = (TextView) findViewById(R.id.nomeTextView);
         mNomeTextView.setText(pessoa.getNome());
         findViewById(R.id.nomeLayout).setOnLongClickListener(new LongClick(this, pessoa.getNome()));
 
-        mCpfTextView = (TextView) findViewById(R.id.cpfTextView);
+
         mCpfTextView.setText(
                 MaskTextWatcher.formatter(
                         MaskTextWatcher.Mask.CPF,
@@ -72,12 +80,11 @@ public class DetailPessoaFisicaActivity extends AppCompatActivity {
             findViewById(R.id.contatoCard).setVisibility(View.GONE);
         } else {
             if (!telefoneList.isEmpty()) {
-                mTelefoneLayout = (LinearLayout) findViewById(R.id.telefoneLayout);
+
                 getTelefoneView();
             } else {
                 findViewById(R.id.separador).setVisibility(View.GONE);
             }
-            mEmailLayout = (LinearLayout) findViewById(R.id.emailLayout);
             getEmailView();
         }
 
@@ -101,7 +108,6 @@ public class DetailPessoaFisicaActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.menu_detail, menu);
-
         return true;
     }
 
@@ -138,7 +144,7 @@ public class DetailPessoaFisicaActivity extends AppCompatActivity {
     }
 
     private void loadData(long id) {
-        db = new ImobDb(this);
+
         pessoa = (Pessoa.Fisica) db.readPessoa(id);
         telefoneList = db.readTelefone(ImobContract.TelefoneEntry.COLUMN_PESSOA_ID,pessoa.getId());
         emailList = db.readEmail(ImobContract.EmailEntry.COLUMN_PESSOA_ID,pessoa.getId());

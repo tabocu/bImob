@@ -4,18 +4,15 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
-import android.util.Log;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.blackseed.blackimob.MainActivity;
 import br.com.blackseed.blackimob.data.ImobContract.EmailEntry;
+import br.com.blackseed.blackimob.data.ImobContract.EnderecoEntry;
 import br.com.blackseed.blackimob.data.ImobContract.ImovelEntry;
 import br.com.blackseed.blackimob.data.ImobContract.PessoaEntry;
 import br.com.blackseed.blackimob.data.ImobContract.TelefoneEntry;
-import br.com.blackseed.blackimob.data.ImobContract.EnderecoEntry;
 import br.com.blackseed.blackimob.entity.Email;
 import br.com.blackseed.blackimob.entity.Endereco;
 import br.com.blackseed.blackimob.entity.Imovel;
@@ -31,13 +28,104 @@ public class ImobDb {
         dbHelper = new ImobDbHelper(context);
     }
 
+    // Novo metodo de trabalhar o banco
+
+    private static ContentValues getContentValues(Pessoa pessoa) {
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(PessoaEntry.COLUMN_NOME, pessoa.getNome());
+
+        if (pessoa.getEndereco() != null)
+            contentValues.put(PessoaEntry.COLUMN_ENDERECO_ID, pessoa.getEndereco().getId());
+
+        if (pessoa.isPessoaFisica()) {
+            Pessoa.Fisica pessoaFisica = (Pessoa.Fisica) pessoa;
+            contentValues.put(PessoaEntry.COLUMN_CPF, pessoaFisica.getCpf());
+            contentValues.put(PessoaEntry.COLUMN_IS_FAVORITO, pessoaFisica.isFavorito());
+            contentValues.put(PessoaEntry.COLUMN_IS_PESSOA_FISICA, true);
+        } else {
+            Pessoa.Juridica pessoaJuridica = (Pessoa.Juridica) pessoa;
+            contentValues.put(PessoaEntry.COLUMN_RAZAO_SOCIAL, pessoaJuridica.getRazaoSocial());
+            contentValues.put(PessoaEntry.COLUMN_CNPJ, pessoaJuridica.getCnpj());
+            contentValues.put(PessoaEntry.COLUMN_IS_FAVORITO, pessoaJuridica.isFavorito());
+            contentValues.put(PessoaEntry.COLUMN_IS_PESSOA_FISICA, false);
+        }
+
+        return contentValues;
+    }
+
+    private static ContentValues getContentValues(Imovel imovel) {
+        ContentValues contentValues = new ContentValues();
+
+        if (imovel.getEndereco() != null)
+            contentValues.put(PessoaEntry.COLUMN_ENDERECO_ID, imovel.getEndereco().getId());
+        contentValues.put(ImovelEntry.COLUMN_APELIDO, imovel.getApelido());
+        contentValues.put(ImovelEntry.COLUMN_TIPO_IMOVEL, imovel.getTipo());
+        contentValues.put(ImovelEntry.COLUMN_IS_FAVORITO, imovel.isFavorito());
+
+        return contentValues;
+    }
+
 
     //---------------------------------------------------------------------------------------------
     //CRUD IMOVEL
 
+    private static ContentValues getContentValues(Telefone telefone) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TelefoneEntry.COLUMN_TELEFONE, telefone.getNumero());
+
+        return contentValues;
+    }
+
+    private static ContentValues getContentValues(Email email) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(EmailEntry.COLUMN_EMAIL, email.getEndereco());
+
+        return contentValues;
+    }
+
+    private static ContentValues getContentValues(Endereco endereco) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(EnderecoEntry.COLUMN_PLACE_ID, endereco.getPlaceId());
+        contentValues.put(ImobContract.EnderecoEntry.COLUMN_LOCAL, endereco.getLocal());
+        contentValues.put(ImobContract.EnderecoEntry.COLUMN_COMPLEMENTO, endereco.getComplemento());
+        contentValues.put(ImobContract.EnderecoEntry.COLUMN_LATITUDE, endereco.getLatitude());
+        contentValues.put(ImobContract.EnderecoEntry.COLUMN_LONGITUDE, endereco.getLongitude());
+
+        return contentValues;
+    }
+
+    public Cursor fetchAllPessoa() {
+        String ordenacao =
+                PessoaEntry.COLUMN_IS_FAVORITO + " DESC, " +
+                        PessoaEntry.COLUMN_NOME + " ASC";
+
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+        qb.setTables(PessoaEntry.TABLE_NAME);
+
+        return qb.query(dbHelper.getReadableDatabase(),
+                PessoaEntry.PESSOA_SELECT,
+                null, null, null, null, ordenacao);
+    }
+
+    public Cursor fetchPessoa(Long id) {
+
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+        qb.setTables(PessoaEntry.TABLE_NAME);
+        qb.appendWhere(PessoaEntry._ID + " = " + id);
+
+        Cursor cursor = qb.query(dbHelper.getReadableDatabase(),
+                PessoaEntry.PESSOA_SELECT,
+                null, null, null, null, null);
+
+        if (!cursor.moveToNext()) return null;
+        return cursor;
+
+    }
+
     public Pessoa createPessoa(Pessoa pessoa) {
 
-        if(pessoa.getEndereco() != null)
+        if (pessoa.getEndereco() != null)
             createEndereco(pessoa.getEndereco());
 
         ContentValues contentValues = getContentValues(pessoa);
@@ -46,6 +134,16 @@ public class ImobDb {
         pessoa.setId(_id);
         return pessoa;
     }
+
+
+
+
+
+
+
+
+    //---------------------------------------------------------------------------------------------
+    //CRUD IMOVEL
 
     public Pessoa readPessoa(long id) {
 
@@ -58,7 +156,7 @@ public class ImobDb {
 
         Pessoa pessoa;
 
-        if(!pessoaCursor.moveToNext()) return null;
+        if (!pessoaCursor.moveToNext()) return null;
         if (pessoaCursor.getInt(pessoaCursor.getColumnIndex(PessoaEntry.COLUMN_IS_PESSOA_FISICA)) == 1) {
             pessoa = new Pessoa.Fisica();
             ((Pessoa.Fisica) pessoa).setCpf(
@@ -78,8 +176,8 @@ public class ImobDb {
                                     PessoaEntry.COLUMN_CNPJ)));
         }
 
-        pessoa.setEndereco(readEndereco(
-                pessoaCursor.getLong(pessoaCursor.getColumnIndex(PessoaEntry.COLUMN_ENDERECO_ID))));
+        //pessoa.setEndereco(readEndereco(
+        //      pessoaCursor.getLong(pessoaCursor.getColumnIndex(PessoaEntry.COLUMN_ENDERECO_ID))));
         pessoa.setNome(pessoaCursor.getString(pessoaCursor.getColumnIndex(PessoaEntry.COLUMN_NOME)));
         pessoa.setFavorito(pessoaCursor.getInt(pessoaCursor.getColumnIndex(PessoaEntry.COLUMN_IS_FAVORITO)) == 1);
         pessoa.setId(pessoaCursor.getLong(pessoaCursor.getColumnIndex(PessoaEntry._ID)));
@@ -132,7 +230,6 @@ public class ImobDb {
         return pessoaList;
     }
 
-
     public void updatePessoa(Pessoa pessoa) {
         ContentValues contentValues = getContentValues(pessoa);
         String where = PessoaEntry._ID + " = " + pessoa.getId();
@@ -161,13 +258,12 @@ public class ImobDb {
 
 
 
-
     //---------------------------------------------------------------------------------------------
-    //CRUD IMOVEL
+    //CRUD TELEFONE
 
     public Imovel createImovel(Imovel imovel) {
 
-        if(imovel.getEndereco() != null)
+        if (imovel.getEndereco() != null)
             createEndereco(imovel.getEndereco());
         ContentValues contentValues = getContentValues(imovel);
 
@@ -187,9 +283,9 @@ public class ImobDb {
         List<Imovel> imovelList = new ArrayList<>();
         Cursor imovelCursor = qb.query(dbHelper.getReadableDatabase(),
                 ImovelEntry.IMOVEL_SELECT,
-                null, null, null, null,ordenacao);
+                null, null, null, null, ordenacao);
 
-        while(imovelCursor.moveToNext()){
+        while (imovelCursor.moveToNext()) {
             Imovel imovel = new Imovel();
             imovel.setApelido(
                     imovelCursor.getString(
@@ -224,13 +320,21 @@ public class ImobDb {
                 .delete(ImovelEntry.TABLE_NAME, ImovelEntry._ID + " = " + imovel.getId(), null);
     }
 
-    public int deleteImovel(List<Imovel> imoveis){
+    public int deleteImovel(List<Imovel> imoveis) {
         int result = 0;
-        for(Imovel imovel: imoveis){
+        for (Imovel imovel : imoveis) {
             result += deleteImovel(imovel);
         }
         return result;
     }
+
+    public void createTelefone(String column, Long foreignKey, List<Telefone> telefoneList) {
+
+        for (Telefone telefone : telefoneList) {
+            createTelefone(column, foreignKey, telefone);
+        }
+    }
+
 
 
 
@@ -239,14 +343,7 @@ public class ImobDb {
 
 
     //---------------------------------------------------------------------------------------------
-    //CRUD TELEFONE
-
-    public void createTelefone(String column, Long foreignKey, List<Telefone> telefoneList) {
-
-        for(Telefone telefone : telefoneList){
-            createTelefone(column, foreignKey, telefone);
-        }
-    }
+    //CRUD EMAIL
 
     public Telefone createTelefone(String column, Long foreignKey, Telefone telefone) {
         ContentValues contentValues = getContentValues(telefone);
@@ -297,12 +394,6 @@ public class ImobDb {
                 .delete(TelefoneEntry.TABLE_NAME, foreignColumn + " = " + foreignKey, null);
     }
 
-    public void createEmail(String column, Long foreignKey, List<Email> emailList) {
-
-        for(Email email : emailList){
-            createEmail(column, foreignKey, email);
-        }
-    }
 
 
 
@@ -312,7 +403,14 @@ public class ImobDb {
 
 
     //---------------------------------------------------------------------------------------------
-    //CRUD EMAIL
+    //CRUD ENDEREÇO
+
+    public void createEmail(String column, Long foreignKey, List<Email> emailList) {
+
+        for (Email email : emailList) {
+            createEmail(column, foreignKey, email);
+        }
+    }
 
     public Email createEmail(String foreignColumn, Long foreignKey, Email email) {
         ContentValues contentValues = getContentValues(email);
@@ -353,16 +451,6 @@ public class ImobDb {
         return emails;
     }
 
-    public int deleteEmail(Email email) {
-        return dbHelper.getWritableDatabase()
-                .delete(EmailEntry.TABLE_NAME, EmailEntry._ID + " = " + email.getId(), null);
-    }
-
-    public int deleteEmail(String foreignColumn, long foreignKey) {
-        return dbHelper.getWritableDatabase()
-                .delete(EmailEntry.TABLE_NAME, foreignColumn + " = " + foreignKey, null);
-    }
-
 
 
 
@@ -372,7 +460,17 @@ public class ImobDb {
 
 
     //---------------------------------------------------------------------------------------------
-    //CRUD ENDEREÇO
+    //CONTENT VALUES
+
+    public int deleteEmail(Email email) {
+        return dbHelper.getWritableDatabase()
+                .delete(EmailEntry.TABLE_NAME, EmailEntry._ID + " = " + email.getId(), null);
+    }
+
+    public int deleteEmail(String foreignColumn, long foreignKey) {
+        return dbHelper.getWritableDatabase()
+                .delete(EmailEntry.TABLE_NAME, foreignColumn + " = " + foreignKey, null);
+    }
 
     public Endereco createEndereco(Endereco endereco) {
 
@@ -407,79 +505,6 @@ public class ImobDb {
     public int deleteEndereco(Endereco endereco) {
         return dbHelper.getWritableDatabase()
                 .delete(EnderecoEntry.TABLE_NAME, EnderecoEntry._ID + " = " + endereco.getId(), null);
-    }
-
-
-
-
-
-
-
-
-
-    //---------------------------------------------------------------------------------------------
-    //CONTENT VALUES
-
-    private static ContentValues getContentValues(Pessoa pessoa) {
-        ContentValues contentValues = new ContentValues();
-
-        contentValues.put(PessoaEntry.COLUMN_NOME, pessoa.getNome());
-
-        if(pessoa.getEndereco() != null)
-            contentValues.put(PessoaEntry.COLUMN_ENDERECO_ID, pessoa.getEndereco().getId());
-
-        if (pessoa.isPessoaFisica()) {
-            Pessoa.Fisica pessoaFisica = (Pessoa.Fisica) pessoa;
-            contentValues.put(PessoaEntry.COLUMN_CPF, pessoaFisica.getCpf());
-            contentValues.put(PessoaEntry.COLUMN_IS_FAVORITO, pessoaFisica.isFavorito());
-            contentValues.put(PessoaEntry.COLUMN_IS_PESSOA_FISICA, true);
-        } else {
-            Pessoa.Juridica pessoaJuridica = (Pessoa.Juridica) pessoa;
-            contentValues.put(PessoaEntry.COLUMN_RAZAO_SOCIAL, pessoaJuridica.getRazaoSocial());
-            contentValues.put(PessoaEntry.COLUMN_CNPJ, pessoaJuridica.getCnpj());
-            contentValues.put(PessoaEntry.COLUMN_IS_FAVORITO, pessoaJuridica.isFavorito());
-            contentValues.put(PessoaEntry.COLUMN_IS_PESSOA_FISICA, false);
-        }
-
-        return contentValues;
-    }
-
-    private static ContentValues getContentValues(Imovel imovel){
-        ContentValues contentValues = new ContentValues();
-
-        if(imovel.getEndereco() != null)
-            contentValues.put(PessoaEntry.COLUMN_ENDERECO_ID,imovel.getEndereco().getId());
-        contentValues.put(ImovelEntry.COLUMN_APELIDO, imovel.getApelido());
-        contentValues.put(ImovelEntry.COLUMN_TIPO_IMOVEL, imovel.getTipo());
-        contentValues.put(ImovelEntry.COLUMN_IS_FAVORITO, imovel.isFavorito());
-
-        return contentValues;
-    }
-
-    private static ContentValues getContentValues(Telefone telefone) {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(TelefoneEntry.COLUMN_TELEFONE, telefone.getNumero());
-
-        return contentValues;
-    }
-
-
-    private static ContentValues getContentValues(Email email) {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(EmailEntry.COLUMN_EMAIL, email.getEndereco());
-
-        return contentValues;
-    }
-
-    private static ContentValues getContentValues(Endereco endereco) {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(EnderecoEntry.COLUMN_PLACE_ID, endereco.getPlaceId());
-        contentValues.put(ImobContract.EnderecoEntry.COLUMN_LOCAL, endereco.getLocal());
-        contentValues.put(ImobContract.EnderecoEntry.COLUMN_COMPLEMENTO, endereco.getComplemento());
-        contentValues.put(ImobContract.EnderecoEntry.COLUMN_LATITUDE, endereco.getLatitude());
-        contentValues.put(ImobContract.EnderecoEntry.COLUMN_LONGITUDE, endereco.getLongitude());
-
-        return contentValues;
     }
 
 

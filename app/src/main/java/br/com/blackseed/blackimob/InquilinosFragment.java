@@ -1,9 +1,7 @@
 package br.com.blackseed.blackimob;
 
-
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,59 +9,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import java.util.List;
-
-import br.com.blackseed.blackimob.adapter.PessoasAdapter;
+import br.com.blackseed.blackimob.cursoradapter.PessoaAdapter;
+import br.com.blackseed.blackimob.data.ImobContract;
+import br.com.blackseed.blackimob.data.ImobContract.PessoaEntry;
 import br.com.blackseed.blackimob.data.ImobDb;
 import br.com.blackseed.blackimob.detail.DetailPessoaFisicaActivity;
 import br.com.blackseed.blackimob.detail.DetailPessoaJuridicaActivity;
-import br.com.blackseed.blackimob.entity.Pessoa;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link InquilinosFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class InquilinosFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+public class InquilinosFragment extends Fragment implements AdapterView.OnItemClickListener {
 
     private ImobDb db;
-    private PessoasAdapter adapter;
-    private List<Pessoa> pessoaList;
-
+    private PessoaAdapter adapter;
+    private ListView mPessoaListView;
 
     public InquilinosFragment() {
-
-    }
-
-    public static InquilinosFragment newInstance(String param1, String param2) {
-        InquilinosFragment fragment = new InquilinosFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
         db = new ImobDb(getContext());
-        adapter = new PessoasAdapter(getActivity());
+        adapter = new PessoaAdapter(getContext(), db.fetchAllPessoa());
     }
 
     @Override
@@ -72,65 +40,34 @@ public class InquilinosFragment extends Fragment {
 
         View rootView =  inflater.inflate(R.layout.fragment_inquilinos, container, false);
 
-        ListView listView = (ListView) rootView.findViewById(R.id.itensListView);
-        listView.setAdapter(adapter);
-        pessoaList = db.readAllPessoa();
-        adapter.clear();
-        adapter.addAll(pessoaList);
-
-
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Pessoa pessoa = (Pessoa) parent.getItemAtPosition(position);
-                itemMenu(pessoa);
-                return true;
-            }
-        });
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Pessoa pessoa = (Pessoa) parent.getItemAtPosition(position);
-                Bundle bundle = new Bundle();
-                bundle.putLong("id",pessoa.getId());
-
-
-                Intent intent;
-                if(pessoa.isPessoaFisica())
-                    intent = new Intent(getContext(), DetailPessoaFisicaActivity.class);
-
-                else
-                    intent = new Intent(getContext(), DetailPessoaJuridicaActivity.class);
-
-                intent.putExtras(bundle);
-                startActivityForResult(intent, 0, null);
-
-            }
-        });
+        mPessoaListView = (ListView) rootView.findViewById(R.id.itensListView);
+        mPessoaListView.setOnItemClickListener(this);
+        mPessoaListView.setAdapter(adapter);
 
         return rootView;
     }
 
-    private void itemMenu(final Pessoa pessoa) {
-        final CharSequence[] options = {"Delete"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setItems(options, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                if (options[item].equals("Delete")) {
-                    db.deletePessoa(pessoa);
-                    updateList();
-                }
-            }
-        });
-        builder.show();
-    }
-
     public void updateList() {
-        adapter.clear();
-        adapter.addAll(db.readAllPessoa());
+        adapter.changeCursor(db.fetchAllPessoa());
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+
+        int columnIsPessoaFisica = cursor.getColumnIndexOrThrow(PessoaEntry.COLUMN_IS_PESSOA_FISICA);
+        int columnId = cursor.getColumnIndexOrThrow(ImobContract.PessoaEntry._ID);
+
+        Bundle bundle = new Bundle();
+        bundle.putLong("id", cursor.getLong(columnId));
+
+        Intent intent;
+        if (cursor.getInt(columnIsPessoaFisica) == 1)
+            intent = new Intent(getContext(), DetailPessoaFisicaActivity.class);
+        else
+            intent = new Intent(getContext(), DetailPessoaJuridicaActivity.class);
+
+        intent.putExtras(bundle);
+        startActivityForResult(intent, 0, null);
+    }
 }
