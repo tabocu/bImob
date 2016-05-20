@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="br.com.blackseed.blackimob.detail.DetailPessoaFisicaActivity"
-    tools:showIn="@layout/activity_detail_pessoa_fisica">
+    tools:showIn="@layout/activity_detail_pessoa_fisica"
+    android:id="@+id/mainLayout">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -39,66 +40,10 @@
                     android:background="#EEEEEE" />
 
                 <LinearLayout
-                    android:id="@+id/nomeLayout"
+                    android:id="@+id/dadosLinearLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="72dp"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:clickable="true"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="54dp"
-                        android:layout_height="54dp"
-                        android:layout_gravity="center_vertical"
-                        android:padding="12dp"
-                        android:src="@drawable/ic_person_gray_24dp" />
-
-                    <TextView
-                        android:id="@+id/nomeTextView"
-                        style="@style/Base.TextAppearance.AppCompat.Body1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="6dp"
-                        android:layout_marginRight="6dp"
-                        android:layout_weight="1"
-                        android:singleLine="true"
-                        android:textSize="16sp" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginLeft="60dp"
-                    android:background="#EEEEEE" />
-
-                <LinearLayout
-                    android:id="@+id/cpfLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="72dp"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:clickable="true"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="54dp"
-                        android:layout_height="54dp"
-                        android:layout_gravity="center_vertical"
-                        android:padding="12dp"
-                        android:src="@drawable/ic_cpf_gray_24dp" />
-
-                    <TextView
-                        android:id="@+id/cpfTextView"
-                        style="@style/Base.TextAppearance.AppCompat.Body1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="6dp"
-                        android:layout_marginRight="6dp"
-                        android:layout_weight="1"
-                        android:singleLine="true"
-                        android:textSize="16sp" />
-                </LinearLayout>
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
 
             </LinearLayout>
         </android.support.v7.widget.CardView>
@@ -128,20 +73,7 @@
                     android:background="#EEEEEE" />
 
                 <LinearLayout
-                    android:id="@+id/telefoneLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" />
-
-                <View
-                    android:id="@+id/separador"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginLeft="60dp"
-                    android:background="#EEEEEE" />
-
-                <LinearLayout
-                    android:id="@+id/emailLayout"
+                    android:id="@+id/contatosLinearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical" />

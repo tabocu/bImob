@@ -29,6 +29,95 @@ public class ImobDb {
     }
 
     // Novo metodo de trabalhar o banco
+    public Cursor fetchAllPessoa() {
+        String ordenacao =
+                PessoaEntry.COLUMN_IS_FAVORITO + " DESC, " +
+                        PessoaEntry.COLUMN_NOME + " ASC";
+
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+        qb.setTables(PessoaEntry.TABLE_NAME);
+
+        return qb.query(dbHelper.getReadableDatabase(),
+                PessoaEntry.PESSOA_SELECT,
+                null, null, null, null, ordenacao);
+    }
+
+    public Cursor fetchPessoa(Long id) {
+
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+        qb.setTables(PessoaEntry.TABLE_NAME);
+        qb.appendWhere(PessoaEntry._ID + " = " + id);
+
+        Cursor cursor = qb.query(dbHelper.getReadableDatabase(),
+                PessoaEntry.PESSOA_SELECT,
+                null, null, null, null, null);
+
+        if (!cursor.moveToNext()) return null;
+        return cursor;
+    }
+
+    public Cursor fetchTelefoneOfPessoa(Long id) {
+        String[] sqlSelect = {
+                TelefoneEntry._ID,
+                TelefoneEntry.COLUMN_TELEFONE
+        };
+
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+        qb.setTables(TelefoneEntry.TABLE_NAME);
+        qb.appendWhere(TelefoneEntry.COLUMN_PESSOA_ID + " = " + id);
+
+        Cursor cursor = qb.query(dbHelper.getReadableDatabase(),
+                sqlSelect,
+                null, null, null, null, null);
+
+        if (!cursor.moveToNext()) return null;
+        return cursor;
+    }
+
+    public Cursor fetchEmailOfPessoa(Long id) {
+        String[] sqlSelect = {
+                EmailEntry._ID,
+                EmailEntry.COLUMN_EMAIL
+        };
+
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+        qb.setTables(EmailEntry.TABLE_NAME);
+        qb.appendWhere(EmailEntry.COLUMN_PESSOA_ID + " = " + id);
+
+        Cursor cursor = qb.query(dbHelper.getReadableDatabase(),
+                sqlSelect,
+                null, null, null, null, null);
+
+        if (!cursor.moveToNext()) return null;
+        return cursor;
+    }
+
+    public int deletePessoa(long id) {
+        deleteTelefone(TelefoneEntry.COLUMN_PESSOA_ID, id);
+        deleteEmail(EmailEntry.COLUMN_PESSOA_ID, id);
+        return dbHelper.getWritableDatabase()
+                .delete(PessoaEntry.TABLE_NAME, PessoaEntry._ID + " = " + id, null);
+    }
+
+    public void updatePessoa(long id, ContentValues contentValues) {
+        String where = PessoaEntry._ID + " = " + id;
+        dbHelper.getWritableDatabase().update(PessoaEntry.TABLE_NAME, contentValues, where, null);
+    }
+
+    public static List<String> cursorToStringList(Cursor cursor, String column) {
+        List<String> stringList = new ArrayList<>();
+        int columnIndex = cursor.getColumnIndexOrThrow(column);
+        for (cursor.moveToFirst(); cursor.isAfterLast(); cursor.moveToNext())
+            stringList.add(cursor.getString(columnIndex));
+        return stringList;
+    }
+
+
+
+
+
+
+
 
     private static ContentValues getContentValues(Pessoa pessoa) {
         ContentValues contentValues = new ContentValues();
@@ -95,33 +184,7 @@ public class ImobDb {
         return contentValues;
     }
 
-    public Cursor fetchAllPessoa() {
-        String ordenacao =
-                PessoaEntry.COLUMN_IS_FAVORITO + " DESC, " +
-                        PessoaEntry.COLUMN_NOME + " ASC";
 
-        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-        qb.setTables(PessoaEntry.TABLE_NAME);
-
-        return qb.query(dbHelper.getReadableDatabase(),
-                PessoaEntry.PESSOA_SELECT,
-                null, null, null, null, ordenacao);
-    }
-
-    public Cursor fetchPessoa(Long id) {
-
-        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-        qb.setTables(PessoaEntry.TABLE_NAME);
-        qb.appendWhere(PessoaEntry._ID + " = " + id);
-
-        Cursor cursor = qb.query(dbHelper.getReadableDatabase(),
-                PessoaEntry.PESSOA_SELECT,
-                null, null, null, null, null);
-
-        if (!cursor.moveToNext()) return null;
-        return cursor;
-
-    }
 
     public Pessoa createPessoa(Pessoa pessoa) {
 

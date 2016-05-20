@@ -11,12 +11,12 @@ import android.widget.Toast;
 /**
  * Created by nilol_000 on 17/05/2016.
  */
-public class LongClick implements View.OnLongClickListener {
+public class CopyLongClick implements View.OnLongClickListener {
 
     private String text;
     private Context context;
 
-    public LongClick(Context context, String text) {
+    public CopyLongClick(Context context, String text) {
         this.context = context;
         this.text = text;
     }

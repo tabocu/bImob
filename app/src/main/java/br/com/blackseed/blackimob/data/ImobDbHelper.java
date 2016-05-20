@@ -5,15 +5,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import br.com.blackseed.blackimob.data.ImobContract.EmailEntry;
+import br.com.blackseed.blackimob.data.ImobContract.EnderecoEntry;
 import br.com.blackseed.blackimob.data.ImobContract.ImovelEntry;
 import br.com.blackseed.blackimob.data.ImobContract.PessoaEntry;
 import br.com.blackseed.blackimob.data.ImobContract.TelefoneEntry;
-import br.com.blackseed.blackimob.data.ImobContract.EnderecoEntry;
 
 public class ImobDbHelper extends SQLiteOpenHelper {
 
     static final String DATABASE_NAME = "imob.db";
-    private static final int DATABASE_VERSION = 11;
+    private static final int DATABASE_VERSION = 12;
 
     public ImobDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

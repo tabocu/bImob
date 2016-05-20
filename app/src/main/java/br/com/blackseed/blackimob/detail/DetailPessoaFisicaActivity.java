@@ -1,49 +1,22 @@
 package br.com.blackseed.blackimob.detail;
 
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
+import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.List;
-
-import br.com.blackseed.blackimob.AddInquilinoActivity;
 import br.com.blackseed.blackimob.R;
-import br.com.blackseed.blackimob.components.LongClick;
-import br.com.blackseed.blackimob.data.ImobContract;
-import br.com.blackseed.blackimob.data.ImobDb;
-import br.com.blackseed.blackimob.entity.Email;
-import br.com.blackseed.blackimob.entity.Pessoa;
-import br.com.blackseed.blackimob.entity.Telefone;
-import br.com.blackseed.blackimob.utils.MaskTextWatcher;
+import br.com.blackseed.blackimob.cursoradapter.EmailAdapter;
+import br.com.blackseed.blackimob.cursoradapter.TelefoneAdapter;
+import br.com.blackseed.blackimob.cursoradapter.UtilsCursorAdapter;
+import br.com.blackseed.blackimob.data.ImobContract.PessoaEntry;
 
-public class DetailPessoaFisicaActivity extends AppCompatActivity {
+public class DetailPessoaFisicaActivity extends DetailPessoaActivity {
 
-    private final static int EDIT_INTENT = 100;
-
-    private ImobDb db;
-
-    private Pessoa.Fisica pessoa;
-    private List<Telefone> telefoneList;
-    private List<Email> emailList;
-
-    private TextView mNomeTextView;
-    private TextView mCpfTextView;
-    private LinearLayout mTelefoneLayout;
-    private LinearLayout mEmailLayout;
+    private LinearLayout mDadosLinearLayout;
+    private LinearLayout mContatosLinearLayout;
+    private boolean favorito;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,217 +25,42 @@ public class DetailPessoaFisicaActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        db = new ImobDb(this);
+        mDadosLinearLayout = (LinearLayout) findViewById(R.id.dadosLinearLayout);
+        mContatosLinearLayout = (LinearLayout) findViewById(R.id.contatosLinearLayout);
 
-        // Dados
-        mNomeTextView = (TextView) findViewById(R.id.nomeTextView);
-        mCpfTextView = (TextView) findViewById(R.id.cpfTextView);
+        Cursor cursorPessoa = getDB().fetchPessoa(getId());
+        favorito = cursorPessoa.getInt(
+                cursorPessoa.getColumnIndexOrThrow(
+                        PessoaEntry.COLUMN_IS_FAVORITO)) == 1;
+        mDadosLinearLayout.addView(UtilsCursorAdapter.Nome.getViewFromCursor(this, cursorPessoa));
+        mDadosLinearLayout.addView(UtilsCursorAdapter.getSeparadorView(this));
+        mDadosLinearLayout.addView(UtilsCursorAdapter.Cpf.getViewFromCursor(this, cursorPessoa));
 
-        // Contatos
-        mTelefoneLayout = (LinearLayout) findViewById(R.id.telefoneLayout);
-        mEmailLayout = (LinearLayout) findViewById(R.id.emailLayout);
+        Cursor cursorTelefone = getDB().fetchTelefoneOfPessoa(getId());
+        TelefoneAdapter telefoneAdapter = new TelefoneAdapter(this, cursorTelefone);
+        for (int i = 0; i < telefoneAdapter.getCount(); i++)
+            mContatosLinearLayout.addView(telefoneAdapter.getView(i, null, null));
 
-        Bundle bundle = getIntent().getExtras();
-        loadData(bundle.getLong("id"));
+        mContatosLinearLayout.addView(UtilsCursorAdapter.getSeparadorView(this));
 
-
-        mNomeTextView.setText(pessoa.getNome());
-        findViewById(R.id.nomeLayout).setOnLongClickListener(new LongClick(this, pessoa.getNome()));
-
-
-        mCpfTextView.setText(
-                MaskTextWatcher.formatter(
-                        MaskTextWatcher.Mask.CPF,
-                        pessoa.getCpf()));
-        findViewById(R.id.cpfLayout).setOnLongClickListener(new LongClick(this, pessoa.getCpf()));
-
-        if (telefoneList.isEmpty() && emailList.isEmpty()) {
-            findViewById(R.id.contatoCard).setVisibility(View.GONE);
-        } else {
-            if (!telefoneList.isEmpty()) {
-
-                getTelefoneView();
-            } else {
-                findViewById(R.id.separador).setVisibility(View.GONE);
-            }
-            getEmailView();
-        }
+        Cursor cursorEmail = getDB().fetchEmailOfPessoa(getId());
+        EmailAdapter emailAdapter = new EmailAdapter(this, cursorEmail);
+        for (int i = 0; i < emailAdapter.getCount(); i++)
+            mContatosLinearLayout.addView(emailAdapter.getView(i, null, null));
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(pessoa.getNome());
+        getSupportActionBar().setTitle(cursorPessoa.getString(cursorPessoa.getColumnIndexOrThrow(PessoaEntry.COLUMN_NOME)));
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
 
-        menu.findItem(R.id.action_favorite).setChecked(pessoa.isFavorito());
+        menu.findItem(R.id.action_favorite).setChecked(favorito);
 
-        if (pessoa.isFavorito())
+        if (favorito)
             menu.findItem(R.id.action_favorite).setIcon(R.drawable.ic_favorite_24dp);
         else
             menu.findItem(R.id.action_favorite).setIcon(R.drawable.ic_favorite_not_24dp);
         return true;
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu_detail, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_delete) {
-            deletePessoa();
-        } else if (id == R.id.action_edit) {
-
-            Intent intent = new Intent(this, AddInquilinoActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putLong("id", pessoa.getId());
-            intent.putExtras(bundle);
-            startActivityForResult(intent, 1, null);
-
-
-        } else if (id == R.id.action_favorite) {
-            if (item.isChecked()) {
-                item.setIcon(R.drawable.ic_favorite_not_24dp);
-                item.setChecked(false);
-                pessoa.setFavorito(false);
-                db.updatePessoa(pessoa);
-            } else {
-                item.setIcon(R.drawable.ic_favorite_24dp);
-                item.setChecked(true);
-                pessoa.setFavorito(true);
-                db.updatePessoa(pessoa);
-            }
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void loadData(long id) {
-
-        pessoa = (Pessoa.Fisica) db.readPessoa(id);
-        telefoneList = db.readTelefone(ImobContract.TelefoneEntry.COLUMN_PESSOA_ID,pessoa.getId());
-        emailList = db.readEmail(ImobContract.EmailEntry.COLUMN_PESSOA_ID,pessoa.getId());
-    }
-
-
-    public void getTelefoneView() {
-
-        for (int i = 0; i < telefoneList.size(); i++) {
-            final Telefone telefone = telefoneList.get(i);
-
-            LayoutInflater layoutInflater;
-            layoutInflater = LayoutInflater.from(this);
-            View view = layoutInflater.inflate(R.layout.contato_item_list, null);
-
-            if (i == 0) {
-                ImageView imageView = (ImageView) view.findViewById(R.id.contatoImageView);
-                imageView.setImageResource(R.drawable.ic_call_gray_24dp);
-            }
-
-            TextView textView = (TextView) view.findViewById(R.id.contatoTextView);
-            textView.setText(telefone.getNumero());
-
-            ImageButton imageButton = (ImageButton) view.findViewById(R.id.contatoImageBtn);
-            imageButton.setImageResource(R.drawable.ic_sms_chat_black_24dp);
-
-            // Botão de mensagem clicado
-            imageButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent sendIntent = new Intent(Intent.ACTION_VIEW);
-                    sendIntent.setData(Uri.parse("sms:" + telefone.getNumero()));
-                    sendIntent.putExtra("sms_body", "");
-                    startActivity(sendIntent);
-                }
-            });
-
-            // Telefone clicado
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String number = ((TextView) v.findViewById(R.id.contatoTextView)).getText().toString();
-                    Intent intent = new Intent(Intent.ACTION_DIAL);
-                    intent.setData(Uri.parse("tel:" + telefone.getNumero()));
-                    startActivity(intent);
-                }
-            });
-
-            // Clicar e segurar
-            view.setOnLongClickListener(new LongClick(this, telefone.getNumero()));
-
-            mTelefoneLayout.addView(view);
-        }
-    }
-
-
-    public void getEmailView() {
-        for (int i = 0; i < emailList.size(); i++) {
-            final Email email = emailList.get(i);
-
-            LayoutInflater layoutInflater;
-            layoutInflater = LayoutInflater.from(this);
-            View view = layoutInflater.inflate(R.layout.email_item_list, null);
-
-            if (i == 0) {
-                ImageView imageView = (ImageView) view.findViewById(R.id.contatoImageView);
-                imageView.setImageResource(R.drawable.ic_email_gray_24dp);
-            }
-
-            TextView textView = (TextView) view.findViewById(R.id.contatoTextView);
-            textView.setText(email.getEndereco());
-
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
-                    emailIntent.setData(Uri.parse("mailto:" + email.getEndereco()));
-                    startActivity(Intent.createChooser(emailIntent, "Enviar email..."));
-                }
-            });
-
-            // Clicar e segurar
-            view.setOnLongClickListener(new LongClick(this, email.getEndereco()));
-
-            mEmailLayout.addView(view);
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        recreate();
-    }
-
-
-    private void deletePessoa() {
-        AlertDialog deleteAlert;
-        //Cria o gerador do AlertDialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        //define o titulo
-        builder.setTitle(R.string.deletePessoaAlertTitle);
-        //define a mensagem
-        builder.setMessage(R.string.deletePessoaAlertText);
-        //define um botão como positivo
-        builder.setPositiveButton(R.string.deletePessoaAlertPositive, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface arg0, int arg1) {
-                Toast.makeText(DetailPessoaFisicaActivity.this, R.string.deletePessoaAlertToast, Toast.LENGTH_SHORT).show();
-                db.deletePessoa(pessoa);
-                finish();
-            }
-        });
-        //define um botão como negativo.
-        builder.setNegativeButton(R.string.deletePessoaAlertNegative, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface arg0, int arg1) { }
-        });
-        //cria o AlertDialog
-        deleteAlert = builder.create();
-        //Exibe
-        deleteAlert.show();
-    }
-
 }
