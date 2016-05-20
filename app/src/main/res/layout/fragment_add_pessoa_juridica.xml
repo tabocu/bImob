@@ -17,7 +17,7 @@
             android:layout_margin="12dp"
             android:src="@drawable/ic_business_man" />
         <EditText
-            android:id="@+id/nomeFantasiaEditText"
+            android:id="@+id/nomeEditText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"

@@ -15,7 +15,7 @@ import br.com.blackseed.blackimob.entity.Imovel;
 
 public class ImoveisFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    
+
     public ImoveisFragment() {
         // Required empty public constructor
     }
@@ -31,8 +31,6 @@ public class ImoveisFragment extends Fragment implements LoaderManager.LoaderCal
                              Bundle savedInstanceState) {
 
         View rootView =  inflater.inflate(R.layout.fragment_imoveis, container, false);
-
-
 
         return rootView;
     }

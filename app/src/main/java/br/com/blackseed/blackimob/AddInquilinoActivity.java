@@ -1,5 +1,6 @@
 package br.com.blackseed.blackimob;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -11,8 +12,9 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import br.com.blackseed.blackimob.data.ImobContract.PessoaEntry;
 import br.com.blackseed.blackimob.data.ImobDb;
-import br.com.blackseed.blackimob.entity.Pessoa;
+
 
 public class AddInquilinoActivity extends AppCompatActivity {
 
@@ -22,8 +24,6 @@ public class AddInquilinoActivity extends AppCompatActivity {
     private AddPessoaJuridicaFragment mAddPessoaJuridicaFragment = new AddPessoaJuridicaFragment();
 
     private Switch mPessoaSwitch;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +44,11 @@ public class AddInquilinoActivity extends AppCompatActivity {
             // Obtem o id da pessoa
             id = bundle.getLong("id");
             // Obtem o objeto pessoa do banco de dados
-            Pessoa pessoa = db.readPessoa(id);
+            Cursor pessoaCursor = db.fetchPessoa(id);
 
+            int columnIsPessoaFisica = pessoaCursor.getColumnIndexOrThrow(PessoaEntry.COLUMN_IS_PESSOA_FISICA);
 
-            if (pessoa.isPessoaFisica()) { // Se for pessoa fisica
+            if (pessoaCursor.getInt(columnIsPessoaFisica) == 1) { // Se for pessoa fisica
                 // Carrega a fragment de pessoa fisica
                 mAddPessoaFisicaFragment.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction()
