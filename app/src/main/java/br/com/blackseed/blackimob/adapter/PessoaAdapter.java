@@ -1,4 +1,4 @@
-package br.com.blackseed.blackimob.cursoradapter;
+package br.com.blackseed.blackimob.adapter;
 
 import android.content.Context;
 import android.database.Cursor;

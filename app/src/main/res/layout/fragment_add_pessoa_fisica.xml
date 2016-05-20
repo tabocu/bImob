@@ -119,23 +119,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_margin="12dp"
             android:src="@drawable/ic_place_gray_24dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <EditText
+            android:id="@+id/enderecoEditText"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:hint="Endereço"
+            android:inputType="textCapWords"
+            android:singleLine="true" />
 
-            <br.com.blackseed.blackimob.components.AdressEditView
-                android:id="@+id/enderecoEditView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" />
-        </LinearLayout>
-
+        <View
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="12dp" />
     </LinearLayout>
 </LinearLayout>

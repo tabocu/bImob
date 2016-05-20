@@ -7,9 +7,9 @@ import android.view.Menu;
 import android.widget.LinearLayout;
 
 import br.com.blackseed.blackimob.R;
-import br.com.blackseed.blackimob.cursoradapter.EmailAdapter;
-import br.com.blackseed.blackimob.cursoradapter.TelefoneAdapter;
-import br.com.blackseed.blackimob.cursoradapter.UtilsCursorAdapter;
+import br.com.blackseed.blackimob.adapter.EmailAdapter;
+import br.com.blackseed.blackimob.adapter.TelefoneAdapter;
+import br.com.blackseed.blackimob.adapter.UtilsCursorAdapter;
 import br.com.blackseed.blackimob.data.ImobContract.PessoaEntry;
 
 public class DetailPessoaJuridicaActivity extends DetailPessoaActivity {

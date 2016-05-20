@@ -1,4 +1,4 @@
-package br.com.blackseed.blackimob.cursoradapter;
+package br.com.blackseed.blackimob.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -13,15 +13,15 @@ import android.widget.TextView;
 import br.com.blackseed.blackimob.R;
 import br.com.blackseed.blackimob.components.ContatoClick;
 import br.com.blackseed.blackimob.components.CopyLongClick;
-import br.com.blackseed.blackimob.data.ImobContract.EmailEntry;
+import br.com.blackseed.blackimob.data.ImobContract.TelefoneEntry;
 
-public class EmailAdapter extends CursorAdapter {
+public class TelefoneAdapter extends CursorAdapter {
 
-    private final int columnEmail;
+    private final int columnTelefone;
 
-    public EmailAdapter(Context context, Cursor cursor) {
+    public TelefoneAdapter(Context context, Cursor cursor) {
         super(context, cursor, 0);
-        columnEmail = cursor.getColumnIndexOrThrow(EmailEntry.COLUMN_EMAIL);
+        columnTelefone = cursor.getColumnIndexOrThrow(TelefoneEntry.COLUMN_TELEFONE);
     }
 
     @Override
@@ -36,12 +36,13 @@ public class EmailAdapter extends CursorAdapter {
         ImageButton contatoImageBtn = (ImageButton) view.findViewById(R.id.contatoImageBtn);
 
         if (cursor.isFirst())
-            contatoImageView.setImageResource(R.drawable.ic_email_gray_24dp);
-        contatoTextView.setText(cursor.getString(columnEmail));
-        contatoImageBtn.setVisibility(View.GONE);
+            contatoImageView.setImageResource(R.drawable.ic_call_gray_24dp);
+        contatoTextView.setText(cursor.getString(columnTelefone));
+        contatoImageBtn.setImageResource(R.drawable.ic_sms_chat_black_24dp);
+        contatoImageBtn.setOnClickListener(new ContatoClick(cursor.getString(columnTelefone), ContatoClick.SMS));
 
-        view.setOnLongClickListener(new CopyLongClick(context, cursor.getString(columnEmail)));
-        view.setOnClickListener(new ContatoClick(cursor.getString(columnEmail), ContatoClick.EMAIL));
+        view.setOnLongClickListener(new CopyLongClick(context, cursor.getString(columnTelefone)));
+        view.setOnClickListener(new ContatoClick(cursor.getString(columnTelefone), ContatoClick.DIAL));
     }
 
 

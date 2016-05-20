@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import br.com.blackseed.blackimob.cursoradapter.PessoaAdapter;
+import br.com.blackseed.blackimob.adapter.PessoaAdapter;
 import br.com.blackseed.blackimob.data.ImobContract;
 import br.com.blackseed.blackimob.data.ImobContract.PessoaEntry;
 import br.com.blackseed.blackimob.data.ImobDb;

@@ -1,10 +1,13 @@
 package br.com.blackseed.blackimob;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +15,6 @@ import android.widget.EditText;
 
 import java.util.List;
 
-import br.com.blackseed.blackimob.components.AdressEditView;
 import br.com.blackseed.blackimob.components.MultiEditView;
 import br.com.blackseed.blackimob.data.ImobContract.EmailEntry;
 import br.com.blackseed.blackimob.data.ImobContract.PessoaEntry;
@@ -22,6 +24,8 @@ import br.com.blackseed.blackimob.utils.MaskTextWatcher;
 
 public class AddPessoaFisicaFragment extends Fragment {
 
+    private static final int REQUEST_CODE_AUTOCOMPLETE = 1;
+
     private ImobDb db;
 
     private long id = -1;
@@ -29,7 +33,7 @@ public class AddPessoaFisicaFragment extends Fragment {
     private EditText mCpfEditText;
     private MultiEditView mTelefoneMultiEditView;
     private MultiEditView mEmailMultiEditView;
-    private AdressEditView mEnderecoEditView;
+    private EditText mEnderecoEditText;
 
     public AddPessoaFisicaFragment() {
     }
@@ -48,7 +52,7 @@ public class AddPessoaFisicaFragment extends Fragment {
         mCpfEditText = (EditText) rootView.findViewById(R.id.cpfEditText);
         mTelefoneMultiEditView = (MultiEditView) rootView.findViewById(R.id.telefoneMultiEditView);
         mEmailMultiEditView = (MultiEditView) rootView.findViewById(R.id.emailMultiEditView);
-        mEnderecoEditView = (AdressEditView) rootView.findViewById(R.id.enderecoEditView);
+        mEnderecoEditText = (EditText) rootView.findViewById(R.id.enderecoEditText);
 
         // Configura o campo de Cpf com mascara e tipo de entrada
         mCpfEditText.addTextChangedListener(new MaskTextWatcher(MaskTextWatcher.Mask.CPF));
@@ -64,6 +68,29 @@ public class AddPessoaFisicaFragment extends Fragment {
             }
         });
         mCpfEditText.setRawInputType(InputType.TYPE_CLASS_NUMBER);
+
+        mEnderecoEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() > 2) {
+                    Intent intent = new Intent(getContext(), PlaceActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("text", s.toString());
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
+            }
+        });
 
         // Pega o id da pessoa (no caso de edição)
         Bundle bundle = getArguments();
@@ -119,5 +146,30 @@ public class AddPessoaFisicaFragment extends Fragment {
             db.createEmail(emailContentValues);
         }
         return id;
+    }
+
+    private void openAutocompleteActivity() {
+
+
+//        try {
+//            // The autocomplete activity requires Google Play Services to be available. The intent
+//            // builder checks this and throws an exception if it is not the case.
+//            Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+//                    .build(getActivity());
+//            startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE);
+//        } catch (GooglePlayServicesRepairableException e) {
+//            // Indicates that Google Play Services is either not installed or not up to date. Prompt
+//            // the user to correct the issue.
+//            GoogleApiAvailability.getInstance().getErrorDialog(getActivity(), e.getConnectionStatusCode(),
+//                    0 /* requestCode */).show();
+//        } catch (GooglePlayServicesNotAvailableException e) {
+//            // Indicates that Google Play Services is not available and the problem is not easily
+//            // resolvable.
+//            String message = "Google Play Services is not available: " +
+//                    GoogleApiAvailability.getInstance().getErrorString(e.errorCode);
+//
+//
+//            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+//        }
     }
 }
