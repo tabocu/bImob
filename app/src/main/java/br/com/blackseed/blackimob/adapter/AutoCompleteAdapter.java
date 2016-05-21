@@ -15,6 +15,8 @@ import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.AutocompletePredictionBuffer;
 import com.google.android.gms.location.places.Places;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import br.com.blackseed.blackimob.R;
@@ -23,6 +25,7 @@ import br.com.blackseed.blackimob.entity.AutoCompletePlace;
 public class AutoCompleteAdapter extends ArrayAdapter<AutoCompletePlace> {
 
     private GoogleApiClient mGoogleApiClient;
+    private List<AutoCompletePlace> placeList = new ArrayList<>();
 
 
     public AutoCompleteAdapter(Context context) {
@@ -37,6 +40,7 @@ public class AutoCompleteAdapter extends ArrayAdapter<AutoCompletePlace> {
 
         TextView locationTextView = (TextView) view.findViewById(R.id.locationTextView);
         locationTextView.setText(getItem(position).getDescription());
+
 
         return view;
     }
@@ -61,6 +65,8 @@ public class AutoCompleteAdapter extends ArrayAdapter<AutoCompletePlace> {
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
+                clear();
+                addAll(placeList);
                 notifyDataSetChanged();
             }
 
@@ -78,10 +84,10 @@ public class AutoCompleteAdapter extends ArrayAdapter<AutoCompletePlace> {
                                 if (buffer == null)
                                     return;
 
+                                placeList.clear();
                                 if (buffer.getStatus().isSuccess()) {
                                     for (AutocompletePrediction prediction : buffer) {
-                                        //Add as a new item to avoid IllegalArgumentsException when buffer is released
-                                        add(new AutoCompletePlace(prediction.getPlaceId(), prediction.getDescription()));
+                                        placeList.add(new AutoCompletePlace(prediction.getPlaceId(), prediction.getDescription()));
                                     }
                                 }
 
