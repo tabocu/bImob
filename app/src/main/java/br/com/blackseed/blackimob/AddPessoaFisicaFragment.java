@@ -34,6 +34,7 @@ public class AddPessoaFisicaFragment extends Fragment {
     private MultiEditView mTelefoneMultiEditView;
     private MultiEditView mEmailMultiEditView;
     private EditText mEnderecoEditText;
+    private EditText mComplementoEditText;
 
     private boolean mBlockAutoComplete = false;
 
@@ -55,6 +56,7 @@ public class AddPessoaFisicaFragment extends Fragment {
         mTelefoneMultiEditView = (MultiEditView) rootView.findViewById(R.id.telefoneMultiEditView);
         mEmailMultiEditView = (MultiEditView) rootView.findViewById(R.id.emailMultiEditView);
         mEnderecoEditText = (EditText) rootView.findViewById(R.id.enderecoEditText);
+        mComplementoEditText = (EditText) rootView.findViewById(R.id.complementoEditText);
 
         // Configura o campo de Cpf com mascara e tipo de entrada
         mCpfEditText.addTextChangedListener(new MaskTextWatcher(MaskTextWatcher.Mask.CPF));
@@ -157,13 +159,11 @@ public class AddPessoaFisicaFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == REQUEST_CODE_AUTOCOMPLETE){
             if(resultCode == getActivity().RESULT_OK){
-//                mBlockAutoComplete = true;
                 mEnderecoEditText.setText(data.getStringExtra("description"));
                 mEnderecoEditText.setSelection(mEnderecoEditText.getText().length());
                 mBlockAutoComplete = false;
 
             } else if(resultCode == getActivity().RESULT_CANCELED){
-//                mBlockAutoComplete = true;
                 mEnderecoEditText.setText(data.getStringExtra("text"));
                 mEnderecoEditText.setSelection(mEnderecoEditText.getText().length());
                 mBlockAutoComplete = false;

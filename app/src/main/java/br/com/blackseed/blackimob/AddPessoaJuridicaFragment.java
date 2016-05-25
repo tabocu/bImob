@@ -2,10 +2,13 @@ package br.com.blackseed.blackimob;
 
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +28,8 @@ import br.com.blackseed.blackimob.utils.MaskTextWatcher;
  */
 public class AddPessoaJuridicaFragment extends Fragment {
 
+    private static final int REQUEST_CODE_AUTOCOMPLETE = 1;
+
     private ImobDb db;
 
     private long id = -1;
@@ -33,7 +38,10 @@ public class AddPessoaJuridicaFragment extends Fragment {
     private EditText mCnpjEditText;
     private MultiEditView mTelefoneMultiEditView;
     private MultiEditView mEmailMultiEditView;
-    private AdressEditView mEnderecoEditView;
+    private EditText mEnderecoEditText;
+    private EditText mComplementoEditText;
+
+    private boolean mBlockAutoComplete = false;
 
 
     public AddPessoaJuridicaFragment() {
@@ -56,7 +64,8 @@ public class AddPessoaJuridicaFragment extends Fragment {
         mCnpjEditText = (EditText) rootView.findViewById(R.id.cnpjEditText);
         mTelefoneMultiEditView = (MultiEditView) rootView.findViewById(R.id.telefoneMultiEditView);
         mEmailMultiEditView = (MultiEditView) rootView.findViewById(R.id.emailMultiEditView);
-        mEnderecoEditView = (AdressEditView) rootView.findViewById(R.id.enderecoEditView);
+        mEnderecoEditText = (EditText) rootView.findViewById(R.id.enderecoEditText);
+        mComplementoEditText = (EditText) rootView.findViewById(R.id.complementoEditText);
 
         // Configura o campo de cnpj com mascara e tipo de entrada
         mCnpjEditText.addTextChangedListener(new MaskTextWatcher(MaskTextWatcher.Mask.CNPJ));
@@ -72,6 +81,32 @@ public class AddPessoaJuridicaFragment extends Fragment {
             }
         });
         mCnpjEditText.setRawInputType(InputType.TYPE_CLASS_NUMBER);
+
+
+        mEnderecoEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (mBlockAutoComplete) return;
+                if (s.length() > 2) {
+                    mBlockAutoComplete = true;
+                    Intent intent = new Intent(getContext(), PlaceActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("text", s.toString());
+                    intent.putExtras(bundle);
+                    startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE);
+                }
+            }
+        });
 
         // Pega o id da pessoa (no caso de edição)
         Bundle bundle = getArguments();
@@ -131,4 +166,23 @@ public class AddPessoaJuridicaFragment extends Fragment {
         }
         return id;
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_CODE_AUTOCOMPLETE){
+            if(resultCode == getActivity().RESULT_OK){
+                mEnderecoEditText.setText(data.getStringExtra("description"));
+                mEnderecoEditText.setSelection(mEnderecoEditText.getText().length());
+                mBlockAutoComplete = false;
+
+            } else if(resultCode == getActivity().RESULT_CANCELED){
+                mEnderecoEditText.setText(data.getStringExtra("text"));
+                mEnderecoEditText.setSelection(mEnderecoEditText.getText().length());
+                mBlockAutoComplete = false;
+            }
+
+        }
+    }
+
 }
