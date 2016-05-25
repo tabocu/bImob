@@ -22,13 +22,15 @@
             <LinearLayout
             android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingRight="12dp">
 
                 <ImageView
                     android:layout_width="54dp"
                     android:layout_height="54dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
                     android:layout_gravity="center_vertical"
-                    android:padding="12dp"
                     android:src="@drawable/ic_place_white_24dp" />
 
                 <EditText

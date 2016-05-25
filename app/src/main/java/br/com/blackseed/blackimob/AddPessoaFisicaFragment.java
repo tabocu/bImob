@@ -35,6 +35,8 @@ public class AddPessoaFisicaFragment extends Fragment {
     private MultiEditView mEmailMultiEditView;
     private EditText mEnderecoEditText;
 
+    private boolean mBlockAutoComplete = false;
+
     public AddPessoaFisicaFragment() {
     }
 
@@ -82,12 +84,14 @@ public class AddPessoaFisicaFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
+                if (mBlockAutoComplete) return;
                 if (s.length() > 2) {
+                    mBlockAutoComplete = true;
                     Intent intent = new Intent(getContext(), PlaceActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("text", s.toString());
                     intent.putExtras(bundle);
-                    startActivity(intent);
+                    startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE);
                 }
             }
         });
@@ -148,28 +152,23 @@ public class AddPessoaFisicaFragment extends Fragment {
         return id;
     }
 
-    private void openAutocompleteActivity() {
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_CODE_AUTOCOMPLETE){
+            if(resultCode == getActivity().RESULT_OK){
+//                mBlockAutoComplete = true;
+                mEnderecoEditText.setText(data.getStringExtra("description"));
+                mEnderecoEditText.setSelection(mEnderecoEditText.getText().length());
+                mBlockAutoComplete = false;
 
+            } else if(resultCode == getActivity().RESULT_CANCELED){
+//                mBlockAutoComplete = true;
+                mEnderecoEditText.setText(data.getStringExtra("text"));
+                mEnderecoEditText.setSelection(mEnderecoEditText.getText().length());
+                mBlockAutoComplete = false;
+            }
 
-//        try {
-//            // The autocomplete activity requires Google Play Services to be available. The intent
-//            // builder checks this and throws an exception if it is not the case.
-//            Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
-//                    .build(getActivity());
-//            startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE);
-//        } catch (GooglePlayServicesRepairableException e) {
-//            // Indicates that Google Play Services is either not installed or not up to date. Prompt
-//            // the user to correct the issue.
-//            GoogleApiAvailability.getInstance().getErrorDialog(getActivity(), e.getConnectionStatusCode(),
-//                    0 /* requestCode */).show();
-//        } catch (GooglePlayServicesNotAvailableException e) {
-//            // Indicates that Google Play Services is not available and the problem is not easily
-//            // resolvable.
-//            String message = "Google Play Services is not available: " +
-//                    GoogleApiAvailability.getInstance().getErrorString(e.errorCode);
-//
-//
-//            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-//        }
+        }
     }
 }

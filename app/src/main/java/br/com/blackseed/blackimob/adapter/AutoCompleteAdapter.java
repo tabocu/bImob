@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import br.com.blackseed.blackimob.PlaceActivity;
 import br.com.blackseed.blackimob.R;
 import br.com.blackseed.blackimob.entity.AutoCompletePlace;
 
@@ -38,9 +39,18 @@ public class AutoCompleteAdapter extends ArrayAdapter<AutoCompletePlace> {
         layoutInflater = LayoutInflater.from(getContext());
         view = layoutInflater.inflate(R.layout.location_list_item, null);
 
-        TextView locationTextView = (TextView) view.findViewById(R.id.locationTextView);
-        locationTextView.setText(getItem(position).getDescription());
+        //Pega o texto já separando entre "rua e número" e "bairro, cidade, estado, país)
+        String[] enderecos = getItem(position).getDescription().split(" - ", 2);
 
+        //A primeira posição sempre existe, mesmo que nula
+        TextView locationTextView = (TextView) view.findViewById(R.id.locationTextView);
+        locationTextView.setText(enderecos[0]);
+
+        //A segunda posição pode não existir
+        if(enderecos.length > 1) {
+            TextView locationSecundaryTextView = (TextView) view.findViewById(R.id.locationSecundaryTextView);
+            locationSecundaryTextView.setText(enderecos[1]);
+        }
 
         return view;
     }

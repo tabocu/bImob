@@ -1,17 +1,24 @@
 package br.com.blackseed.blackimob;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
 
 import br.com.blackseed.blackimob.adapter.AutoCompleteAdapter;
+import br.com.blackseed.blackimob.entity.AutoCompletePlace;
 
 
 public class PlaceActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener,
@@ -34,6 +41,38 @@ public class PlaceActivity extends AppCompatActivity implements GoogleApiClient.
         mAdapter = new AutoCompleteAdapter(this);
 
         mLocationListView.setAdapter(mAdapter);
+
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null) {
+
+            mAdressEditText.setText(bundle.getString("text"));
+            mAdressEditText.setSelection(mAdressEditText.getText().length());
+
+        }
+
+        mLocationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                AutoCompletePlace autoCompletePlace = (AutoCompletePlace) parent.getItemAtPosition(position);
+                Intent intent = new Intent();
+                intent.putExtra("id", autoCompletePlace.getId());
+                intent.putExtra("description", autoCompletePlace.getDescription());
+                setResult(RESULT_OK,intent);
+                finish();
+            }
+        });
+
+
+        mAdressEditText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN && ( keyCode == KeyEvent.KEYCODE_ENTER || keyCode == KeyEvent.KEYCODE_BACK)) {
+                    onCanceled();
+                }
+                return true;
+            }
+        });
+
         mAdressEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -62,6 +101,20 @@ public class PlaceActivity extends AppCompatActivity implements GoogleApiClient.
 
 
     }
+
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(this,"voltar",Toast.LENGTH_SHORT).show();
+        super.onBackPressed();
+    }
+
+    public void  onCanceled() {
+        Intent intent = new Intent();
+        intent.putExtra("text", mAdressEditText.getText().toString());
+        setResult(RESULT_CANCELED,intent);
+        finish();
+    }
+
 
     @Override
     protected void onStart() {
