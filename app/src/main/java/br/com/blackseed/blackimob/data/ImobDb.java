@@ -10,7 +10,9 @@ import java.util.List;
 
 import br.com.blackseed.blackimob.data.ImobContract.EmailEntry;
 import br.com.blackseed.blackimob.data.ImobContract.PessoaEntry;
+import br.com.blackseed.blackimob.data.ImobContract.ImovelEntry;
 import br.com.blackseed.blackimob.data.ImobContract.TelefoneEntry;
+import br.com.blackseed.blackimob.data.ImobContract.EnderecoEntry;
 
 
 public class ImobDb {
@@ -47,6 +49,54 @@ public class ImobDb {
         if (!cursor.moveToNext()) return null;
         return cursor;
     }
+
+    public Cursor fetchEndereco(Long enderecoId) {
+      String[] sqlSelect = {
+              EnderecoEntry._ID,
+              EnderecoEntry.COLUMN_LOCAL,
+              EnderecoEntry.COLUMN_COMPLEMENTO
+      };
+
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+        qb.setTables(EnderecoEntry.TABLE_NAME);
+        qb.appendWhere(EnderecoEntry._ID + " = " + enderecoId);
+
+        Cursor cursor = qb.query(dbHelper.getReadableDatabase(),
+                sqlSelect,
+                null, null, null, null, null);
+
+        return cursor;
+    };
+
+    public Cursor fetchEnderecoOfPessoa(Long pessoaId) {
+
+        String[] sqlPessoaSelect = {PessoaEntry.COLUMN_ENDERECO_ID};
+
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+        qb.setTables(PessoaEntry.TABLE_NAME);
+        qb.appendWhere(PessoaEntry._ID + " = " + pessoaId);
+
+        Cursor cursor = qb.query(dbHelper.getReadableDatabase(),
+                sqlPessoaSelect,
+                null, null, null, null, null);
+
+        return fetchEndereco(cursor.getLong(0));
+    };
+
+    public Cursor fetchEnderecoOfImovel(Long imovelId) {
+
+        String[] sqlPessoaSelect = {PessoaEntry.COLUMN_ENDERECO_ID};
+
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+        qb.setTables(ImovelEntry.TABLE_NAME);
+        qb.appendWhere(ImovelEntry._ID + " = " + imovelId);
+
+        Cursor cursor = qb.query(dbHelper.getReadableDatabase(),
+                sqlPessoaSelect,
+                null, null, null, null, null);
+
+        return fetchEndereco(cursor.getLong(0));
+    };
 
     public Cursor fetchTelefoneOfPessoa(Long id) {
         String[] sqlSelect = {
@@ -108,6 +158,11 @@ public class ImobDb {
                 .insert(EmailEntry.TABLE_NAME, null, contentValues);
     }
 
+    public long createEndereco(ContentValues contentValues) {
+        return dbHelper.getWritableDatabase()
+                .insert(EnderecoEntry.TABLE_NAME, null, contentValues);
+    }
+
     public int deleteTelefoneOfPessoa(long pessoa_id) {
         return dbHelper.getWritableDatabase()
                 .delete(TelefoneEntry.TABLE_NAME, TelefoneEntry.COLUMN_PESSOA_ID + " = " + pessoa_id, null);
@@ -116,6 +171,22 @@ public class ImobDb {
     public int deleteEmailOfPessoa(long pessoa_id) {
         return dbHelper.getWritableDatabase()
                 .delete(EmailEntry.TABLE_NAME, EmailEntry.COLUMN_PESSOA_ID + " = " + pessoa_id, null);
+    }
+
+    public int deleteEnderecoOfPessoa(long pessoa_id) {
+
+        Cursor cursor = fetchEnderecoOfPessoa(pessoa_id);
+        return dbHelper.getWritableDatabase()
+                .delete(EnderecoEntry.TABLE_NAME, EnderecoEntry._ID + " = "
+                        + cursor.getLong(cursor.getColumnIndex(EnderecoEntry._ID)), null);
+    }
+
+    public int deleteEnderecoOfImovel(long imovel_id) {
+
+        Cursor cursor = fetchEnderecoOfImovel(imovel_id);
+        return dbHelper.getWritableDatabase()
+                .delete(EnderecoEntry.TABLE_NAME, EnderecoEntry._ID + " = "
+                        + cursor.getLong(cursor.getColumnIndex(EnderecoEntry._ID)), null);
     }
 
     public static List<String> cursorToStringList(Cursor cursor, String column) {
