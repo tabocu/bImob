@@ -1,11 +1,14 @@
 package br.com.blackseed.blackimob.entity;
 
+import com.google.android.gms.maps.model.LatLng;
+
 public class AutoCompletePlace {
 
     private String placeId;
     private CharSequence primary;
     private CharSequence secundary;
     private CharSequence fullText;
+    private LatLng latLng;
 
     public AutoCompletePlace(String placeId, CharSequence primary, CharSequence secundary, CharSequence fullText) {
         this.placeId = placeId;
@@ -18,6 +21,10 @@ public class AutoCompletePlace {
         this.placeId = placeId;
         this.fullText = fullText;
     }
+
+    public LatLng getLatLng() {return latLng;}
+
+    public void setLatLng(LatLng latLng) {this.latLng = latLng;}
 
     public CharSequence getPrimary() {return primary;}
 

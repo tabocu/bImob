@@ -172,7 +172,7 @@ public class ImobContract {
         public static final String COLUMN_LOCAL = "local";
         public static final String COLUMN_COMPLEMENTO = "complemento";
         public static final String COLUMN_LATITUDE = "latitude";
-           public static final String COLUMN_LONGITUDE = "longitude";
+        public static final String COLUMN_LONGITUDE = "longitude";
 
         public static final String[] ENDERECO_SELECT = {
                 EnderecoEntry._ID,

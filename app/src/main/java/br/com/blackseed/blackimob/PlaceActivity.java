@@ -3,9 +3,11 @@ package br.com.blackseed.blackimob;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,6 +17,9 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.Places;
 
 import br.com.blackseed.blackimob.adapter.AutoCompleteAdapter;
@@ -22,7 +27,9 @@ import br.com.blackseed.blackimob.entity.AutoCompletePlace;
 
 
 public class PlaceActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener,
-        GoogleApiClient.ConnectionCallbacks {
+        GoogleApiClient.ConnectionCallbacks, ResultCallback<PlaceBuffer> {
+
+    private static final String TAG = "PlaceResultCallback";
 
     private GoogleApiClient mGoogleApiClient;
 
@@ -30,6 +37,8 @@ public class PlaceActivity extends AppCompatActivity implements GoogleApiClient.
 
     private ListView mLocationListView;
     private EditText mAdressEditText;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +63,10 @@ public class PlaceActivity extends AppCompatActivity implements GoogleApiClient.
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 AutoCompletePlace autoCompletePlace = (AutoCompletePlace) parent.getItemAtPosition(position);
-                Intent intent = new Intent();
-                intent.putExtra("id", autoCompletePlace.getPlaceId());
-                intent.putExtra("description", autoCompletePlace.getFullText().toString());
-                setResult(RESULT_OK,intent);
-                finish();
+
+                Places.GeoDataApi.getPlaceById(mGoogleApiClient, autoCompletePlace.getPlaceId())
+                        .setResultCallback(PlaceActivity.this);
+
             }
         });
 
@@ -147,4 +155,26 @@ public class PlaceActivity extends AppCompatActivity implements GoogleApiClient.
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
     }
+
+    @Override
+    public void onResult(@NonNull PlaceBuffer places) {
+        if (places.getStatus().isSuccess() && places.getCount() > 0){
+            final Place place = places.get(0);
+            Log.i(TAG, "Place found: " + place.getName());
+
+            Intent intent = new Intent();
+            intent.putExtra("id", place.getId());                   //String
+            intent.putExtra("description", place.getAddress());     //CharSequence
+            intent.putExtra("latitude", place.getLatLng().latitude);     //Double
+            intent.putExtra("longitude", place.getLatLng().longitude);    //Double
+            setResult(RESULT_OK,intent);
+            finish();
+
+        } else {
+            Log.e(TAG, "Place not found");
+        }
+        places.release();
+
+    }
+
 }

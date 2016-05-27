@@ -58,8 +58,11 @@ public class ImobDb {
     public Cursor fetchEndereco(Long enderecoId) {
       String[] sqlSelect = {
               EnderecoEntry._ID,
+              EnderecoEntry.COLUMN_PLACE_ID,
               EnderecoEntry.COLUMN_LOCAL,
-              EnderecoEntry.COLUMN_COMPLEMENTO
+              EnderecoEntry.COLUMN_COMPLEMENTO,
+              EnderecoEntry.COLUMN_LATITUDE,
+              EnderecoEntry.COLUMN_LONGITUDE
       };
 
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();

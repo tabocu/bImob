@@ -38,6 +38,10 @@ public class AddPessoaFisicaFragment extends Fragment {
     private EditText mEnderecoEditText;
     private EditText mComplementoEditText;
 
+    private String mPlaceId;
+    private Double mLatitude;
+    private Double mLongitude;
+
     private boolean mBlockAutoComplete = false;
 
     public AddPessoaFisicaFragment() {
@@ -128,6 +132,9 @@ public class AddPessoaFisicaFragment extends Fragment {
 
         ContentValues enderecoContenValues = new ContentValues();
 
+        enderecoContenValues.put(ImobContract.EnderecoEntry.COLUMN_PLACE_ID, mPlaceId);
+        enderecoContenValues.put(ImobContract.EnderecoEntry.COLUMN_LATITUDE, mLatitude);
+        enderecoContenValues.put(ImobContract.EnderecoEntry.COLUMN_LONGITUDE, mLongitude);
         enderecoContenValues.put(ImobContract.EnderecoEntry.COLUMN_LOCAL, mEnderecoEditText.getText().toString());
         enderecoContenValues.put(ImobContract.EnderecoEntry.COLUMN_COMPLEMENTO, mComplementoEditText.getText().toString());
         long endereco_id = db.createEndereco(enderecoContenValues);
@@ -170,6 +177,15 @@ public class AddPessoaFisicaFragment extends Fragment {
             if(resultCode == getActivity().RESULT_OK){
                 mEnderecoEditText.setText(data.getStringExtra("description"));
                 mEnderecoEditText.setSelection(mEnderecoEditText.getText().length());
+                mLatitude = data.getDoubleExtra("latitude",0);
+                mLongitude = data.getDoubleExtra("longitude",0);
+                mPlaceId = data.getStringExtra("id");
+
+                Toast.makeText(getActivity(),mEnderecoEditText.getText(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),mLatitude.toString(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),mLongitude.toString(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),mPlaceId,Toast.LENGTH_SHORT).show();
+
                 mBlockAutoComplete = false;
 
             } else if(resultCode == getActivity().RESULT_CANCELED){

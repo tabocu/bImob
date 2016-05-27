@@ -1,22 +1,19 @@
 package br.com.blackseed.blackimob.detail;
 
-import android.app.FragmentTransaction;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import android.view.Menu;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
@@ -24,6 +21,7 @@ import br.com.blackseed.blackimob.R;
 import br.com.blackseed.blackimob.adapter.EmailAdapter;
 import br.com.blackseed.blackimob.adapter.TelefoneAdapter;
 import br.com.blackseed.blackimob.adapter.UtilsCursorAdapter;
+import br.com.blackseed.blackimob.data.ImobContract;
 import br.com.blackseed.blackimob.data.ImobContract.PessoaEntry;
 
 public class DetailPessoaFisicaActivity extends DetailPessoaActivity implements OnMapReadyCallback {
@@ -31,11 +29,12 @@ public class DetailPessoaFisicaActivity extends DetailPessoaActivity implements 
     private LinearLayout mDadosLinearLayout;
     private LinearLayout mContatosLinearLayout;
     private LinearLayout mLocalLinearLayout;
-    private LinearLayout mMapaLinearLayout;
+
     private boolean favorito;
 
     private GoogleMap mMap;
-
+    private double mLatitude;
+    private double mLongitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,15 +79,14 @@ public class DetailPessoaFisicaActivity extends DetailPessoaActivity implements 
         if(cursorEndereco != null) {
             mLocalLinearLayout.addView(UtilsCursorAdapter.Local.getViewFromCursor(this, cursorEndereco));
             mLocalLinearLayout.addView(UtilsCursorAdapter.Complemento.getViewFromCursor(this, cursorEndereco));
+            mLatitude = cursorEndereco.getDouble(cursorEndereco.getColumnIndex(ImobContract.EnderecoEntry.COLUMN_LATITUDE));
+            mLongitude = cursorEndereco.getDouble(cursorEndereco.getColumnIndex(ImobContract.EnderecoEntry.COLUMN_LONGITUDE));
         } else
             mLocalLinearLayout.addView(UtilsCursorAdapter.noInfo.getViewFromCursor(this));
 
-        MapFragment mMapFragment = MapFragment.newInstance();
-        mMapFragment.getMapAsync(this);
-
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.mapaLinearLayout, mMapFragment);
-        fragmentTransaction.commit();
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -112,9 +110,8 @@ public class DetailPessoaFisicaActivity extends DetailPessoaActivity implements 
         mMap = googleMap;
 
         // Add a marker in Sydney, Australia, and move the camera.
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-
+        LatLng latLng = new LatLng(mLatitude, mLongitude);
+        mMap.addMarker(new MarkerOptions().position(latLng));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,16));
     }
 }
