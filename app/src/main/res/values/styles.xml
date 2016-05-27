@@ -22,4 +22,24 @@
         <item name="android:textColor">@color/secondary_text</item>
     </style>
 
+    <style name="boldText">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <style name="italicText">
+        <item name="android:textStyle">italic</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <style name="boldItalicText">
+        <item name="android:textStyle">bold|italic</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <style name="lightText">
+        <item name="android:textStyle">italic</item>
+        <item name="android:textColor">#d3d3d3</item>
+    </style>
+
 </resources>

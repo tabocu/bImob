@@ -55,8 +55,8 @@ public class PlaceActivity extends AppCompatActivity implements GoogleApiClient.
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 AutoCompletePlace autoCompletePlace = (AutoCompletePlace) parent.getItemAtPosition(position);
                 Intent intent = new Intent();
-                intent.putExtra("id", autoCompletePlace.getId());
-                intent.putExtra("description", autoCompletePlace.getDescription());
+                intent.putExtra("id", autoCompletePlace.getPlaceId());
+                intent.putExtra("description", autoCompletePlace.getFullText().toString());
                 setResult(RESULT_OK,intent);
                 finish();
             }

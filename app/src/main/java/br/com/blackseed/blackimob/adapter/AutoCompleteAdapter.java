@@ -1,6 +1,7 @@
 package br.com.blackseed.blackimob.adapter;
 
 import android.content.Context;
+import android.text.style.BackgroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.AutocompletePredictionBuffer;
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 
 import java.util.ArrayList;
@@ -40,16 +42,17 @@ public class AutoCompleteAdapter extends ArrayAdapter<AutoCompletePlace> {
         view = layoutInflater.inflate(R.layout.location_list_item, null);
 
         //Pega o texto já separando entre "rua e número" e "bairro, cidade, estado, país)
-        String[] enderecos = getItem(position).getDescription().split(" - ", 2);
+        CharSequence primario = getItem(position).getPrimary();
+        CharSequence secundario = getItem(position).getSecundary();
+        String id = getItem(position).getPlaceId();
 
-        //A primeira posição sempre existe, mesmo que nula
-        TextView locationTextView = (TextView) view.findViewById(R.id.locationTextView);
-        locationTextView.setText(enderecos[0]);
-
-        //A segunda posição pode não existir
-        if(enderecos.length > 1) {
+        if(primario != null) {
+            TextView locationTextView = (TextView) view.findViewById(R.id.locationTextView);
+            locationTextView.setText(primario.toString());
+        }
+        if(secundario != null) {
             TextView locationSecundaryTextView = (TextView) view.findViewById(R.id.locationSecundaryTextView);
-            locationSecundaryTextView.setText(enderecos[1]);
+            locationSecundaryTextView.setText(secundario.toString());
         }
 
         return view;
@@ -97,7 +100,11 @@ public class AutoCompleteAdapter extends ArrayAdapter<AutoCompletePlace> {
                                 placeList.clear();
                                 if (buffer.getStatus().isSuccess()) {
                                     for (AutocompletePrediction prediction : buffer) {
-                                        placeList.add(new AutoCompletePlace(prediction.getPlaceId(), prediction.getDescription()));
+                                        placeList.add(new AutoCompletePlace(
+                                                prediction.getPlaceId(),
+                                                prediction.getPrimaryText(null),
+                                                prediction.getSecondaryText(null),
+                                                prediction.getFullText(null)));
                                     }
                                 }
 
@@ -105,4 +112,6 @@ public class AutoCompleteAdapter extends ArrayAdapter<AutoCompletePlace> {
                             }
                         }, 60, TimeUnit.SECONDS);
     }
+
+
 }

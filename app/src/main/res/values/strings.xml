@@ -30,6 +30,9 @@
     <string name="deletePessoaAlertNegative">Cancelar</string>
     <string name="deletePessoaAlertToast">Pessoa deletada</string>
 
+    <string name="noInfo">sem informação</string>
+
+
     <string name="large_text">
         "Material is the metaphor.\n\n"
 

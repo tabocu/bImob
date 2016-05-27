@@ -28,6 +28,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/locationSecundaryTextView"/>
 
+
     </LinearLayout>
 
 </LinearLayout>

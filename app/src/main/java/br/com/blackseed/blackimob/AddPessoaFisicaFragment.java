@@ -12,10 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.List;
 
 import br.com.blackseed.blackimob.components.MultiEditView;
+import br.com.blackseed.blackimob.data.ImobContract;
 import br.com.blackseed.blackimob.data.ImobContract.EmailEntry;
 import br.com.blackseed.blackimob.data.ImobContract.PessoaEntry;
 import br.com.blackseed.blackimob.data.ImobContract.TelefoneEntry;
@@ -124,10 +126,17 @@ public class AddPessoaFisicaFragment extends Fragment {
 
     public long saveData() {
 
+        ContentValues enderecoContenValues = new ContentValues();
+
+        enderecoContenValues.put(ImobContract.EnderecoEntry.COLUMN_LOCAL, mEnderecoEditText.getText().toString());
+        enderecoContenValues.put(ImobContract.EnderecoEntry.COLUMN_COMPLEMENTO, mComplementoEditText.getText().toString());
+        long endereco_id = db.createEndereco(enderecoContenValues);
+
         ContentValues pessoaContentValues = new ContentValues();
         pessoaContentValues.put(PessoaEntry.COLUMN_IS_PESSOA_FISICA, true);
         pessoaContentValues.put(PessoaEntry.COLUMN_NOME, mNomeEditText.getText().toString());
         pessoaContentValues.put(PessoaEntry.COLUMN_CPF, mCpfEditText.getText().toString().replaceAll("\\D", ""));
+        pessoaContentValues.put(PessoaEntry.COLUMN_ENDERECO_ID, endereco_id);
 
         if (id == -1) id = db.createPessoa(pessoaContentValues);
         else {

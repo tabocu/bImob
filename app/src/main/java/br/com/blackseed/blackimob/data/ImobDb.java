@@ -4,23 +4,28 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.blackseed.blackimob.MainActivity;
 import br.com.blackseed.blackimob.data.ImobContract.EmailEntry;
 import br.com.blackseed.blackimob.data.ImobContract.PessoaEntry;
 import br.com.blackseed.blackimob.data.ImobContract.ImovelEntry;
 import br.com.blackseed.blackimob.data.ImobContract.TelefoneEntry;
 import br.com.blackseed.blackimob.data.ImobContract.EnderecoEntry;
+import br.com.blackseed.blackimob.detail.DetailPessoaActivity;
 
 
 public class ImobDb {
 
     private ImobDbHelper dbHelper;
+    private Context context;
 
     public ImobDb(Context context) {
         dbHelper = new ImobDbHelper(context);
+        this.context = context;
     }
     
     public Cursor fetchAllPessoa() {
@@ -65,38 +70,39 @@ public class ImobDb {
                 sqlSelect,
                 null, null, null, null, null);
 
+        if (!cursor.moveToNext()) return null;
         return cursor;
     };
 
-    public Cursor fetchEnderecoOfPessoa(Long pessoaId) {
+//    public Cursor fetchEnderecoOfPessoa(Long pessoaId) {
+//
+//        String[] sqlPessoaSelect = {PessoaEntry.COLUMN_ENDERECO_ID};
+//
+//        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+//        qb.setTables(PessoaEntry.TABLE_NAME);
+//        qb.appendWhere(PessoaEntry._ID + " = " + pessoaId);
+//
+//        Cursor cursor = qb.query(dbHelper.getReadableDatabase(),
+//                sqlPessoaSelect,
+//                null, null, null, null, null);
+//
+//        return fetchEndereco(cursor.getLong(0));
+//    };
 
-        String[] sqlPessoaSelect = {PessoaEntry.COLUMN_ENDERECO_ID};
-
-        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-        qb.setTables(PessoaEntry.TABLE_NAME);
-        qb.appendWhere(PessoaEntry._ID + " = " + pessoaId);
-
-        Cursor cursor = qb.query(dbHelper.getReadableDatabase(),
-                sqlPessoaSelect,
-                null, null, null, null, null);
-
-        return fetchEndereco(cursor.getLong(0));
-    };
-
-    public Cursor fetchEnderecoOfImovel(Long imovelId) {
-
-        String[] sqlPessoaSelect = {PessoaEntry.COLUMN_ENDERECO_ID};
-
-        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-        qb.setTables(ImovelEntry.TABLE_NAME);
-        qb.appendWhere(ImovelEntry._ID + " = " + imovelId);
-
-        Cursor cursor = qb.query(dbHelper.getReadableDatabase(),
-                sqlPessoaSelect,
-                null, null, null, null, null);
-
-        return fetchEndereco(cursor.getLong(0));
-    };
+//    public Cursor fetchEnderecoOfImovel(Long imovelId) {
+//
+//        String[] sqlPessoaSelect = {PessoaEntry.COLUMN_ENDERECO_ID};
+//
+//        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+//        qb.setTables(ImovelEntry.TABLE_NAME);
+//        qb.appendWhere(ImovelEntry._ID + " = " + imovelId);
+//
+//        Cursor cursor = qb.query(dbHelper.getReadableDatabase(),
+//                sqlPessoaSelect,
+//                null, null, null, null, null);
+//
+//        return fetchEndereco(cursor.getLong(0));
+//    };
 
     public Cursor fetchTelefoneOfPessoa(Long id) {
         String[] sqlSelect = {
@@ -173,21 +179,18 @@ public class ImobDb {
                 .delete(EmailEntry.TABLE_NAME, EmailEntry.COLUMN_PESSOA_ID + " = " + pessoa_id, null);
     }
 
-    public int deleteEnderecoOfPessoa(long pessoa_id) {
-
-        Cursor cursor = fetchEnderecoOfPessoa(pessoa_id);
+    public int deleteEndereco(long endereco_id) {
         return dbHelper.getWritableDatabase()
-                .delete(EnderecoEntry.TABLE_NAME, EnderecoEntry._ID + " = "
-                        + cursor.getLong(cursor.getColumnIndex(EnderecoEntry._ID)), null);
+                .delete(EnderecoEntry.TABLE_NAME, EnderecoEntry._ID + " = " + endereco_id, null);
     }
 
-    public int deleteEnderecoOfImovel(long imovel_id) {
-
-        Cursor cursor = fetchEnderecoOfImovel(imovel_id);
-        return dbHelper.getWritableDatabase()
-                .delete(EnderecoEntry.TABLE_NAME, EnderecoEntry._ID + " = "
-                        + cursor.getLong(cursor.getColumnIndex(EnderecoEntry._ID)), null);
-    }
+//    public int deleteEnderecoOfImovel(long imovel_id) {
+//
+//        Cursor cursor = fetchEnderecoOfImovel(imovel_id);
+//        return dbHelper.getWritableDatabase()
+//                .delete(EnderecoEntry.TABLE_NAME, EnderecoEntry._ID + " = "
+//                        + cursor.getLong(cursor.getColumnIndex(EnderecoEntry._ID)), null);
+//    }
 
     public static List<String> cursorToStringList(Cursor cursor, String column) {
         List<String> stringList = new ArrayList<>();

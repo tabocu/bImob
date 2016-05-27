@@ -112,4 +112,65 @@ public class UtilsCursorAdapter {
             return view;
         }
     }
+
+    public static class Local {
+        private Local() {
+        }
+
+        public static View getViewFromCursor(Context context, Cursor cursor) {
+            View view = LayoutInflater.from(context).inflate(R.layout.contato_item_list, null);
+
+            int column = cursor.getColumnIndexOrThrow(ImobContract.EnderecoEntry.COLUMN_LOCAL);
+
+            ImageView contatoImageView = (ImageView) view.findViewById(R.id.contatoImageView);
+            TextView contatoTextView = (TextView) view.findViewById(R.id.contatoTextView);
+            ImageButton contatoImageBtn = (ImageButton) view.findViewById(R.id.contatoImageBtn);
+
+            contatoImageView.setImageResource(R.drawable.ic_place_gray_24dp);
+            contatoTextView.setText(cursor.getString(column));
+            contatoImageBtn.setVisibility(View.GONE);
+
+            view.setOnLongClickListener(new CopyLongClick(context, cursor.getString(column)));
+
+            return view;
+        }
+    }
+
+    public static class Complemento {
+        private Complemento() {
+        }
+
+        public static View getViewFromCursor(Context context, Cursor cursor) {
+            View view = LayoutInflater.from(context).inflate(R.layout.contato_item_list, null);
+
+            int column = cursor.getColumnIndexOrThrow(ImobContract.EnderecoEntry.COLUMN_COMPLEMENTO);
+
+//            ImageView contatoImageView = (ImageView) view.findViewById(R.id.contatoImageView);
+            TextView contatoTextView = (TextView) view.findViewById(R.id.contatoTextView);
+            ImageButton contatoImageBtn = (ImageButton) view.findViewById(R.id.contatoImageBtn);
+
+//            contatoImageView.setImageResource(R.drawable.ic_place_gray_24dp);
+            contatoTextView.setText(cursor.getString(column));
+            contatoImageBtn.setVisibility(View.GONE);
+
+            view.setOnLongClickListener(new CopyLongClick(context, cursor.getString(column)));
+
+            return view;
+        }
+    }
+
+    public static class noInfo {
+        private noInfo() {
+        }
+
+        public static View getViewFromCursor(Context context) {
+            View view = LayoutInflater.from(context).inflate(R.layout.contato_item_list_noinfo, null);
+
+            TextView contatoTextView = (TextView) view.findViewById(R.id.contatoTextView);
+            contatoTextView.setText(R.string.noInfo);
+
+            return view;
+        }
+    }
+
 }

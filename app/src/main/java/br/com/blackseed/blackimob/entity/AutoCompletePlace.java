@@ -2,27 +2,40 @@ package br.com.blackseed.blackimob.entity;
 
 public class AutoCompletePlace {
 
-    private String id;
-    private String description;
+    private String placeId;
+    private CharSequence primary;
+    private CharSequence secundary;
+    private CharSequence fullText;
 
-    public AutoCompletePlace(String id, String description) {
-        this.id = id;
-        this.description = description;
+    public AutoCompletePlace(String placeId, CharSequence primary, CharSequence secundary, CharSequence fullText) {
+        this.placeId = placeId;
+        this.primary = primary;
+        this.secundary = secundary;
+        this.fullText = fullText;
     }
 
-    public String getDescription() {
-        return description;
+    public AutoCompletePlace(String placeId, CharSequence fullText) {
+        this.placeId = placeId;
+        this.fullText = fullText;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public CharSequence getPrimary() {return primary;}
+
+    public void setPrimary(CharSequence primary) {this.primary = primary;}
+
+    public CharSequence getSecundary() {return secundary;}
+
+    public void setSecundary(CharSequence secundary) {this.secundary = secundary;}
+
+    public CharSequence getFullText() {return fullText;}
+
+    public void setFullText(CharSequence fullText) {this.fullText = fullText;}
+
+    public String getPlaceId() {
+        return placeId;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    public void setPlaceId(String id) {
+        this.placeId = id;
     }
 }
