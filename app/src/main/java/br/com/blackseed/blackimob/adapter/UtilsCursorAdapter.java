@@ -164,7 +164,7 @@ public class UtilsCursorAdapter {
         }
 
         public static View getViewFromCursor(Context context) {
-            View view = LayoutInflater.from(context).inflate(R.layout.contato_item_list_noinfo, null);
+            View view = LayoutInflater.from(context).inflate(R.layout.contato_item_list, null);
 
             TextView contatoTextView = (TextView) view.findViewById(R.id.contatoTextView);
             contatoTextView.setText(R.string.noInfo);

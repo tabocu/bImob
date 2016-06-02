@@ -128,5 +128,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_detail_pessoa_fisica">Detalhes</string>
     <string name="title_activity_detail_pessoa_juridica">Detalhes</string>
+    <string name="title_activity_add_pessoa_fisica">PessoaFisicaActivity</string>
 
 </resources>

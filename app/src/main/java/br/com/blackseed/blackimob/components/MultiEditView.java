@@ -5,9 +5,9 @@ import android.content.res.TypedArray;
 import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ import br.com.blackseed.blackimob.R;
  */
 public class MultiEditView extends LinearLayout {
 
-    private int numberOfViews = 1;
+    private int numberOfViews = 0;
     private String mHint;
     private String mAddText;
     private int mInputType;
@@ -49,18 +49,11 @@ public class MultiEditView extends LinearLayout {
 
         editTextList = new ArrayList<>();
 
-        View view = inflate(getContext(), R.layout.single_item, null);
-        view.findViewById(R.id.deleteBtn).setOnClickListener(new RemoveClickListener(view));
-        EditText editText = (EditText) view.findViewById(R.id.editText);
-        editText.setHint(mHint);
-        editText.setInputType(mInputType);
-        addView(view);
 
-        editTextList.add(editText);
 
         View addBtn = inflate(getContext(), R.layout.add_field_btn, null);
         addBtn.findViewById(R.id.addFieldBtn).setOnClickListener(new AddClickListener());
-        ((Button) addBtn.findViewById(R.id.addFieldBtn)).setText(mAddText);
+        ((TextView) addBtn.findViewById(R.id.addFieldBtn)).setText(mAddText);
         addView(addBtn);
 
 
@@ -79,7 +72,7 @@ public class MultiEditView extends LinearLayout {
         removeAllViews();
         View addBtn = inflate(getContext(), R.layout.add_field_btn, null);
         addBtn.findViewById(R.id.addFieldBtn).setOnClickListener(new AddClickListener());
-        ((Button) addBtn.findViewById(R.id.addFieldBtn)).setText(mAddText);
+        ((TextView) addBtn.findViewById(R.id.addFieldBtn)).setText(mAddText);
         addView(addBtn);
         for (String text : textList)
             createField(text);
@@ -92,6 +85,7 @@ public class MultiEditView extends LinearLayout {
         editText.setHint(mHint);
         editText.setInputType(mInputType);
         editText.setText(text);
+        editText.requestFocus();
         editTextList.add(editText);
 
         addView(view, numberOfViews);

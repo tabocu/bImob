@@ -75,18 +75,20 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="br.com.blackseed.blackimob.MainActivity" />
         </activity>
-        <activity android:name=".PlaceActivity"></activity>
-
+        <activity android:name=".PlaceActivity" />
         <activity
-            android:name="br.com.blackseed.blackimob.MapFragmentActivity"
-            android:label="@string/app_name" >
+            android:name=".MapFragmentActivity"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name=".temp.AddPessoaFisicaActivity"
+            android:label="@string/title_activity_add_pessoa_fisica"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

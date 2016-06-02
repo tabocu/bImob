@@ -19,6 +19,7 @@ import android.widget.FrameLayout;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import br.com.blackseed.blackimob.data.ImobDb;
+import br.com.blackseed.blackimob.temp.AddPessoaFisicaActivity;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -102,7 +103,7 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onClick(View v) {
                         fabMenu.collapse();
-                        Intent intent = new Intent(getBaseContext(), AddLocacaoActivity.class);
+                        Intent intent = new Intent(getBaseContext(), AddPessoaFisicaActivity.class);
                         startActivity(intent);
                     }
                 });

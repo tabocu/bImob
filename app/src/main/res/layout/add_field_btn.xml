@@ -5,17 +5,20 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <Button
+    <TextView
         android:id="@+id/addFieldBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
-        android:background="?android:attr/selectableItemBackground" />
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:textAppearance="?android:attr/editTextColor"
+        android:textSize="18sp" />
 
     <View
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:padding="12dp" />
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_margin="18dp" />
 
 </LinearLayout>
