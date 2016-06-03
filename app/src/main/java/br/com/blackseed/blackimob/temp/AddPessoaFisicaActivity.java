@@ -22,7 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import java.io.File;
 import java.util.List;
@@ -50,6 +50,7 @@ public class AddPessoaFisicaActivity extends AppCompatActivity {
     private EditText mEnderecoEditText;
     private EditText mComplementoEditText;
     private ImageView mPhotoImageView;
+    private TextView mFullAdressTextView;
 
     private String mPlaceId;
     private Double mLatitude;
@@ -77,7 +78,7 @@ public class AddPessoaFisicaActivity extends AppCompatActivity {
         mEnderecoEditText = (EditText) findViewById(R.id.enderecoEditText);
         mComplementoEditText = (EditText) findViewById(R.id.complementoEditText);
         mPhotoImageView = (ImageView) findViewById(R.id.photoImageView);
-
+        mFullAdressTextView = (TextView) findViewById(R.id.fullAdressTextView);
 
 
 
@@ -178,20 +179,17 @@ public class AddPessoaFisicaActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_AUTOCOMPLETE) {
             if (resultCode == this.RESULT_OK) {
-                mEnderecoEditText.setText(data.getStringExtra("description"));
+                mFullAdressTextView.setText(data.getStringExtra("description"));
+                mFullAdressTextView.setVisibility(View.VISIBLE);
+                mEnderecoEditText.setText(data.getStringExtra("text"));
                 mEnderecoEditText.setSelection(mEnderecoEditText.getText().length());
                 mLatitude = data.getDoubleExtra("latitude", 0);
                 mLongitude = data.getDoubleExtra("longitude", 0);
                 mPlaceId = data.getStringExtra("id");
-
-                Toast.makeText(this, mEnderecoEditText.getText(), Toast.LENGTH_SHORT).show();
-                Toast.makeText(this, mLatitude.toString(), Toast.LENGTH_SHORT).show();
-                Toast.makeText(this, mLongitude.toString(), Toast.LENGTH_SHORT).show();
-                Toast.makeText(this, mPlaceId, Toast.LENGTH_SHORT).show();
-
                 mBlockAutoComplete = false;
 
             } else if (resultCode == this.RESULT_CANCELED) {
+                mFullAdressTextView.setVisibility(View.GONE);
                 mEnderecoEditText.setText(data.getStringExtra("text"));
                 mEnderecoEditText.setSelection(mEnderecoEditText.getText().length());
                 mBlockAutoComplete = false;

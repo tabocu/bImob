@@ -1,7 +1,6 @@
 package br.com.blackseed.blackimob;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -148,12 +147,10 @@ public class PlaceActivity extends AppCompatActivity implements GoogleApiClient.
 
     @Override
     public void onConnectionSuspended(int i) {
-
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-
     }
 
     @Override
@@ -164,6 +161,7 @@ public class PlaceActivity extends AppCompatActivity implements GoogleApiClient.
 
             Intent intent = new Intent();
             intent.putExtra("id", place.getId());                   //String
+            intent.putExtra("text", mAdressEditText.getText().toString());
             intent.putExtra("description", place.getAddress());     //CharSequence
             intent.putExtra("latitude", place.getLatLng().latitude);     //Double
             intent.putExtra("longitude", place.getLatLng().longitude);    //Double

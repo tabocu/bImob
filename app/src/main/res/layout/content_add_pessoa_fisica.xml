@@ -179,6 +179,16 @@
                 android:background="@android:color/transparent" />
         </LinearLayout>
 
+        <TextView
+            android:layout_marginLeft="60dp"
+            android:id="@+id/fullAdressTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:visibility="gone" />
+
+
     </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>

@@ -81,7 +81,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="br.com.blackseed.blackimob.MainActivity" />
         </activity>
-        <activity android:name=".PlaceActivity" />
+        <activity
+            android:name=".PlaceActivity"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".temp.AddPessoaFisicaActivity"
