@@ -1,11 +1,17 @@
 package br.com.blackseed.blackimob.temp;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -15,8 +21,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.List;
 
 import br.com.blackseed.blackimob.PlaceActivity;
@@ -25,10 +33,13 @@ import br.com.blackseed.blackimob.components.MultiEditView;
 import br.com.blackseed.blackimob.data.ImobContract;
 import br.com.blackseed.blackimob.data.ImobDb;
 import br.com.blackseed.blackimob.utils.MaskTextWatcher;
+import br.com.blackseed.blackimob.utils.Utils;
 
 public class AddPessoaFisicaActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_AUTOCOMPLETE = 1;
+    private static final int REQUEST_CODE_CAMERA_PHOTO = 2;
+    private static final int REQUEST_CODE_GALLERY_PHOTO = 3;
 
     long id = -1;
     private ImobDb db;
@@ -38,10 +49,13 @@ public class AddPessoaFisicaActivity extends AppCompatActivity {
     private MultiEditView mEmailMultiEditView;
     private EditText mEnderecoEditText;
     private EditText mComplementoEditText;
+    private ImageView mPhotoImageView;
 
     private String mPlaceId;
     private Double mLatitude;
     private Double mLongitude;
+
+    private Bitmap mBitmap;
 
     private boolean mBlockAutoComplete = false;
 
@@ -62,6 +76,10 @@ public class AddPessoaFisicaActivity extends AppCompatActivity {
         mEmailMultiEditView = (MultiEditView) findViewById(R.id.emailMultiEditView);
         mEnderecoEditText = (EditText) findViewById(R.id.enderecoEditText);
         mComplementoEditText = (EditText) findViewById(R.id.complementoEditText);
+        mPhotoImageView = (ImageView) findViewById(R.id.photoImageView);
+
+
+
 
         // Configura o campo de Cpf com mascara e tipo de entrada
         mCpfEditText.addTextChangedListener(new MaskTextWatcher(MaskTextWatcher.Mask.CPF));
@@ -128,8 +146,7 @@ public class AddPessoaFisicaActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                selectImage();
             }
         });
     }
@@ -155,6 +172,7 @@ public class AddPessoaFisicaActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -178,7 +196,31 @@ public class AddPessoaFisicaActivity extends AppCompatActivity {
                 mEnderecoEditText.setSelection(mEnderecoEditText.getText().length());
                 mBlockAutoComplete = false;
             }
+        } else if (requestCode == REQUEST_CODE_CAMERA_PHOTO) {
+            File f = new File(Environment.getExternalStorageDirectory(), "temp.jpg");
+            try {
+                BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+                mBitmap = BitmapFactory.decodeFile(f.getAbsolutePath(), bitmapOptions);
+                if (mBitmap != null) {
+                    mPhotoImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                    mPhotoImageView.setImageBitmap(Utils.getResizedBitmap(mBitmap, 500));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
+        } else if (requestCode == REQUEST_CODE_GALLERY_PHOTO) {
+
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (mBitmap != null) {
+            mPhotoImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            mPhotoImageView.setImageBitmap(Utils.getResizedBitmap(mBitmap, 500));
         }
     }
 
@@ -222,5 +264,27 @@ public class AddPessoaFisicaActivity extends AppCompatActivity {
             db.createEmail(emailContentValues);
         }
         return id;
+    }
+
+    private void selectImage() {
+        final CharSequence[] options = {"Camera", "Galeria"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Escolher foto");
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+
+                if (item == 0) {
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+                    startActivityForResult(intent, REQUEST_CODE_CAMERA_PHOTO);
+                } else if (item == 1) {
+                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(intent, REQUEST_CODE_GALLERY_PHOTO);
+                }
+            }
+        });
+        builder.show();
     }
 }

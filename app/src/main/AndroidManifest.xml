@@ -25,7 +25,8 @@
 
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,7 +37,8 @@
             android:name=".AddImovelActivity"
             android:label="@string/novo_imovel"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="br.com.blackseed.blackimob.MainActivity" />
@@ -45,7 +47,8 @@
             android:name=".AddLocacaoActivity"
             android:label="@string/nova_locacao"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="br.com.blackseed.blackimob.MainActivity" />
@@ -54,7 +57,8 @@
             android:name=".AddInquilinoActivity"
             android:label="@string/nova_pessoa"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="br.com.blackseed.blackimob.MainActivity" />
@@ -62,7 +66,8 @@
         <activity
             android:name=".detail.DetailPessoaFisicaActivity"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="br.com.blackseed.blackimob.MainActivity" />
@@ -70,25 +75,19 @@
         <activity
             android:name=".detail.DetailPessoaJuridicaActivity"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="br.com.blackseed.blackimob.MainActivity" />
         </activity>
         <activity android:name=".PlaceActivity" />
-        <activity
-            android:name=".MapFragmentActivity"
-            android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <activity
             android:name=".temp.AddPessoaFisicaActivity"
             android:label="@string/title_activity_add_pessoa_fisica"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
